@@ -1,0 +1,16 @@
+{
+  "name": "opuslink-backend",
+  "version": "1.0.0",
+  "description": "CS 554-A Web Rangers Final Project - OpusLink",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Web Rangers",
+  "license": "ISC",
+  "dependencies": {
+    "express": "^4.21.1",
+    "mongodb": "^6.10.0",
+    "mongoose": "^8.8.1"
+  }
+}
