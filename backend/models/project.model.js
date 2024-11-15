@@ -1,57 +1,35 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
-
-const ProjectSchema = new Schema(
-  {
-    createrId: {
-      type: String,
-      required: true,
+const projectSchema = new mongoose.Schema({
+    title: { 
+      type: String, 
+      required: [true, "Project title can't be empty!"], 
+      minlength: [5, "Title should be at least 5 characters long"],
+      maxlength: [100, "Title should not exceed 100 characters"]
     },
-    title: {
-      type: String,
-      required: true,
+    description: { 
+      type: String, 
+      required: [true, "Description can't be empty!"], 
+      minlength: [10, "Description should be at least 10 characters long"]
     },
-    desc: {
-      type: String,
-      required: true,
+    budget: { 
+      type: Number, 
+      required: [true, "Budget can't be empty!"], 
+      min: [1, "Budget should be greater than 0"]
     },
-    price: {
-      type: Number,
-      required: true,
+    clientId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
     },
-    cover: {
-      type: String,
-      required: true,
+    status: { 
+      type: String, 
+      enum: ['open', 'closed'], 
+      default: 'open' 
     },
-    images: {
-      type: [String],
-      required: false,
-    },
-    userId: {
-      type: String,
-      required: true,
-    },
-    deliveryTime: {
-      type: Number,
-      required: true,
-    },
-    features: {
-      type: [String],
-      required: false,
-    },
-    sold: {
-        type: Boolean,
-        required: true,
-        default: false,
-    },
-    freelancerId: {
-        type: String,
-        required: false
+    createdAt: { 
+      type: Date, 
+      default: Date.now 
     }
-  },
-  {
-    timestamps: true,
-  }
-);
-
-export default mongoose.model("Project", ProjectSchema);
+  }, { timestamps: true });
+  
+  export const Project = mongoose.model("Project", projectSchema);
