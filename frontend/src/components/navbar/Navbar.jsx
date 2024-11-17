@@ -59,7 +59,7 @@ function Navbar() {
           {currentUser ? (
             <li className="dropdown" onClick={() => setMenuOpen(!menuOpen)}>
               <img
-                src="https://via.placeholder.com/32"
+                src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 alt="User Avatar"
                 className="user-avatar"
               />
