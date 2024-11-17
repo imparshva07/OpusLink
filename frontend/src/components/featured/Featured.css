@@ -1,0 +1,130 @@
+.featured {
+  height: 650px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background: linear-gradient(120deg, #1dbf73, #013914);
+  color: white;
+  padding: 20px;
+
+  .featured-container {
+    max-width: 1200px;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 30px;
+
+    .featured-left {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+
+      h1 {
+        font-size: 3rem;
+        font-weight: 700;
+        line-height: 1.2;
+        span {
+          color: #ffe600;
+          font-style: normal;
+        }
+      }
+
+      .search-bar {
+        display: flex;
+        background-color: white;
+        border-radius: 50px;
+        overflow: hidden;
+        align-items: center;
+
+        .search-input {
+          display: flex;
+          align-items: center;
+          gap: 10px;
+          padding: 10px 20px;
+          flex: 1;
+
+          img {
+            width: 24px;
+            height: 24px;
+          }
+
+          input {
+            width: 100%;
+            border: none;
+            outline: none;
+            font-size: 1rem;
+            color: #333;
+            &::placeholder {
+              color: #999;
+            }
+          }
+        }
+
+        .btn-search {
+          background-color: #ffe600;
+          color: #013914;
+          border: none;
+          padding: 12px 30px;
+          font-weight: bold;
+          border-radius: 50px;
+          cursor: pointer;
+          transition: all 0.3s;
+          &:hover {
+            background-color: #ffcc00;
+          }
+        }
+      }
+
+      .popular-tags {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        span {
+          font-weight: bold;
+        }
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 10px;
+
+          li {
+            list-style: none;
+
+            button {
+              background-color: transparent;
+              color: white;
+              border: 2px solid white;
+              border-radius: 20px;
+              padding: 5px 15px;
+              cursor: pointer;
+              font-size: 0.9rem;
+              transition: all 0.3s;
+
+              &:hover {
+                background-color: white;
+                color: #013914;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .featured-right {
+      flex: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      img {
+        width: 100%;
+        max-width: 500px;
+        object-fit: contain;
+        border-radius: 10px;
+        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
