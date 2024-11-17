@@ -4,18 +4,18 @@ import "./Navbar.css";
 
 function Navbar() {
   const [active, setActive] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false);
+  const [open, setOpen] = useState(false);
 
   const { pathname } = useLocation();
 
-  const handleScroll = () => {
-    setActive(window.scrollY > 50);
+  const isActive = () => {
+    window.scrollY > 0 ? setActive(true) : setActive(false);
   };
 
   useEffect(() => {
-    window.addEventListener("scroll", handleScroll);
+    window.addEventListener("scroll", isActive);
     return () => {
-      window.removeEventListener("scroll", handleScroll);
+      window.removeEventListener("scroll", isActive);
     };
   }, []);
 
@@ -26,104 +26,95 @@ function Navbar() {
   };
 
   return (
-    <nav className={`navbar ${active ? "scrolled" : ""}`}>
-      <div className="navbar-container">
+    <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
+      <div className="container">
         <div className="logo">
-          <Link className="nav-link" to="/">
-            <span>WorkSphere</span>
+          <Link className="link" to="/">
+            <span className="text">OpusLink</span>
           </Link>
         </div>
-        <ul className="nav-links">
-          <li>
-            <Link className="nav-link" to="/business">
-              Business
-            </Link>
-          </li>
-          <li>
-            <Link className="nav-link" to="/explore">
-              Explore
-            </Link>
-          </li>
-          <li>
-            <Link className="nav-link" to="/language">
-              EN
-            </Link>
-          </li>
-          {!currentUser?.isSeller && (
-            <li>
-              <Link className="nav-link" to="/become-seller">
-                Become a Seller
-              </Link>
-            </li>
-          )}
+        <div className="links">
+          <span>Business</span>
+          <span>Explore</span>
+          <span>English</span>
+          {!currentUser?.isSeller && <span>Become a Seller</span>}
           {currentUser ? (
-            <li className="dropdown" onClick={() => setMenuOpen(!menuOpen)}>
+            <div className="user" onClick={() => setOpen(!open)}>
               <img
                 src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt="User Avatar"
-                className="user-avatar"
+                alt=""
               />
-              <span>{currentUser.username}</span>
-              {menuOpen && (
-                <div className="dropdown-menu">
+              <span>{currentUser?.username}</span>
+              {open && (
+                <div className="options">
                   {currentUser.isSeller && (
                     <>
-                      <Link className="dropdown-item" to="/mygigs">
-                        My Gigs
+                      <Link className="link" to="/mygigs">
+                        Gigs
                       </Link>
-                      <Link className="dropdown-item" to="/add-gig">
-                        Add Gig
+                      <Link className="link" to="/add">
+                        Add New Gig
                       </Link>
                     </>
                   )}
-                  <Link className="dropdown-item" to="/orders">
+                  <Link className="link" to="/orders">
                     Orders
                   </Link>
-                  <Link className="dropdown-item" to="/messages">
+                  <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="dropdown-item" to="/logout">
+                  <Link className="link" to="/">
                     Logout
                   </Link>
                 </div>
               )}
-            </li>
+            </div>
           ) : (
             <>
-              <li>
-                <Link className="nav-link" to="/login">
-                  Login
-                </Link>
-              </li>
-              <li>
-                <Link className="nav-link" to="/register">
-                  <button className="btn-primary">Join</button>
-                </Link>
-              </li>
+              <span>Sign in</span>
+              <Link className="link" to="/register">
+                <button>Join</button>
+              </Link>
             </>
           )}
-        </ul>
+        </div>
       </div>
       {(active || pathname !== "/") && (
-        <div className="submenu">
-          <Link className="submenu-link" to="/graphics-design">
-            Graphics & Design
-          </Link>
-          <Link className="submenu-link" to="/video-animation">
-            Video & Animation
-          </Link>
-          <Link className="submenu-link" to="/writing">
-            Writing & Translation
-          </Link>
-          <Link className="submenu-link" to="/ai-services">
-            AI Services
-          </Link>
-          <Link className="submenu-link" to="/marketing">
-            Digital Marketing
-          </Link>
-        </div>
+        <>
+          <hr />
+          <div className="menu">
+            <Link className="link menuLink" to="/">
+              Graphics & Design
+            </Link>
+            <Link className="link menuLink" to="/">
+              Video & Animation
+            </Link>
+            <Link className="link menuLink" to="/">
+              Writing & Translation
+            </Link>
+            <Link className="link menuLink" to="/">
+              AI Services
+            </Link>
+            <Link className="link menuLink" to="/">
+              Digital Marketing
+            </Link>
+            <Link className="link menuLink" to="/">
+              Music & Audio
+            </Link>
+            <Link className="link menuLink" to="/">
+              Programming & Tech
+            </Link>
+            <Link className="link menuLink" to="/">
+              Business
+            </Link>
+            <Link className="link menuLink" to="/">
+              Lifestyle
+            </Link>
+          </div>
+          <hr />
+        </>
       )}
-    </nav>
+    </div>
   );
 }
 
