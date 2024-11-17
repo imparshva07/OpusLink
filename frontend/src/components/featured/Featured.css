@@ -1,130 +1,118 @@
 .featured {
-  height: 650px;
+  height: 600px;
+  display: flex;
+  justify-content: center;
+  background-color: #003366;
+  color: white;
+}
+
+.featured .container {
+  width: 1400px;
+  display: flex;
+  align-items: center;
+}
+
+.featured .container .left {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.featured .container .left h1 {
+  font-size: 48px;
+  font-weight: 700;
+}
+
+.featured .container .left h1 span {
+  font-style: italic;
+  font-weight: 400;
+  color: #00acee;
+}
+
+.featured .container .left .search {
+  background-color: #f0f4fa;
+  border-radius: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  overflow: hidden;
+}
+
+.featured .container .left .search .searchInput {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.featured .container .left .search .searchInput img {
+  width: 20px;
+  height: 20px;
+  margin: 10px;
+}
+
+.featured .container .left .search .searchInput input {
+  border: none;
+  outline: none;
+  width: 100%;
+  padding: 10px;
+  background-color: transparent;
+  font-size: 16px;
+}
+
+.featured .container .left .search .searchInput input::placeholder {
+  color: #808080;
+}
+
+.featured .container .left .search button {
+  width: 130px;
+  height: 50px;
+  border: none;
+  background-color: #00acee;
+  color: white;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.featured .container .left .search button:hover {
+  background-color: #0077b6;
+}
+
+.featured .container .left .popular {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+
+.featured .container .left .popular span {
+  font-weight: 600;
+  color: #cce7ff;
+}
+
+.featured .container .left .popular button {
+  border: 1px solid #00acee;
+  background-color: transparent;
+  color: #00acee;
+  padding: 5px 15px;
+  border-radius: 20px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.featured .container .left .popular button:hover {
+  background-color: #00acee;
+  color: white;
+}
+
+.featured .container .right {
   display: flex;
   justify-content: center;
   align-items: center;
-  background: linear-gradient(120deg, #1dbf73, #013914);
-  color: white;
-  padding: 20px;
+  height: 100%;
+}
 
-  .featured-container {
-    max-width: 1200px;
-    width: 100%;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    gap: 30px;
-
-    .featured-left {
-      flex: 1;
-      display: flex;
-      flex-direction: column;
-      gap: 20px;
-
-      h1 {
-        font-size: 3rem;
-        font-weight: 700;
-        line-height: 1.2;
-        span {
-          color: #ffe600;
-          font-style: normal;
-        }
-      }
-
-      .search-bar {
-        display: flex;
-        background-color: white;
-        border-radius: 50px;
-        overflow: hidden;
-        align-items: center;
-
-        .search-input {
-          display: flex;
-          align-items: center;
-          gap: 10px;
-          padding: 10px 20px;
-          flex: 1;
-
-          img {
-            width: 24px;
-            height: 24px;
-          }
-
-          input {
-            width: 100%;
-            border: none;
-            outline: none;
-            font-size: 1rem;
-            color: #333;
-            &::placeholder {
-              color: #999;
-            }
-          }
-        }
-
-        .btn-search {
-          background-color: #ffe600;
-          color: #013914;
-          border: none;
-          padding: 12px 30px;
-          font-weight: bold;
-          border-radius: 50px;
-          cursor: pointer;
-          transition: all 0.3s;
-          &:hover {
-            background-color: #ffcc00;
-          }
-        }
-      }
-
-      .popular-tags {
-        display: flex;
-        flex-direction: column;
-        gap: 10px;
-        span {
-          font-weight: bold;
-        }
-        ul {
-          display: flex;
-          flex-wrap: wrap;
-          gap: 10px;
-
-          li {
-            list-style: none;
-
-            button {
-              background-color: transparent;
-              color: white;
-              border: 2px solid white;
-              border-radius: 20px;
-              padding: 5px 15px;
-              cursor: pointer;
-              font-size: 0.9rem;
-              transition: all 0.3s;
-
-              &:hover {
-                background-color: white;
-                color: #013914;
-              }
-            }
-          }
-        }
-      }
-    }
-
-    .featured-right {
-      flex: 1;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-
-      img {
-        width: 100%;
-        max-width: 500px;
-        object-fit: contain;
-        border-radius: 10px;
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
-      }
-    }
-  }
+.featured .container .right img {
+  height: 100%;
+  object-fit: contain;
 }

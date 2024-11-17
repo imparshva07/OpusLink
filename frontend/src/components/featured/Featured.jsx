@@ -3,34 +3,32 @@ import "./Featured.css";
 
 function Featured() {
   return (
-    <section className="featured">
-      <div className="featured-container">
-        <div className="featured-left">
+    <div className="featured">
+      <div className="container">
+        <div className="left">
           <h1>
-            Empower your business with <span>expert freelance</span> talent
+            Discover the ideal <span>freelance</span> solutions for your needs
           </h1>
-          <div className="search-bar">
-            <div className="search-input">
-              <img src="./img/search.png" alt="Search Icon" />
-              <input type="text" placeholder='Try "e-commerce website"' />
+          <div className="search">
+            <div className="searchInput">
+              <img src="./img/search-blue.png" alt="" />
+              <input type="text" placeholder='Try "custom web design"' />
             </div>
-            <button className="btn-search">Search</button>
+            <button>Find</button>
           </div>
-          <div className="popular-tags">
-            <span>Popular:</span>
-            <ul>
-              <li><button>UI/UX Design</button></li>
-              <li><button>React Development</button></li>
-              <li><button>SEO Optimization</button></li>
-              <li><button>Content Writing</button></li>
-            </ul>
+          <div className="popular">
+            <span>Trending:</span>
+            <button>App Development</button>
+            <button>eCommerce</button>
+            <button>SEO Optimization</button>
+            <button>Machine Learning</button>
           </div>
         </div>
-        <div className="featured-right">
-          <img src="./img/hero-image.png" alt="Freelancer" />
+        <div className="right">
+          <img src="./img/creative-team.png" alt="" />
         </div>
       </div>
-    </section>
+    </div>
   );
 }
 
