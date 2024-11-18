@@ -1,12 +1,172 @@
-import React from 'react'
-import "./Project.css"
+import React from "react";
+import "./Project.css";
+import { Slider } from "infinite-react-carousel/lib";
 
-const Project = () => {
+function Project() {
   return (
-    <div className='add'>
-      Project
+    <div className="project">
+      <div className="container">
+        <div className="left">
+          <span className="breadcrumbs">
+            OpusLink &gt; Creative Projects &gt;
+          </span>
+
+          <h1>AI-Generated Art: Personalized Creations Just for You</h1>
+          <div className="user">
+            <img
+              className="pp"
+              src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              alt=""
+            />
+            <span>Anna Bell</span>
+            <div className="stars">
+              <img src="/img/star.png" alt="" />
+              <img src="/img/star.png" alt="" />
+              <img src="/img/star.png" alt="" />
+              <img src="/img/star.png" alt="" />
+              <img src="/img/star.png" alt="" />
+              <span>5</span>
+            </div>
+          </div>
+          <Slider slidesToShow={1} arrowsScroll={1} className="slider">
+            <img
+              src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              alt=""
+            />
+            <img
+              src="https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              alt=""
+            />
+            <img
+              src="https://images.pexels.com/photos/1054777/pexels-photo-1054777.jpeg?auto=compress&cs=tinysrgb&w=1600"
+              alt=""
+            />
+          </Slider>
+          <h2>About This Project</h2>
+          <p>
+            Using AI, I create unique artworks based on your description, helping you visualize anything from characters to landscapes. Whether you're vague or specific in your prompt, I can provide you with stunning and original pieces.
+          </p>
+          <div className="seller">
+            <h2>About The Artist</h2>
+            <div className="user">
+              <img
+                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                alt=""
+              />
+              <div className="info">
+                <span>Anna Bell</span>
+                <div className="stars">
+                  <img src="/img/star.png" alt="" />
+                  <img src="/img/star.png" alt="" />
+                  <img src="/img/star.png" alt="" />
+                  <img src="/img/star.png" alt="" />
+                  <img src="/img/star.png" alt="" />
+                  <span>5</span>
+                </div>
+                <button>Contact Me</button>
+              </div>
+            </div>
+            <div className="box">
+              <div className="items">
+                <div className="item">
+                  <span className="title">From</span>
+                  <span className="desc">USA</span>
+                </div>
+                <div className="item">
+                  <span className="title">Member Since</span>
+                  <span className="desc">Aug 2022</span>
+                </div>
+                <div className="item">
+                  <span className="title">Avg. Response Time</span>
+                  <span className="desc">4 hours</span>
+                </div>
+                <div className="item">
+                  <span className="title">Last Delivery</span>
+                  <span className="desc">1 day</span>
+                </div>
+                <div className="item">
+                  <span className="title">Languages</span>
+                  <span className="desc">English</span>
+                </div>
+              </div>
+              <hr />
+              <p>
+                I'm Anna, and I love creating AI-generated art. I know exactly how to craft prompts that yield stunning and detailed results, no matter your vision.
+              </p>
+            </div>
+          </div>
+          <div className="reviews">
+            <h2>Customer Reviews</h2>
+            <div className="item">
+              <div className="user">
+                <img
+                  className="pp"
+                  src="https://images.pexels.com/photos/839586/pexels-photo-839586.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                  alt=""
+                />
+                <div className="info">
+                  <span>Garner David</span>
+                  <div className="country">
+                    <img
+                      src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
+                      alt=""
+                    />
+                    <span>United States</span>
+                  </div>
+                </div>
+              </div>
+              <div className="stars">
+                <img src="/img/star.png" alt="" />
+                <img src="/img/star.png" alt="" />
+                <img src="/img/star.png" alt="" />
+                <img src="/img/star.png" alt="" />
+                <img src="/img/star.png" alt="" />
+                <span>5</span>
+              </div>
+              <p>
+                Amazing service! The communication was fantastic, and I loved the custom images created for my project. Highly recommended.
+              </p>
+            </div>
+            <hr />
+          </div>
+        </div>
+        <div className="right">
+          <div className="price">
+            <h3>1 Custom AI Image</h3>
+            <h2>$59.99</h2>
+          </div>
+          <p>
+            Receive a fully customized AI-generated image based on your exact description and requirements.
+          </p>
+          <div className="details">
+            <div className="item">
+              <img src="/img/clock.png" alt="" />
+              <span>2-Day Delivery</span>
+            </div>
+            <div className="item">
+              <img src="/img/recycle.png" alt="" />
+              <span>3 Revisions</span>
+            </div>
+          </div>
+          <div className="features">
+            <div className="item">
+              <img src="/img/greencheck.png" alt="" />
+              <span>Prompt Writing</span>
+            </div>
+            <div className="item">
+              <img src="/img/greencheck.png" alt="" />
+              <span>Image Upscaling</span>
+            </div>
+            <div className="item">
+              <img src="/img/greencheck.png" alt="" />
+              <span>Additional Design Elements</span>
+            </div>
+          </div>
+          <button>Continue</button>
+        </div>
+      </div>
     </div>
-  )
+  );
 }
 
-export default Project
+export default Project;

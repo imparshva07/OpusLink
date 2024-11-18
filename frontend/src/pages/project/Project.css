@@ -1,0 +1,219 @@
+.project {
+  display: flex;
+  justify-content: center;
+}
+.project .container {
+  width: 1400px;
+  padding: 30px 0px;
+  display: flex;
+  gap: 50px;
+}
+.project .container .left {
+  flex: 2;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.project .container .left .breadcrumbs {
+  font-weight: 300;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: #555;
+}
+.project .container .left .user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.project .container .left .user .pp {
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+.project .container .left .user span {
+  font-size: 14px;
+  font-weight: 500;
+}
+.project .container .left .user .stars {
+  display: flex;
+  align-items: center;
+  gap: 5px;
+}
+.project .container .left .user .stars img {
+  height: 14px;
+  width: 14px;
+}
+.project .container .left .user .stars span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffc108;
+}
+.project .container .left .slider {
+  background-color: #f5f5f5;
+}
+.project .container .left .slider img {
+  max-height: 500px;
+  object-fit: contain;
+}
+.project .container .left h2 {
+  font-weight: 400;
+}
+.project .container .left p {
+  font-weight: 300;
+  line-height: 25px;
+  color: #555;
+}
+.project .container .left .seller {
+  margin-top: 50px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.project .container .left .seller .user {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+}
+.project .container .left .seller .user img {
+  width: 50px;
+  height: 50px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.project .container .left .seller .user .info {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+}
+.project .container .left .seller .user .info span {
+  font-weight: 500;
+}
+.project .container .left .seller .user .info .stars {
+  display: flex;
+  gap: 5px;
+}
+.project .container .left .seller .user .info .stars img {
+  height: 16px;
+  width: 16px;
+}
+.project .container .left .seller .user .info .stars span {
+  font-size: 14px;
+  font-weight: bold;
+  color: #ffc108;
+}
+.project .container .left .seller .box {
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 8px;
+}
+.project .container .left .seller .box .items {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+  gap: 20px;
+}
+.project .container .left .seller .box .items .item {
+  display: flex;
+  flex-direction: column;
+}
+.project .container .left .seller .box .items .item .title {
+  font-size: 13px;
+  color: #777;
+}
+.project .container .left .seller .box .items .item .desc {
+  font-size: 16px;
+  font-weight: 500;
+}
+.project .container .left .reviews {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+.project .container .left .reviews .item {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.project .container .left .reviews .item .user {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+}
+.project .container .left .reviews .item .user img {
+  width: 40px;
+  height: 40px;
+  object-fit: cover;
+  border-radius: 50%;
+}
+.project .container .left .reviews .item .stars {
+  display: flex;
+  gap: 5px;
+}
+.project .container .left .reviews .item .stars img {
+  height: 14px;
+  width: 14px;
+}
+.project .container .left .reviews .item .stars span {
+  font-weight: bold;
+  color: #ffc108;
+}
+.project .container .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+.project .container .right .price h3 {
+  font-size: 18px;
+  font-weight: 500;
+}
+.project .container .right .price h2 {
+  font-size: 32px;
+  font-weight: 700;
+  color: #ff5722;
+}
+.project .container .right .details {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.project .container .right .details .item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.project .container .right .details .item img {
+  width: 20px;
+  height: 20px;
+}
+.project .container .right .features {
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+.project .container .right .features .item {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.project .container .right .features .item img {
+  width: 20px;
+  height: 20px;
+}
+.project .container .right button {
+  background-color: #ff5722;
+  color: white;
+  padding: 12px 25px;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  border-radius: 5px;
+}
+.project .container .right button:hover {
+  background-color: #e64a19;
+}
