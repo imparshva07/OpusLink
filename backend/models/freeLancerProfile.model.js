@@ -9,21 +9,24 @@ const freelancerProfileSchema = new mongoose.Schema({
     description: { 
       type: String, 
       required: [true, "Description can't be empty!"],
-      minlength: [10, "Description should be at least 10 characters long"]
+      minlength: [10, "Description should be at least 10 characters long"],
+      default: 'Profile description'
     },
-    skills: [{ 
+    skills: { 
       type: [String], 
       validate: {
         validator: function (v) {
           return v && v.length > 0;
         },
         message: 'A freelancer must have at least one skill.',
-      }
-    }],
+      },
+      default:["No skill"]
+    },
     hourlyRate: { 
       type: Number, 
       required: [true, "Hourly rate can't be empty!"], 
-      min: [1, "Hourly rate should be greater than 0"]
+      min: [1, "Hourly rate should be greater than 0"],
+      default: 1
     }, 
     createdAt: { 
       type: Date, 
