@@ -7,7 +7,7 @@ import authRoutes from "./routes/auth.route.js";
 import userRoute from './routes/user.route.js'
 import profileRoute from './routes/freelancerProfile.route.js'
 import projectRoute from './routes/project.route.js'
-import bidRoutes from "./routes/bid.routes.js";
+import bidRoutes from "./routes/bid.route.js";
 
 
 
