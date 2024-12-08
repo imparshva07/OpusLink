@@ -29,45 +29,31 @@ const Login = () => {
   };
 
   return (
-    <div className="d-flex align-items-center justify-content-center vh-100">
-      <div className="card p-4 shadow" style={{ width: "400px" }}>
-        <h3 className="mb-4">Login</h3>
-        <form onSubmit={handleSubmit}>
-          <div className="mb-3">
-            <label className="form-label">Email</label>
-            <input
-              type="email"
-              className="form-control"
-              value={form.email}
-              onChange={(e) => setForm({ ...form, email: e.target.value })}
-              required
-            />
-          </div>
-          <div className="mb-3">
-            <label className="form-label">Password</label>
-            <input
-              type="password"
-              className="form-control"
-              value={form.password}
-              onChange={(e) => setForm({ ...form, password: e.target.value })}
-              required
-            />
-          </div>
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div>
-          )}
-          <button type="submit" className="btn btn-primary w-100">
-            Login
-          </button>
-        </form>
-        <div className="text-center mt-3">
-          <p>
-            Don't have an account? <Link to="/register">Register</Link>
-          </p>
-        </div>
-      </div>
+    <div className="login">
+      <form onSubmit={handleSubmit}>
+        <h1>Login</h1>
+        <label htmlFor="email">Email</label>
+        <input
+          type="email"
+          id="email"
+          value={form.email}
+          onChange={(e) => setForm({ ...form, email: e.target.value })}
+          required
+        />
+        <label htmlFor="password">Password</label>
+        <input
+          type="password"
+          id="password"
+          value={form.password}
+          onChange={(e) => setForm({ ...form, password: e.target.value })}
+          required
+        />
+        {error && <span>{error}</span>}
+        <button type="submit">Login</button>
+        <p>
+          Don't have an account? <Link to="/register">Register</Link>
+        </p>
+      </form>
     </div>
   );
 };
