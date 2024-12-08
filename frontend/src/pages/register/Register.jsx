@@ -1,63 +1,43 @@
 import React, { useState } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import axios from "axios";
-// import upload from "../../utils/upload";
 import "./Register.css";
 
-function Register() {
-  const [file, setFile] = useState(null);
-  const [user, setUser] = useState({
+const Register = () => {
+  const [form, setForm] = useState({
     name: "",
     email: "",
     password: "",
     confirmPassword: "",
     role: "",
-    country: "",
-    phone: "",
-    desc: "",
   });
-  const [error, setError] = useState(null);
-
-  const navigate = useNavigate();
-
-  const handleChange = (e) => {
-    setUser((prev) => ({
-      ...prev,
-      [e.target.name]: e.target.value,
-    }));
-  };
+  const [error, setError] = useState("");
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    if (user.password !== user.confirmPassword) {
+    if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
       return;
     }
     try {
-      // Register the user with Firebase
-      const { user: firebaseUser } = await createUserWithEmailAndPassword(
+      const { user } = await createUserWithEmailAndPassword(
         auth,
-        user.email,
-        user.password
+        form.email,
+        form.password
       );
-      await updateProfile(firebaseUser, { displayName: user.name });
-
-      // Upload profile picture if it exists
-      const imgUrl = file ? await upload(file) : "";
-
-      // Send data to the server
-      await axios.post("http://localhost:5000/api/auth/register", {
-        ...user,
-        img: imgUrl,
-        firebaseToken: await firebaseUser.getIdToken(),
+      await updateProfile(user, {
+        displayName: form.name,
       });
-
-      navigate("/"); // Redirect after successful registration
-    } catch (err) {
+      const token = await user.getIdToken();
+      await axios.post("http://localhost:5000/api/auth/register", {
+        firebaseToken: token,
+        name: form.name,
+        role: form.role,
+      });
+    } catch (error) {
       setError("Registration failed. Please try again later.");
-      console.error(err);
     }
   };
 
@@ -69,58 +49,71 @@ function Register() {
 
           <label htmlFor="name">Name</label>
           <input
-            name="name"
             type="text"
-            placeholder="John Doe"
-            onChange={handleChange}
-            value={user.name}
+            id="name"
+            value={form.name}
+            onChange={(e) => setForm({ ...form, name: e.target.value })}
+            required
           />
 
           <label htmlFor="email">Email</label>
           <input
-            name="email"
             type="email"
-            placeholder="Email"
-            onChange={handleChange}
-            value={user.email}
+            id="email"
+            value={form.email}
+            onChange={(e) => setForm({ ...form, email: e.target.value })}
+            required
           />
 
           <label htmlFor="password">Password</label>
           <input
-            name="password"
             type="password"
-            onChange={handleChange}
-            value={user.password}
+            id="password"
+            value={form.password}
+            onChange={(e) => setForm({ ...form, password: e.target.value })}
+            required
           />
 
           <label htmlFor="confirmPassword">Confirm Password</label>
           <input
-            name="confirmPassword"
             type="password"
-            onChange={handleChange}
-            value={user.confirmPassword}
+            id="confirmPassword"
+            value={form.confirmPassword}
+            onChange={(e) =>
+              setForm({ ...form, confirmPassword: e.target.value })
+            }
+            required
           />
 
-          <div className="toggle">
-            <label htmlFor="isSeller">Activate the seller account</label>
-            <label className="switch">
-              <input
-                type="checkbox"
-                onChange={(e) =>
-                  setUser({ ...user, isSeller: e.target.checked })
-                }
-              />
-              <span className="slider round"></span>
-            </label>
-          </div>
+          <label htmlFor="role">Role</label>
+          <select
+            id="role"
+            value={form.role}
+            onChange={(e) => setForm({ ...form, role: e.target.value })}
+            required
+          >
+            <option value="">Select your Role</option>
+            <option value="freelancer">Freelancer</option>
+            <option value="client">Client</option>
+          </select>
 
-          <button type="submit">Register</button>
+          {error && (
+            <div className="alert alert-danger" role="alert">
+              {error}
+            </div>
+          )}
+
+          <button type="submit" className="mt-3 btn btn-primary w-100">
+            Register
+          </button>
+
+          <p>
+            Already have an account? <Link to="/login">Login</Link>
+          </p>
         </div>
       </form>
-
-      {error && <div className="error">{error}</div>}
     </div>
   );
-}
+};
 
 export default Register;
