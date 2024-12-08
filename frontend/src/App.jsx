@@ -13,6 +13,7 @@ import Bids from "./pages/bids/Bids";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
+import Orders from "./pages/orders/Orders";
 
 function App() {
   const Layout = () => {
@@ -61,6 +62,10 @@ function App() {
         {
           path: "/project/:id",
           element: <Project />,
+        },
+        {
+          path: "/orders",
+          element: <Orders />,
         },
       ],
     },
