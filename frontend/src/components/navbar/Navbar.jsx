@@ -72,15 +72,9 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  {/* <Link className="link" to="/">
+                  <Link className="link" onClick={handleLogout}>
                     Logout
-                  </Link> */}
-                  <button
-                    className="btn btn-danger mt-3"
-                    onClick={handleLogout}
-                  >
-                    Logout
-                  </button>
+                  </Link>
                 </div>
               )}
             </div>
