@@ -14,7 +14,7 @@ const Register = () => {
     role: "",
   });
   const [error, setError] = useState("");
-
+  const navigate = useNavigate();
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
@@ -36,6 +36,7 @@ const Register = () => {
         name: form.name,
         role: form.role,
       });
+      navigate("/")
     } catch (error) {
       setError("Registration failed. Please try again later.");
     }

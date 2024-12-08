@@ -8,6 +8,7 @@ import "./Login.css";
 const Login = () => {
   const [form, setForm] = useState({ email: "", password: "" });
   const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -21,6 +22,7 @@ const Login = () => {
       await axios.post("http://localhost:5000/api/auth/login", {
         firebaseToken: token,
       });
+      navigate("/");
     } catch (err) {
       setError("Invalid credentials. Please try again.");
     }
