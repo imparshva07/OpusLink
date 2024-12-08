@@ -131,3 +131,33 @@
 .register form .right .toggle .switch {
   background-color: #e0e0e0;
 }
+
+.register form .left select {
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  appearance: none; /* Removes default dropdown arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+.register form .left select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.register form .left select::after {
+  content: "▼"; /* Custom dropdown arrow */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #007bff;
+  font-size: 18px;
+  pointer-events: none;
+}

@@ -15,6 +15,7 @@ const Register = () => {
   });
   const [error, setError] = useState("");
   const navigate = useNavigate();
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (form.password !== form.confirmPassword) {
@@ -36,7 +37,7 @@ const Register = () => {
         name: form.name,
         role: form.role,
       });
-      navigate("/")
+      navigate("/");
     } catch (error) {
       setError("Registration failed. Please try again later.");
     }
@@ -98,11 +99,7 @@ const Register = () => {
             <option value="client">Client</option>
           </select>
 
-          {error && (
-            <div className="alert alert-danger" role="alert">
-              {error}
-            </div>
-          )}
+          {error && <div className="alert alert-danger" role="alert">{error}</div>}
 
           <button type="submit" className="mt-3 btn btn-primary w-100">
             Register
