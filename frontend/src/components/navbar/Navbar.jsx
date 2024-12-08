@@ -1,5 +1,8 @@
-import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import React, { useEffect, useState, useContext } from "react";
+import { AuthContext } from "../../context/AuthContext";
+import { Link, useLocation, useNavigate } from "react-router-dom";
+import { signOut } from "firebase/auth";
+import { auth } from "../../firebaseConfig";
 import "./Navbar.css";
 
 function Navbar() {
@@ -7,6 +10,18 @@ function Navbar() {
   const [open, setOpen] = useState(false);
 
   const { pathname } = useLocation();
+
+  const { currentUser } = useContext(AuthContext);
+  const navigate = useNavigate();
+
+  const handleLogout = async () => {
+    try {
+      await signOut(auth);
+      navigate("/login");
+    } catch (error) {
+      console.error("Logout failed:", error);
+    }
+  };
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
@@ -18,12 +33,6 @@ function Navbar() {
       window.removeEventListener("scroll", isActive);
     };
   }, []);
-
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
-  };
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -44,7 +53,7 @@ function Navbar() {
                 src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 alt=""
               />
-              <span>{currentUser?.username}</span>
+              <span>{currentUser?.displayName}</span>
               {open && (
                 <div className="options">
                   {currentUser.isSeller && (
@@ -63,9 +72,15 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" to="/">
+                  {/* <Link className="link" to="/">
                     Logout
-                  </Link>
+                  </Link> */}
+                  <button
+                    className="btn btn-danger mt-3"
+                    onClick={handleLogout}
+                  >
+                    Logout
+                  </button>
                 </div>
               )}
             </div>
