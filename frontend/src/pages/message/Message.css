@@ -1,0 +1,96 @@
+.message-container {
+  display: flex;
+  justify-content: center;
+  padding: 50px 0;
+}
+
+.message-wrapper {
+  width: 1100px;
+  background-color: #f9f9f9;
+  padding: 30px;
+  border-radius: 15px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.breadcrumb-links {
+  font-size: 14px;
+  color: #777;
+  margin-bottom: 20px;
+  display: block;
+}
+
+.chat-messages {
+  margin-top: 30px;
+  padding: 20px;
+  max-height: 600px;
+  overflow-y: scroll;
+  display: flex;
+  flex-direction: column;
+  gap: 25px;
+}
+
+.message-item {
+  display: flex;
+  gap: 15px;
+  font-size: 16px;
+}
+
+.message-item.owner {
+  flex-direction: row-reverse;
+  align-self: flex-end;
+}
+
+.message-item.owner p {
+  background-color: #007bff;
+  color: white;
+  border-radius: 20px 20px 0 20px;
+}
+
+.message-item p {
+  max-width: 450px;
+  padding: 15px;
+  background-color: #e1e1e1;
+  border-radius: 20px;
+  color: #555;
+  font-weight: 300;
+}
+
+.message-item img {
+  width: 45px;
+  height: 45px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+hr {
+  border: none;
+  border-top: 1px solid #ececec;
+  margin: 20px 0;
+}
+
+.compose-message {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.compose-message textarea {
+  width: 75%;
+  padding: 12px;
+  height: 80px;
+  border-radius: 10px;
+  border: 1px solid #ccc;
+  font-size: 14px;
+  color: #333;
+}
+
+.compose-message button {
+  background-color: #28a745;
+  color: white;
+  font-weight: 600;
+  border: none;
+  border-radius: 12px;
+  padding: 15px;
+  cursor: pointer;
+  width: 120px;
+}
