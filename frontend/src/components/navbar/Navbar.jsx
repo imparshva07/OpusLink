@@ -71,7 +71,7 @@ function Navbar() {
                 src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 alt=""
               />
-              <span>{user?.name}</span>
+              <span>{name}</span>
               {open && (
                 <div className="options">
                   {/* {currentUser.isSeller && (
