@@ -8,6 +8,7 @@ import Projects from "./pages/projects/Projects";
 import Project from "./pages/project/Project";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
+import Reset from "./pages/register/Reset";
 import Add from "./pages/add/Add";
 import Bids from "./pages/bids/Bids";
 import Messages from "./pages/messages/Messages";
@@ -76,6 +77,10 @@ function App() {
     {
       path: "/login",
       element: <Login />,
+    },
+    {
+      path: "/reset",
+      element: <Reset />,
     },
   ]);
 

@@ -2,36 +2,32 @@ import mongoose from "mongoose";
 const { Schema } = mongoose;
 
 const userSchema = new Schema({
-  username: {
+  name: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   email: {
     type: String,
-    required: true,
+    required: false,
     unique: true,
   },
   password: {
     type: String,
-    required: true,
+    required: false,
   },
   img: {
     type: String,
     required: false,
   },
-  contactNumber: {
-    type: String,
-    required: false,
-  },
-  isFreelancer: {
-    type: Boolean,
-    default:false
-  },
   bio: {
     type: String,
     required: false,
-  }
+  },
+  isClient: {
+    type: Boolean,
+    default:false
+  },
 },{
   timestamps:true
 });

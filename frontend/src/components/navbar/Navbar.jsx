@@ -1,8 +1,12 @@
 import React, { useEffect, useState } from "react";
-import { Link, useLocation } from "react-router-dom";
+import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
+import { auth, db, logOut } from "../../Firebase";
+import { query, collection, getDocs, where } from "firebase/firestore";
+import { useAuthState } from "react-firebase-hooks/auth";
 
 function Navbar() {
+  // scrolling effect
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -19,11 +23,34 @@ function Navbar() {
     };
   }, []);
 
-  const currentUser = {
-    id: 1,
-    username: "Anna",
-    isSeller: true,
+  // Firebase User
+  const [user, loading, error] = useAuthState(auth);
+  const [name, setName] = useState("");
+  const navigate = useNavigate();
+
+  const fetchUserName = async () => {
+    try {
+      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+      const doc = await getDocs(q);
+      const data = doc.docs[0].data();
+      setName(data.name);
+    } catch (error) {
+      console.log(error.message);
+    }
   };
+
+  useEffect(()=>{
+    if(loading) return;
+    if (!user) navigate("/login");
+    fetchUserName();
+  }, [user, loading])
+
+  // static user
+  // const currentUser = {
+  //   id: 1,
+  //   username: "Anna",
+  //   isSeller: true,
+  // };
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -37,17 +64,17 @@ function Navbar() {
           <span>Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!currentUser?.isSeller && <span>Become a Seller</span>}
-          {currentUser ? (
+          {!user?.isSeller && <span>Become a Seller</span>}
+          {user ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
                 src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
                 alt=""
               />
-              <span>{currentUser?.username}</span>
+              <span>{user?.name}</span>
               {open && (
                 <div className="options">
-                  {currentUser.isSeller && (
+                  {/* {currentUser.isSeller && (
                     <>
                       <Link className="link" to="/myprojects">
                         Projects
@@ -56,14 +83,14 @@ function Navbar() {
                         Add New Project
                       </Link>
                     </>
-                  )}
+                  )} */}
                   <Link className="link" to="/orders">
                     Orders
                   </Link>
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" to="/">
+                  <Link className="link" onClick={logOut}>
                     Logout
                   </Link>
                 </div>
