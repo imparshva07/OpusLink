@@ -1,6 +1,6 @@
 import Bid from "../models/bid.model.js";
 import { Project } from "../models/project.model.js";
-import { User } from "../models/user.model.js";
+import User  from "../models/user.model.js";
 
 export const createBid = async (req, res) => {
     const { projectId, clientId, freelancerId, bidAmount, proposal } = req.body;

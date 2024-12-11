@@ -15,6 +15,7 @@ import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
 import Orders from "./pages/orders/Orders";
+import Search from "./components/search/search";
 
 function App() {
   const Layout = () => {
@@ -67,6 +68,10 @@ function App() {
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/search",
+          element: <Search />,
         },
       ],
     },
