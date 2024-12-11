@@ -1,6 +1,7 @@
 import express from "express";
 import mongoose from "mongoose";
 import dotenv from "dotenv";
+import cors from "cors";
 import userRoute from "./routes/user.js";
 import bidRoute from "./routes/bid.js";
 import chatRoute from "./routes/chat.js";
