@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React from "react";
 import "./Project.css";
 import { Slider } from "infinite-react-carousel/lib";
@@ -44,7 +45,7 @@ function Project() {
           </Slider>
           <h2>About This Project</h2>
           <p>
-            Using AI, I create unique artworks based on your description, helping you visualize anything from characters to landscapes. Whether you're vague or specific in your prompt, I can provide you with stunning and original pieces.
+            Using AI, I create unique artworks based on your description, helping you visualize anything from characters to landscapes. Whether youre vague or specific in your prompt, I can provide you with stunning and original pieces.
           </p>
           <div className="seller">
             <h2>About The Artist</h2>
@@ -91,7 +92,7 @@ function Project() {
               </div>
               <hr />
               <p>
-                I'm Anna, and I love creating AI-generated art. I know exactly how to craft prompts that yield stunning and detailed results, no matter your vision.
+                Im Anna, and I love creating AI-generated art. I know exactly how to craft prompts that yield stunning and detailed results, no matter your vision.
               </p>
             </div>
           </div>

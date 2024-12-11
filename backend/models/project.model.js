@@ -1,41 +1,35 @@
 import mongoose from "mongoose";
-const { Schema } = mongoose;
-
-const ProjectSchema = new Schema({
-  userId: {
-    type: String,
-    required: false,
-  },
-  title: {
-    type: String,
-    required: false,
-  },
-  info: {
-    type: String,
-    required: false,
-  },
-  category: {
-    type: String,
-    required: false,
-  },
-  budget: {
-    type: Number,
-    required: false,
-  },
-  img: {
-    type: String,
-    required:false
-  },
-  deliveryDays: {
-    type: Number,
-    required:false
-  },
-  specifications: {
-    type: [String],
-    required:false
-  },
-},{
-  timestamps:false
-});
-
-export default mongoose.model("Project", ProjectSchema)
+const projectSchema = new mongoose.Schema({
+    title: { 
+      type: String, 
+      required: [true, "Project title can't be empty!"], 
+      minlength: [5, "Title should be at least 5 characters long"],
+      maxlength: [100, "Title should not exceed 100 characters"]
+    },
+    description: { 
+      type: String, 
+      required: [true, "Description can't be empty!"], 
+      minlength: [10, "Description should be at least 10 characters long"]
+    },
+    budget: { 
+      type: Number, 
+      required: [true, "Budget can't be empty!"], 
+      min: [1, "Budget should be greater than 0"]
+    },
+    clientId: { 
+      type: mongoose.Schema.Types.ObjectId, 
+      ref: 'User', 
+      required: true 
+    },
+    status: { 
+      type: String, 
+      enum: ['open', 'closed'], 
+      default: 'open' 
+    },
+    createdAt: { 
+      type: Date, 
+      default: Date.now 
+    }
+  }, { timestamps: true });
+  
+  export const Project = mongoose.model("Project", projectSchema);
