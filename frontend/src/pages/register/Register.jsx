@@ -1,21 +1,19 @@
 import React, { useEffect, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
-import "../login/Login.css";
-import {
-  auth,
-  registerInWithEmailAndPassword,
-  logOut,
-} from "../../Firebase";
+import { useNavigate } from "react-router-dom";
+import "../register/Register.css";
+import { auth, registerInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 
 function Register() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [name, setName] = useState("");
-  const navigate = useNavigate();
-  const[user, loading, error] = useAuthState(auth);
+  const [img, setImg] = useState(null);
+  const [bio, setBio] = useState("");
+  const [isClient, setIsClient] = useState(false);
 
-  // TODO *************
+  const navigate = useNavigate();
+  const [user, loading, error] = useAuthState(auth);
 
   const register = () => {
     if (name !== "") {
@@ -29,57 +27,81 @@ function Register() {
   useEffect(() => {
     if (loading) return;
     if (user) navigate("/");
-  }, [user, loading]);
+  }, [user, loading, navigate]);
+
+  const handleSubmit = (e) => {
+    e.preventDefault(); // Prevent form refresh
+    register();
+  };
 
   return (
-    <div className="login">
-      <div className="login_box">
-        <input
-          type="text"
-          className="register__textBox"
-          value={name}
-          onChange={(e) => setName(e.target.value)}
-          placeholder="Full Name"
-        />
-        <input
-          type="text"
-          className="register__textBox"
-          value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="E-mail Address"
-        />
-        <input
-          type="password"
-          className="register__textBox"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
-        />
-        <button
-          className="register__btn"
-          // TODO *************
-          onClick={register}
-        >
-          Register
-        </button>
-        {/* <button
-          className="register__btn register__google"
-          // TODO *************
-          onClick={signInWithGoogle}
-        >
-          <div>
-            Register with Google
-            <img
-              src="https://www.transparentpng.com/thumb/google-logo/google-logo-png-icon-free-download-SUF63j.png"
-              alt=""
-            />
-          </div>
-        </button> */}
+    <div className="register">
+      <form onSubmit={handleSubmit} className="register_form">
+        <div className="left">
+          <h1>Create a new account</h1>
 
-        <div style={{ marginTop: "20px" }}>
-          Already have an account? <Link to="/">Login</Link> now.
+          <label htmlFor="name">Full Name</label>
+          <input
+            name="name"
+            type="text"
+            placeholder="Enter your full name"
+            value={name}
+            onChange={(e) => setName(e.target.value)}
+          />
+
+          <label htmlFor="email">Email</label>
+          <input
+            name="email"
+            type="email"
+            placeholder="Enter your email"
+            value={email}
+            onChange={(e) => setEmail(e.target.value)}
+          />
+
+          <label htmlFor="password">Password</label>
+          <input
+            name="password"
+            type="password"
+            placeholder="Enter your password"
+            value={password}
+            onChange={(e) => setPassword(e.target.value)}
+          />
+
+          <label htmlFor="profilePicture">Profile Picture</label>
+          <input
+            type="file"
+            accept="image/*"
+            onChange={(e) => setImg(e.target.files[0])}
+          />
+
+          <label htmlFor="bio">Bio</label>
+          <input
+            name="bio"
+            type="text"
+            placeholder="Enter a brief description"
+            value={bio}
+            onChange={(e) => setBio(e.target.value)}
+          />
+
+          <button type="submit">Register</button>
+          {error && <div className="error-message">{error.message}</div>}
         </div>
-      </div>
+
+        <div className="right">
+          <h1>I am Hiring</h1>
+          <div className="toggle">
+            <label htmlFor="isClient">Enable client mode</label>
+            <label className="switch">
+              <input
+                type="checkbox"
+                checked={isClient}
+                onChange={() => setIsClient(!isClient)}
+              />
+              <span className="slider round"></span>
+            </label>
+          </div>
+        </div>
+      </form>
     </div>
   );
 }

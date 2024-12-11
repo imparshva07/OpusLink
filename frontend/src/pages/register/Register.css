@@ -1,0 +1,163 @@
+.register {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #f5f5f5;
+  padding: 40px 0;
+}
+
+.register form {
+  width: 900px;
+  display: flex;
+  gap: 100px;
+  background-color: #fff;
+  padding: 40px;
+  border-radius: 12px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+}
+
+.register form h1 {
+  color: #333;
+  font-size: 24px;
+  margin-bottom: 20px;
+}
+
+.register form .left, .register form .right {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.register form .left label, .register form .right label {
+  font-size: 16px;
+  color: #555;
+}
+
+.register form .left input, .register form .right input,
+.register form .left textarea, .register form .right textarea {
+  padding: 15px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  font-size: 14px;
+  background-color: #f9f9f9;
+  transition: all 0.3s ease;
+}
+
+.register form .left input:focus, .register form .right input:focus,
+.register form .left textarea:focus, .register form .right textarea:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.register form .left button, .register form .right button {
+  padding: 16px;
+  background-color: #007bff;
+  color: #fff;
+  border: none;
+  font-size: 16px;
+  font-weight: 600;
+  border-radius: 8px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.register form .left button:hover, .register form .right button:hover {
+  background-color: #0056b3;
+}
+
+.register form .left .toggle, .register form .right .toggle {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.register form .left .toggle .switch, .register form .right .toggle .switch {
+  position: relative;
+  width: 52px;
+  height: 28px;
+  background-color: #e0e0e0;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+}
+
+.register form .left .toggle .switch input, .register form .right .toggle .switch input {
+  opacity: 0;
+  width: 0;
+  height: 0;
+}
+
+.register form .left .toggle .slider, .register form .right .toggle .slider {
+  position: absolute;
+  cursor: pointer;
+  top: 4px;
+  left: 4px;
+  width: 20px;
+  height: 20px;
+  background-color: white;
+  border-radius: 50%;
+  transition: transform 0.3s ease;
+}
+
+.register form .left .toggle input:checked + .slider, .register form .right .toggle input:checked + .slider {
+  transform: translateX(24px);
+}
+
+.register form .left .toggle input:checked + .slider {
+  background-color: #007bff;
+}
+
+.register form .left .toggle input:focus + .slider, .register form .right .toggle input:focus + .slider {
+  box-shadow: 0 0 2px #007bff;
+}
+
+.register form .left .toggle input:checked + .slider {
+  background-color: #28a745;
+}
+
+.register form .right input[type="file"] {
+  padding: 10px;
+  border: 1px solid #e0e0e0;
+  background-color: #f9f9f9;
+  border-radius: 8px;
+  font-size: 14px;
+}
+
+.register form .right textarea {
+  resize: vertical;
+  height: 100px;
+}
+
+.register form .right .toggle .switch {
+  background-color: #e0e0e0;
+}
+
+.register form .left select {
+  padding: 12px;
+  border: 1px solid #e0e0e0;
+  border-radius: 8px;
+  background-color: #f9f9f9;
+  font-size: 14px;
+  color: #555;
+  cursor: pointer;
+  appearance: none; /* Removes default dropdown arrow */
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  position: relative;
+}
+
+.register form .left select:focus {
+  border-color: #007bff;
+  outline: none;
+}
+
+.register form .left select::after {
+  content: "▼"; /* Custom dropdown arrow */
+  position: absolute;
+  right: 10px;
+  top: 50%;
+  transform: translateY(-50%);
+  color: #007bff;
+  font-size: 18px;
+  pointer-events: none;
+}

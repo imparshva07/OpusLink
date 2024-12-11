@@ -38,7 +38,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
-  await fetch("localhost:3000/api/auth/register", {
+  await fetch("http://localhost:3000/api/auth/register", {
     method: "POST",
     body: JSON.stringify({
       name,
@@ -98,12 +98,15 @@ const registerInWithEmailAndPassword = async (
   bio
 ) => {
   try {
+    console.log("Hey i am in firebase")
     const response = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     const user = response.user;
+    console.log(user);
+    console.log(user.uid)
     const profilePic = img
       ? img
       : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?t=st=1733884083~exp=1733887683~hmac=3acdac16f592cc2761772a7f961212010f6dc103c2024b14a37f084a7a552969&w=740";
