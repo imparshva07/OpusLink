@@ -1,6 +1,6 @@
 import { auth } from "../config/firebase.js";
 import { User } from "../models/user.model.js";
-import {FreelancerProfile} from "../models/freeLancerProfile.model.js"
+import { FreelancerProfile } from "../models/freeLancerProfile.model.js";
 
 export const registerUser = async (req, res) => {
   const { firebaseToken, name, role } = req.body;
@@ -20,16 +20,22 @@ export const registerUser = async (req, res) => {
     await user.save();
 
     if (role.toLowerCase() === "freelancer") {
-
       const freelancerProfile = new FreelancerProfile({
-        userId: user._id, // Reference the user ID
+        userId: user._id,
       });
 
       await freelancerProfile.save();
-
     }
-    
-    res.status(201).json({ message: "User registered successfully" });
+
+    res.status(201).json({
+      message: "User registered successfully",
+      user: {
+        id: user._id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+      },
+    });
   } catch (error) {
     console.error("Error in registration:", error);
     res
@@ -53,6 +59,7 @@ export const loginUser = async (req, res) => {
       message: "Login successful",
       token: firebaseToken,
       user: {
+        id: user._id,
         name: user.name,
         email: user.email,
         role: user.role,
