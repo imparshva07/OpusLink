@@ -1,65 +1,70 @@
 .login {
   display: flex;
-  justify-content: center;
   align-items: center;
-  width: 100vw;
-  height: 100vh;
-  background-color: #4CAF50;
+  justify-content: center;
+  min-height: 100vh;
+  background-color: #f4f4f4;
 }
 
-.login_box {
-  background-color: white;
-  height: 60vh;
-  padding: 20px 40px;
+.login form {
+  width: 380px;
+  padding: 50px;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  border-radius: 20px;
+  gap: 15px;
+  background: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-.login input {
-  width: 30vw;
+.login form h1 {
+  color: #333;
+  font-size: 24px;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-align: center;
+}
+
+.login form label {
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 5px;
+}
+
+.login form input,
+.login form textarea {
+  padding: 12px;
+  border: 1px solid #ddd;
+  border-radius: 4px;
+  font-size: 14px;
+  background-color: #fafafa;
+  transition: border-color 0.3s;
+
+  &:focus {
+    border-color: #007bff;
+    outline: none;
+  }
+}
+
+.login form button {
+  padding: 14px;
   border: none;
-  outline: none;
-  padding: 10px 15px;
-  /* border-radius: 20px; */
-  margin: 10px;
-  border-bottom: 2px solid #4CAF50;
-  color: #4CAF50;
+  border-radius: 4px;
+  background-color: #007bff;
+  color: #fff;
+  font-size: 16px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background-color 0.3s;
+
+  &:hover {
+    background-color: #0056b3;
+  }
 }
 
-.login button {
-  outline: none;
-  padding: 10px 15px;
-  border-radius: 20px;
-  border: 2px solid white;
-  margin: 5px;
-  background-color: #4CAF50;
-  color: white;
+.login form span {
+  color: #e74c3c;
+  font-size: 18px;
+  text-align: center;
 }
-
-.login button div {
-  display: flex;
-  align-items: center;
-}
-
-.login button img {
-  height: 30px;
-  margin-left: 10px;
-}
-
-.extra_options {
-  margin-top: 20px;
-  display: flex;
-  align-items: center;
-  flex-direction: column;
-}
-
-/* .login_einput {}
-
-.login_pinput {}
-
-.login_btn {}
-
-.login_googlebtn {} */
