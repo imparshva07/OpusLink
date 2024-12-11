@@ -10,25 +10,30 @@ import workRoute from "./routes/work.js";
 import authRoute from "./routes/auth.js";
 
 const app = express();
+dotenv.config();
 
 mongoose.set("strictQuery", true);
 
 const connect = async () => {
   try {
-    await mongoose.connect("mongodb://127.0.0.1:27017/");
+    console.log(process.env.MONGO_URI + "/" + process.env.DB_NAME);
+    await mongoose.connect(process.env.MONGO_URI + "/" + process.env.DB_NAME);
     console.log("Connected to MongoDB");
   } catch (error) {
     console.log(error);
   }
 };
 
-app.use("/api/users", userRoute)
-app.use("/api/bids", bidRoute)
-app.use("/api/chats", chatRoute)
-app.use("/api/messages", messageRoute)
-app.use("/api/projects", projectRoute)
-app.use("/api/works", workRoute)
-app.use("/api/auth", authRoute)
+app.use(express.json());
+
+app.use("/api/users", userRoute);
+app.use("/api/bids", bidRoute);
+app.use("/api/chats", chatRoute);
+app.use("/api/messages", messageRoute);
+app.use("/api/projects", projectRoute);
+app.use("/api/works", workRoute);
+app.use("/api/auth", authRoute);
+
 
 app.listen(3000, () => {
   connect();
