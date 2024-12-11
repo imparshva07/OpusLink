@@ -1,0 +1,84 @@
+.messages {
+  display: flex;
+  justify-content: center;
+  padding: 40px 0;
+  background-color: #f3f4f6;
+}
+
+.messages-container {
+  width: 80%;
+  max-width: 1200px;
+  background-color: white;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  padding: 30px;
+}
+
+.messages-header {
+  display: flex;
+  justify-content: space-between;
+  margin-bottom: 20px;
+}
+
+.messages-header h1 {
+  font-size: 28px;
+  color: #2d3e50;
+  font-weight: 600;
+}
+
+.messages-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.messages-table th,
+.messages-table td {
+  padding: 12px 20px;
+  text-align: left;
+  font-size: 14px;
+}
+
+.messages-table th {
+  background-color: #f7f9fc;
+  color: #606c76;
+  font-weight: 600;
+}
+
+.messages-table td {
+  color: #2f3b44;
+}
+
+.messages-table tr:nth-child(even) {
+  background-color: #f9fafb;
+}
+
+.messages-table tr.active {
+  background-color: #e6f7e7;
+}
+
+.messages-table tr:hover {
+  background-color: #f1f5f9;
+}
+
+.messages-table td .message-link {
+  color: #1dbf73;
+  text-decoration: none;
+}
+
+.messages-table td .message-link:hover {
+  text-decoration: underline;
+}
+
+.messages-table td button {
+  background-color: #1dbf73;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.messages-table td button:hover {
+  background-color: #16a85a;
+}

@@ -1,0 +1,92 @@
+.add {
+  display: flex;
+  justify-content: center;
+  padding: 30px;
+}
+
+.add .container {
+  width: 100%;
+  max-width: 1200px;
+  background-color: #f8f9fa;
+  padding: 40px;
+  border-radius: 10px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.add .container h1 {
+  text-align: center;
+  color: #333;
+  margin-bottom: 40px;
+  font-size: 2.5rem;
+}
+
+.add .container .sections {
+  display: flex;
+  justify-content: space-between;
+  gap: 40px;
+}
+
+.add .container .sections label {
+  color: #555;
+  font-size: 16px;
+  font-weight: 500;
+  margin-bottom: 10px;
+}
+
+.add .container .sections .info,
+.add .container .sections .details {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.add .container .sections input,
+.add .container .sections select,
+.add .container .sections textarea {
+  padding: 12px;
+  border-radius: 6px;
+  border: 1px solid #dcdcdc;
+  font-size: 14px;
+  transition: border 0.3s ease;
+}
+
+.add .container .sections input:focus,
+.add .container .sections select:focus,
+.add .container .sections textarea:focus {
+  border-color: #1dbf73;
+  outline: none;
+}
+
+.add .container .sections .info button,
+.add .container .sections .details button {
+  padding: 12px 20px;
+  background-color: #1dbf73;
+  color: white;
+  font-size: 16px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add .container .sections .info button:hover,
+.add .container .sections .details button:hover {
+  background-color: #17a64a;
+}
+
+.add .container .sections input[type="file"] {
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.add .container .sections textarea {
+  font-family: Arial, sans-serif;
+  resize: vertical;
+}
+
+.add .container .sections .info input[type="text"],
+.add .container .sections .details input[type="text"] {
+  font-weight: 300;
+}

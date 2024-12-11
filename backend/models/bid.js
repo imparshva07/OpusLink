@@ -1,24 +1,27 @@
 import mongoose from "mongoose";
 const { Schema } = mongoose;
 
-const ChatSchema = new Schema(
+const BidSchema = new Schema(
   {
-    id: {
-      type: String,
-      required: true,
-      unique: true,
-    },
-    senderId: {
+    projectId: {
       type: String,
       required: true,
     },
-    receiverId: {
+    userId: {
       type: String,
       required: true,
     },
-    message: {
+    estimated_days: {
+      type: Number,
+      required: true,
+    },
+    offer_price: {
+      type: Number,
+      required: true,
+    },
+    desc: {
       type: String,
-      required: false,
+      required: true,
     },
   },
   {
@@ -26,4 +29,4 @@ const ChatSchema = new Schema(
   }
 );
 
-export default mongoose.model("Chat", ChatSchema);
+export default mongoose.model("Bid", BidSchema);
