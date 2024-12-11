@@ -7,6 +7,7 @@ import chatRoute from "./routes/chat.js";
 import messageRoute from "./routes/message.js";
 import projectRoute from "./routes/project.js";
 import workRoute from "./routes/work.js";
+import authRoute from "./routes/auth.js";
 
 const app = express();
 
@@ -27,6 +28,7 @@ app.use("/api/chats", chatRoute)
 app.use("/api/messages", messageRoute)
 app.use("/api/projects", projectRoute)
 app.use("/api/works", workRoute)
+app.use("/api/auth", authRoute)
 
 app.listen(3000, () => {
   connect();
