@@ -8,5 +8,6 @@ router.get("/", projectFuncs.getAll);
 router.get("/:id", projectFuncs.getProject);
 router.get("/client/:id", projectFuncs.getClientProject);
 router.put("/:id", projectFuncs.updateProject);
+router.get("/search", projectFuncs.searchProjects);
 
 export default router;
