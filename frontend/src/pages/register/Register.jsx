@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { useNavigate, Link } from "react-router-dom";
-import { createUserWithEmailAndPassword, updateProfile } from "firebase/auth";
+import { createUserWithEmailAndPassword } from "firebase/auth";
 import { auth } from "../../firebaseConfig";
 import axios from "axios";
 import "./Register.css";
@@ -14,12 +14,21 @@ const Register = () => {
     role: "",
   });
   const [error, setError] = useState("");
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    setError("");
+    setLoading(true);
+    if (!form.name || !form.email || !form.password || !form.role) {
+      setError("All fields are required.");
+      setLoading(false);
+      return;
+    }
     if (form.password !== form.confirmPassword) {
       setError("Passwords do not match.");
+      setLoading(false);
       return;
     }
     try {
@@ -28,18 +37,17 @@ const Register = () => {
         form.email,
         form.password
       );
-      await updateProfile(user, {
-        displayName: form.name,
-      });
       const token = await user.getIdToken();
       await axios.post("http://localhost:5000/api/auth/register", {
         firebaseToken: token,
         name: form.name,
         role: form.role,
       });
-      navigate("/");
+      navigate("/login");
     } catch (error) {
       setError("Registration failed. Please try again later.");
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -99,10 +107,10 @@ const Register = () => {
             <option value="client">Client</option>
           </select>
 
-          {error && <div className="alert alert-danger" role="alert">{error}</div>}
+          {error && <span>{error}</span>}
 
-          <button type="submit" className="mt-3 btn btn-primary w-100">
-            Register
+          <button type="submit" disabled={loading}>
+            {loading ? "Registering..." : "Register"}
           </button>
 
           <p>

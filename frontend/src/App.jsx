@@ -73,13 +73,11 @@ function App() {
     },
     {
       path: "/register",
-      // element: currentUser ? <Navigate to="/" /> : <Register />,
-      element: <Register />,
+      element: currentUser ? <Navigate to="/" /> : <Register />,
     },
     {
       path: "/login",
-      // element: currentUser ? <Navigate to="/" /> : <Login />,
-      element: <Login />,
+      element: currentUser ? <Navigate to="/" /> : <Login />,
     },
   ]);
 
