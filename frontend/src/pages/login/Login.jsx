@@ -1,11 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 
-import {
-  auth,
-  logInWithEmailAndPassword,
-  signInWithGoogle,
-} from "../../Firebase";
+import { auth, logInWithEmailAndPassword } from "../../Firebase";
 
 import { useAuthState } from "react-firebase-hooks/auth";
 
@@ -15,7 +11,7 @@ function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const navigate = useNavigate();
-  const[user, loading, error] = useAuthState(auth);
+  const [user, loading, error] = useAuthState(auth);
 
   // TODO *************
 
@@ -44,11 +40,11 @@ function Login() {
         <button
           className="login_btn"
           // TODO *************
-          onClick={()=> logInWithEmailAndPassword(email, password)}
+          onClick={() => logInWithEmailAndPassword(email, password)}
         >
           Login
         </button>
-        <button
+        {/* <button
           className="login_btn login_googlebtn"
           // TODO *************
           onClick={signInWithGoogle}
@@ -60,7 +56,7 @@ function Login() {
               alt=""
             />
           </div>
-        </button>
+        </button> */}
         <div className="extra_options">
           <div>
             <Link to="/reset">Forgot Password</Link>

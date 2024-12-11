@@ -4,7 +4,6 @@ import "../login/Login.css";
 import {
   auth,
   registerInWithEmailAndPassword,
-  signInWithGoogle,
   logOut,
 } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -63,7 +62,7 @@ function Register() {
         >
           Register
         </button>
-        <button
+        {/* <button
           className="register__btn register__google"
           // TODO *************
           onClick={signInWithGoogle}
@@ -75,7 +74,7 @@ function Register() {
               alt=""
             />
           </div>
-        </button>
+        </button> */}
 
         <div style={{ marginTop: "20px" }}>
           Already have an account? <Link to="/">Login</Link> now.

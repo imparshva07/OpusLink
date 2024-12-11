@@ -38,7 +38,7 @@ const googleProvider = new GoogleAuthProvider();
 
 // register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
-  await fetch(`${process.env.REACT_APP_BASE_URL}/register`, {
+  await fetch("localhost:3000/api/auth/register", {
     method: "POST",
     body: JSON.stringify({
       name,
@@ -137,7 +137,6 @@ const logOut = () => {
 export {
   auth,
   db,
-  // signInWithGoogle,
   logInWithEmailAndPassword,
   registerInWithEmailAndPassword,
   sendPasswordReset,
