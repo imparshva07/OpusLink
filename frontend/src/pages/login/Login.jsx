@@ -1,8 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-
 import { auth, logInWithEmailAndPassword } from "../../Firebase";
-
 import { useAuthState } from "react-firebase-hooks/auth";
 
 import "./Login.css";
@@ -10,8 +8,9 @@ import "./Login.css";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const navigate = useNavigate();
   const [user, loading, error] = useAuthState(auth);
+  
+  const navigate = useNavigate();
 
   // TODO *************
 
@@ -44,19 +43,6 @@ function Login() {
         >
           Login
         </button>
-        {/* <button
-          className="login_btn login_googlebtn"
-          // TODO *************
-          onClick={signInWithGoogle}
-        >
-          <div>
-            Login with Google
-            <img
-              src="https://www.transparentpng.com/thumb/google-logo/google-logo-png-icon-free-download-SUF63j.png"
-              alt=""
-            />
-          </div>
-        </button> */}
         <div className="extra_options">
           <div>
             <Link to="/reset">Forgot Password</Link>
