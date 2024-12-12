@@ -28,21 +28,20 @@ function Navbar() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const fetchUserName = async () => {
+  //   try {
+  //     const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+  //     const doc = await getDocs(q);
+  //     const data = doc.docs[0].data();
+  //     setName(data.name);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/login");
-    fetchUserName();
   }, [user, loading]);
 
   // static user
