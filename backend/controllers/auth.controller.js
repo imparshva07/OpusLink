@@ -38,9 +38,10 @@ export const register = async (req, res) => {
 
 export const login = async (req, res) => {
   try {
-    const { uid } = req.params;
+    const { uid } = req.body;
 
     const user = await User.findOne({ uid });
+    console.log(user)
 
     if (user) {
       res.status(201).send(user);

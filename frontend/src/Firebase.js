@@ -39,6 +39,7 @@ const googleProvider = new GoogleAuthProvider();
 // register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
   await fetch("http://localhost:3000/api/auth/register", {
+    // Need to use axios here
     method: "POST",
     body: JSON.stringify({
       name,
@@ -82,7 +83,22 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const uid = res.user.uid;
+
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
+    });
+
+    const user = await response.json();
+
+    console.log(user)
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
   } catch (error) {
     console.log(error);
     alert(error.message);
