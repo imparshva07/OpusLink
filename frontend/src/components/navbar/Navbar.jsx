@@ -28,22 +28,21 @@ function Navbar() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  const fetchUserName = async () => {
-    try {
-      const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-      const doc = await getDocs(q);
-      const data = doc.docs[0].data();
-      setName(data.name);
-    } catch (error) {
-      console.log(error.message);
-    }
-  };
+  // const fetchUserName = async () => {
+  //   try {
+  //     const q = query(collection(db, "users"), where("uid", "==", user?.uid));
+  //     const doc = await getDocs(q);
+  //     const data = doc.docs[0].data();
+  //     setName(data.name);
+  //   } catch (error) {
+  //     console.log(error.message);
+  //   }
+  // };
 
-  useEffect(()=>{
-    if(loading) return;
+  useEffect(() => {
+    if (loading) return;
     if (!user) navigate("/login");
-    fetchUserName();
-  }, [user, loading])
+  }, [user, loading]);
 
   // static user
   // const currentUser = {
@@ -51,6 +50,8 @@ function Navbar() {
   //   username: "Anna",
   //   isSeller: true,
   // };
+
+  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -64,17 +65,17 @@ function Navbar() {
           <span>Business</span>
           <span>Explore</span>
           <span>English</span>
-          {!user?.isSeller && <span>Become a Seller</span>}
-          {user ? (
+          {!currentUser?.isClient && <span>Become a Seller</span>}
+          {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img
-                src="https://images.pexels.com/photos/1115697/pexels-photo-1115697.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                src={ currentUser.img || "/img/noavatar.jpg"}
                 alt=""
               />
-              <span>{name}</span>
+              <span>{currentUser.name}</span>
               {open && (
                 <div className="options">
-                  {/* {currentUser.isSeller && (
+                  {currentUser.isClient && (
                     <>
                       <Link className="link" to="/myprojects">
                         Projects
@@ -83,7 +84,7 @@ function Navbar() {
                         Add New Project
                       </Link>
                     </>
-                  )} */}
+                  )}
                   <Link className="link" to="/orders">
                     Orders
                   </Link>

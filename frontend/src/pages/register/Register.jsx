@@ -17,7 +17,7 @@ function Register() {
 
   const register = () => {
     if (name !== "") {
-      registerInWithEmailAndPassword(name, email, password);
+      registerInWithEmailAndPassword(name, email, password, img, isClient, bio);
       navigate("/");
     } else {
       alert("Please enter a name");

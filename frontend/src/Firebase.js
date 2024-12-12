@@ -39,6 +39,7 @@ const googleProvider = new GoogleAuthProvider();
 // register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
   await fetch("http://localhost:3000/api/auth/register", {
+    // Need to use axios here
     method: "POST",
     body: JSON.stringify({
       name,
@@ -58,6 +59,18 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
     .catch((err) => {
       console.log(err.message);
     });
+
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
+    });
+
+    const user = await response.json();
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
 };
 
 // const signInWithGoogle = async () => {
@@ -82,7 +95,20 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
-    await signInWithEmailAndPassword(auth, email, password);
+    const res = await signInWithEmailAndPassword(auth, email, password);
+    const uid = res.user.uid;
+
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
+    });
+
+    const user = await response.json();
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
   } catch (error) {
     console.log(error);
     alert(error.message);
@@ -98,15 +124,12 @@ const registerInWithEmailAndPassword = async (
   bio
 ) => {
   try {
-    console.log("Hey i am in firebase")
     const response = await createUserWithEmailAndPassword(
       auth,
       email,
       password
     );
     const user = response.user;
-    console.log(user);
-    console.log(user.uid)
     const profilePic = img
       ? img
       : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?t=st=1733884083~exp=1733887683~hmac=3acdac16f592cc2761772a7f961212010f6dc103c2024b14a37f084a7a552969&w=740";
@@ -134,7 +157,12 @@ const sendPasswordReset = async (email) => {
 };
 
 const logOut = () => {
-  signOut(auth);
+  try {
+    signOut(auth);
+    localStorage.setItem("currentUser", null);
+  } catch (error) {
+    alert(error.message);
+  }
 };
 
 export {
