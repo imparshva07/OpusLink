@@ -5,6 +5,7 @@ const router = express.Router();
 
 router.post("/", projectFuncs.createProject);
 router.get("/", projectFuncs.getAll);
+router.get("/search", projectFuncs.searchProjects);
 router.get("/:id", projectFuncs.getProject);
 router.get("/client/:id", projectFuncs.getClientProject);
 router.put("/:id", projectFuncs.updateProject);

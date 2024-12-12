@@ -1,67 +1,56 @@
-import { auth } from "../config/firebase.js";
-import { User } from "../models/user.model.js";
-import {FreelancerProfile} from "../models/freeLancerProfile.model.js"
+import User from "../models/user.model.js";
 
-export const registerUser = async (req, res) => {
-  const { firebaseToken, name, role } = req.body;
+/*
+export const register = async (req, res) => {
   try {
-    const decodedToken = await auth.verifyIdToken(firebaseToken);
-    const firebaseUID = decodedToken.uid;
-    const email = decodedToken.email;
+    const newUser = new User(req.body);
 
-    let user = await User.findOne({ email });
+    await newUser.save();
+    res.status(201).send("User has been created");
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+*/
+
+//adding user details to mongoDB 
+export const register = async (req, res) => {
+  try {
+    const { name, email, uid, img, bio, isClient } = req.body;
+
+    const user = await User.findOne({ uid });
+
     if (user) {
-      return res
-        .status(400)
-        .json({ message: "User with this email already exists." });
-    }
-
-    user = new User({ name, email, role, firebaseUID });
-    await user.save();
-
-    if (role.toLowerCase() === "freelancer") {
-
-      const freelancerProfile = new FreelancerProfile({
-        userId: user._id, // Reference the user ID
+      res.status(422).send("User Already Registered!")
+    }else{
+      const newUser = new User({
+        name, email, uid, img, bio, isClient
       });
+      const registerUser = await newUser.save();
 
-      await freelancerProfile.save();
-
+      res.status(201).send("User registered Successfully!");
     }
-    
-    res.status(201).json({ message: "User registered successfully" });
   } catch (error) {
-    console.error("Error in registration:", error);
-    res
-      .status(500)
-      .json({ message: "Error registering user", error: error.message });
+    res.status(500).send(error.message);
   }
 };
 
-export const loginUser = async (req, res) => {
-  const { firebaseToken } = req.body;
+
+export const login = async (req, res) => {
   try {
-    const decodedToken = await auth.verifyIdToken(firebaseToken);
-    const email = decodedToken.email;
+    const { uid } = req.params;
 
-    let user = await User.findOne({ email });
-    if (!user) {
-      return res.status(404).json({ message: "User not found" });
+    const user = await User.findOne({ uid });
+
+    if (user) {
+      res.status(201).send(user);
+    } else {
+      res.status(422).send("User not Found!");
     }
-
-    res.status(200).json({
-      message: "Login successful",
-      token: firebaseToken,
-      user: {
-        name: user.name,
-        email: user.email,
-        role: user.role,
-      },
-    });
   } catch (error) {
-    console.error("Login error:", error);
-    res
-      .status(401)
-      .json({ message: "Authentication failed", error: error.message });
+    res.status(500).send(error.message);
   }
 };
+
+
+export const logout = (req, res) => {};
