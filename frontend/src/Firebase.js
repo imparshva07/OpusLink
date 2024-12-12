@@ -59,6 +59,18 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
     .catch((err) => {
       console.log(err.message);
     });
+
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
+    });
+
+    const user = await response.json();
+
+    localStorage.setItem("currentUser", JSON.stringify(user));
 };
 
 // const signInWithGoogle = async () => {
@@ -95,8 +107,6 @@ const logInWithEmailAndPassword = async (email, password) => {
     });
 
     const user = await response.json();
-
-    console.log(user)
 
     localStorage.setItem("currentUser", JSON.stringify(user));
   } catch (error) {
@@ -147,7 +157,12 @@ const sendPasswordReset = async (email) => {
 };
 
 const logOut = () => {
-  signOut(auth);
+  try {
+    signOut(auth);
+    localStorage.setItem("currentUser", null);
+  } catch (error) {
+    alert(error.message);
+  }
 };
 
 export {
