@@ -107,6 +107,8 @@ const registerInWithEmailAndPassword = async (
     const user = response.user;
     console.log(user);
     console.log(user.uid)
+    console.log(isClient)
+    console.log(bio)
     const profilePic = img
       ? img
       : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?t=st=1733884083~exp=1733887683~hmac=3acdac16f592cc2761772a7f961212010f6dc103c2024b14a37f084a7a552969&w=740";
