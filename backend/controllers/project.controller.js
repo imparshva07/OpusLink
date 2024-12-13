@@ -1,6 +1,8 @@
 import { Project } from "../models/project.model.js";
 import User from "../models/user.model.js";
 import client from "../config/elasticsearch.js";
+import mongoose from "mongoose";
+import { ObjectId } from "mongodb";
 
 export const createProject = async (req, res) => {
   const {
@@ -15,12 +17,14 @@ export const createProject = async (req, res) => {
   } = req.body;
 
   try {
-    const user = await User.findById(userId);
+    const user = await User.findById(new mongoose.Types.ObjectId(userId));
+
     if (!user) {
-      throw "User does not exist!";
+      throw new Error("User does not exist!");
     }
+
     if (!user.isClient) {
-      throw "Only clients can create a project";
+      throw new Error("Only clients are authorized to create a project.");
     }
 
     const newProject = new Project({
@@ -35,11 +39,14 @@ export const createProject = async (req, res) => {
     });
 
     await newProject.save();
+
     await indexProject(newProject);
 
     return res.status(200).json(newProject);
   } catch (e) {
-    return res.status(500).json({ error: e });
+    console.error("Error creating project:", e); // Log the full error object
+    const errorMessage = e.message ? e.message : "An unexpected error occurred";
+    return res.status(500).json({ error: errorMessage });
   }
 };
 
@@ -63,12 +70,24 @@ export const updateProject = async (req, res) => {
 
 export const getClientProject = async (req, res) => {
   const { userId } = req.params;
+  console.log("Received userId:", userId); // Log userId for debugging
+
+  if (!userId) {
+    return res.status(400).json({ error: "userId is missing or undefined" });
+  }
+
+  if (!mongoose.Types.ObjectId.isValid(userId)) {
+    return res.status(400).json({ error: "Invalid userId format" });
+  }
 
   try {
-    const projects = await Project.find({ userId });
+    const projects = await Project.find({ userId: new ObjectId(userId) });
+
+    console.log("Projects found:", projects);
     return res.status(200).json(projects);
   } catch (e) {
-    return res.status(500).json({ error: e });
+    console.error("Error:", e);
+    return res.status(500).json({ error: e.message });
   }
 };
 
