@@ -28,7 +28,7 @@ const projectSchema = new mongoose.Schema({
   },
   img: {
     type: String,
-    required: [true, "Image URL can't be empty!"]
+    default: "https://via.placeholder.com/300x200", // Placeholder image URL
   },
   expected_delivery_time: {
     type: Date,
