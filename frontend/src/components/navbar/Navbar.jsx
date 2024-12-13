@@ -17,6 +17,11 @@ function Navbar() {
     window.scrollY > 0 ? setActive(true) : setActive(false);
   };
 
+  const removeUser = () => {
+    logoutUser();
+    logOut();
+  }
+
   useEffect(() => {
     window.addEventListener("scroll", isActive);
     return () => {
@@ -92,7 +97,7 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" onClick={logOut}>
+                  <Link className="link" onClick={removeUser}>
                     Logout
                   </Link>
                 </div>

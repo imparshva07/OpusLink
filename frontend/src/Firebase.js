@@ -159,7 +159,7 @@ const sendPasswordReset = async (email) => {
 const logOut = () => {
   try {
     signOut(auth);
-    localStorage.setItem("currentUser", null);
+    localStorage.removeItem("currentUser", null);
   } catch (error) {
     alert(error.message);
   }
