@@ -1,35 +1,44 @@
 import mongoose from "mongoose";
+
 const projectSchema = new mongoose.Schema({
-    title: { 
-      type: String, 
-      required: [true, "Project title can't be empty!"], 
-      minlength: [5, "Title should be at least 5 characters long"],
-      maxlength: [100, "Title should not exceed 100 characters"]
-    },
-    description: { 
-      type: String, 
-      required: [true, "Description can't be empty!"], 
-      minlength: [10, "Description should be at least 10 characters long"]
-    },
-    budget: { 
-      type: Number, 
-      required: [true, "Budget can't be empty!"], 
-      min: [1, "Budget should be greater than 0"]
-    },
-    clientId: { 
-      type: mongoose.Schema.Types.ObjectId, 
-      ref: 'User', 
-      required: true 
-    },
-    status: { 
-      type: String, 
-      enum: ['open', 'closed'], 
-      default: 'open' 
-    },
-    createdAt: { 
-      type: Date, 
-      default: Date.now 
-    }
-  }, { timestamps: true });
-  
-  export const Project = mongoose.model("Project", projectSchema);
+  userId: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User',
+    required: true
+  },
+  title: {
+    type: String,
+    required: [true, "Project title can't be empty!"],
+    minlength: [5, "Title should be at least 5 characters long"],
+    maxlength: [100, "Title should not exceed 100 characters"]
+  },
+  description: {
+    type: String,
+    required: [true, "Description can't be empty!"],
+    minlength: [10, "Description should be at least 10 characters long"]
+  },
+  category: {
+    type: String,
+    required: [true, "Category can't be empty!"]
+  },
+  budget: {
+    type: Number,
+    required: [true, "Budget can't be empty!"],
+    min: [1, "Budget should be greater than 0"]
+  },
+  img: {
+    type: String,
+    required: [true, "Image URL can't be empty!"]
+  },
+  expected_delivery_time: {
+    type: Date,
+    required: [true, "Expected delivery time can't be empty!"]
+  },
+  specifications: {
+    type: String,
+    required: [true, "Specifications can't be empty!"],
+    minlength: [10, "Specifications should be at least 10 characters long"]
+  }
+}, { timestamps: true });
+
+export const Project = mongoose.model("Project", projectSchema);
