@@ -1,10 +1,12 @@
-import React, { useState } from "react";
+import React, { useState, useContext} from "react";
 import axios from "axios";
 import "./Add.css";
+import { UserContext } from '../../context/UserContext.jsx';
 
 const Add = () => {
+  const { currentUser, logoutUser } = useContext(UserContext);
   const [formData, setFormData] = useState({
-    userId: "675c34b77fb51c97e4520487",
+    userId: currentUser._id,
     title: "",
     description: "",
     category: "design",
