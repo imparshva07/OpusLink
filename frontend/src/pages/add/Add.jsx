@@ -1,12 +1,15 @@
-import React, { useState, useContext} from "react";
+import React, { useState, useContext } from "react";
 import axios from "axios";
+import { useNavigate } from "react-router-dom"; // Import useNavigate
 import "./Add.css";
 import { UserContext } from '../../context/UserContext.jsx';
 
 const Add = () => {
-  const { currentUser, logoutUser } = useContext(UserContext);
+  const { currentUser } = useContext(UserContext); // Access currentUser from context
+  const navigate = useNavigate(); // Initialize the navigate function
+
   const [formData, setFormData] = useState({
-    userId: currentUser._id,
+    userId: currentUser._id, // Set userId from currentUser
     title: "",
     description: "",
     category: "design",
@@ -31,6 +34,10 @@ const Add = () => {
 
       alert("Project created successfully!");
       console.log("Response: ", response.data);
+
+      // Redirect to the newly created project page using the project's ID
+      navigate(`/project/${response.data._id}`);
+      
     } catch (error) {
       console.error("Error creating project: ", error.response?.data || error.message);
       alert("Failed to create project. Please check your inputs and try again.");
