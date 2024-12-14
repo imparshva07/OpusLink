@@ -11,9 +11,18 @@ export const UserProvider = ({ children }) => {
   });
 
   // Function to update user globally
-  const updateUser = (user) => {
-    setCurrentUser(user);
+  const updateUser = async(uid) => {
+    const response = await fetch("http://localhost:3000/api/auth/login", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify({ uid }),
+    });
+
+    const user = await response.json();
     localStorage.setItem("currentUser", JSON.stringify(user));
+    setCurrentUser(user);
   };
 
   const logoutUser = () => {
