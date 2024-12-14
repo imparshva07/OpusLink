@@ -67,8 +67,7 @@ const logInWithEmailAndPassword = async (email, password) => {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const uid = res.user.uid;
   } catch (error) {
-    console.log(error);
-    alert(error.message);
+    throw new Error("Invalid email or password");
   }
 };
 
@@ -93,7 +92,7 @@ const registerInWithEmailAndPassword = async (
 
     await registerUserToMongo(name, email, user.uid, profilePic, isClient, bio);
   } catch (error) {
-    throw new Error(error.message); // Propagate error back to the caller
+    throw new Error(error.message);
   }
 };
 

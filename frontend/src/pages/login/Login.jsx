@@ -8,16 +8,30 @@ import { UserContext } from "../../context/UserContext";
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
   const [user, loading, error] = useAuthState(auth);
   const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
+  const validateForm = () => {
+    const errors = {};
+
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      errors.email = "Invalid email format";
+    }
+
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
   useEffect(() => {
-    // if (loading) return;
-    // if (user){
-    //   await updateUser(user.uid);
-    //   navigate("/"); 
-    // }
     const fetchAndNavigate = async () => {
       if (loading) return;
       if (user) {
@@ -32,15 +46,23 @@ function Login() {
     fetchAndNavigate();
   }, [user, loading, navigate]);
 
-  const handleSubmit = (e) => {
-    e.preventDefault(); // Prevent the form from refreshing the page
-    logInWithEmailAndPassword(email, password);
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (validateForm()) {
+      try {
+        await logInWithEmailAndPassword(email, password);
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
+    }
   };
 
   return (
     <div className="login">
       <form onSubmit={handleSubmit}>
         <h1>Sign In</h1>
+
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
 
         <label htmlFor="email">Email</label>
         <input
@@ -50,6 +72,7 @@ function Login() {
           onChange={(e) => setEmail(e.target.value)}
           placeholder="Enter Your Email Address"
         />
+        {formErrors.email && <div className="error-message">{formErrors.email}</div>}
 
         <label htmlFor="password">Password</label>
         <input
@@ -59,6 +82,7 @@ function Login() {
           onChange={(e) => setPassword(e.target.value)}
           placeholder="Password"
         />
+        {formErrors.password && <div className="error-message">{formErrors.password}</div>}
 
         <button type="submit">Login</button>
 
