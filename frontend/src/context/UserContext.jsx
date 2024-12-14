@@ -21,7 +21,6 @@ export const UserProvider = ({ children }) => {
     });
 
     const user = await response.json();
-
     localStorage.setItem("currentUser", JSON.stringify(user));
     setCurrentUser(user);
   };

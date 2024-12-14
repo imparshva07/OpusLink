@@ -60,56 +60,13 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
     .catch((err) => {
       console.log(err.message);
     });
-
-    // const response = await fetch("http://localhost:3000/api/auth/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ uid }),
-    // });
-
-    // const user = await response.json();
-
-    // localStorage.setItem("currentUser", JSON.stringify(user));
 };
 
-// const signInWithGoogle = async () => {
-//   try {
-//     const response = await signInWithPopup(auth, googleProvider);
-//     const user = response.user;
-//     const q = query(collection(db, "users"), where("uid", "==", user.uid));
-//     const docs = await getDocs(q);
-//     if (docs.docs.length === 0) {
-//       await addDoc(collection(db, "users"), {
-//         uid: user.uid,
-//         name: user.displayName,
-//         authProvider: "google",
-//         email: user.email,
-//       });
-//     }
-//   } catch (error) {
-//     console.log(error.message);
-//     alert(error.message);
-//   }
-// };
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const uid = res.user.uid;
-
-    // const response = await fetch("http://localhost:3000/api/auth/login", {
-    //   method: "POST",
-    //   headers: {
-    //     "Content-Type": "application/json",
-    //   },
-    //   body: JSON.stringify({ uid }),
-    // });
-
-    // const user = await response.json();
-
-    // localStorage.setItem("currentUser", JSON.stringify(user));
 
   } catch (error) {
     console.log(error);
@@ -135,12 +92,7 @@ const registerInWithEmailAndPassword = async (
     const profilePic = img
       ? img
       : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?t=st=1733884083~exp=1733887683~hmac=3acdac16f592cc2761772a7f961212010f6dc103c2024b14a37f084a7a552969&w=740";
-    // await addDoc(collection(db, "users"), {
-    //   uid: user.uid,
-    //   name,
-    //   authProvider: "local",
-    //   email,
-    // });
+    
     await registerUserToMongo(name, email, user.uid, profilePic, isClient, bio);
   } catch (error) {
     console.log(error);

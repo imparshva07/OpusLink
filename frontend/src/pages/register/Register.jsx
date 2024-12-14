@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useNavigate } from "react-router-dom";
 import "../register/Register.css";
 import { auth, registerInWithEmailAndPassword } from "../../Firebase";
@@ -15,10 +15,10 @@ function Register() {
   const navigate = useNavigate();
   const [user, loading, error] = useAuthState(auth);
 
-  const register = () => {
+  const register = async() => {
     if (name !== "") {
-      registerInWithEmailAndPassword(name, email, password, img, isClient, bio);
-      navigate("/");
+      await registerInWithEmailAndPassword(name, email, password, img, isClient, bio);
+      navigate("/login");
     } else {
       alert("Please enter a name");
     }
@@ -26,7 +26,6 @@ function Register() {
 
   useEffect(() => {
     if (loading) return;
-    // if (user) navigate("/");
   }, [user, loading, navigate]);
 
   const handleSubmit = (e) => {
