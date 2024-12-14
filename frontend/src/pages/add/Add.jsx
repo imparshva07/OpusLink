@@ -47,7 +47,9 @@ const Add = () => {
       errors.expected_delivery_time = "Expected delivery time is required.";
     }
 
-    if (!formData.category.trim().length < 1) {
+    if (!formData.category.trim()) {
+      errors.category = "Category is required.";
+    } else if (formData.category.length < 1) {
       errors.category = "Category is required.";
     }
 
