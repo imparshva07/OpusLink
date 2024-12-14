@@ -20,6 +20,7 @@ const Add = () => {
   const [specificationInput, setSpecificationInput] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const validateForm = () => {
     const errors = {};
@@ -82,6 +83,7 @@ const Add = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
+      setIsLoading(true);
       try {
         const response = await axios.post(
           "http://localhost:3000/api/projects",
@@ -100,6 +102,8 @@ const Add = () => {
           error.response?.data || error.message
         );
         setErrorMessage("Failed to create project. Please try again.");
+      } finally {
+        setIsLoading(false);
       }
     }
   };
@@ -118,6 +122,7 @@ const Add = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter project title"
+              required
             />
             {formErrors.title && (
               <div className="error-message">{formErrors.title}</div>
@@ -132,6 +137,7 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter a detailed description"
               rows="4"
+              required
             ></textarea>
             {formErrors.description && (
               <div className="error-message">{formErrors.description}</div>
@@ -162,6 +168,7 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter your budget"
               min="1"
+              required
             />
             {formErrors.budget && (
               <div className="error-message">{formErrors.budget}</div>
@@ -177,6 +184,7 @@ const Add = () => {
               id="expected_delivery_time"
               value={formData.expected_delivery_time}
               onChange={handleChange}
+              required
             />
             {formErrors.expected_delivery_time && (
               <div className="error-message">
@@ -216,7 +224,9 @@ const Add = () => {
             )}
           </div>
 
-          <button type="submit">Create Project</button>
+          <button type="submit" disabled={isLoading}>
+            {isLoading ? "Creating..." : "Create Project"}
+          </button>
         </form>
       </div>
     </div>
