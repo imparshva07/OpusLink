@@ -1,4 +1,3 @@
-/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -6,20 +5,19 @@ import "./Project.css";
 import { Slider } from "infinite-react-carousel/lib";
 
 function Project() {
-  const { id } = useParams(); // Get project ID from the URL
-  const [project, setProject] = useState(null); // State to store project data
-  const [loading, setLoading] = useState(true); // Loading state
+  const { id } = useParams(); 
+  const [project, setProject] = useState(null); 
+  const [loading, setLoading] = useState(true); 
 
-  // Fetch the project data when the component mounts
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/projects/${id}`); // Fetch data from API
-        setProject(response.data); // Set the project data
-        setLoading(false); // Loading complete
+        const response = await axios.get(`http://localhost:3000/api/projects/${id}`); 
+        setProject(response.data); 
+        setLoading(false); 
       } catch (error) {
         console.error("Error fetching project:", error);
-        setLoading(false); // Even on error, set loading to false
+        setLoading(false); 
       }
     };
 
@@ -110,7 +108,7 @@ function Project() {
                 </div>
               </div>
               <hr />
-              <p>{project.specifications}</p>
+              <p>{project.specifications.join(', ')}</p>
             </div>
           </div>
           <div className="reviews">
@@ -148,8 +146,7 @@ function Project() {
         </div>
         <div className="right">
           <div className="price">
-            <h3>1 Custom AI Image</h3>
-            <h2>${project.budget}</h2>
+            <h2>Budget :${project.budget}</h2>
           </div>
           <p>{project.description}</p>
           <div className="details">
@@ -158,23 +155,16 @@ function Project() {
               <span>Delivery: {new Date(project.expected_delivery_time).toLocaleDateString()}</span>
             </div>
             <div className="item">
-              <img src="/img/recycle.png" alt="" />
-              <span>3 Revisions</span>
+              <span>Specifications</span>
             </div>
           </div>
           <div className="features">
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Prompt Writing</span>
-            </div>
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Image Upscaling</span>
-            </div>
-            <div className="item">
-              <img src="/img/greencheck.png" alt="" />
-              <span>Additional Design Elements</span>
-            </div>
+            {project.specifications.map((spec, index) => (
+              <div className="item" key={index}>
+                <img src="/img/greencheck.png" alt="" />
+                <span>{spec}</span>
+              </div>
+            ))}
           </div>
           <button>Continue</button>
         </div>
