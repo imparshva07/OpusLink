@@ -34,30 +34,14 @@ function Navbar() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  // const fetchUserName = async () => {
-  //   try {
-  //     const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-  //     const doc = await getDocs(q);
-  //     const data = doc.docs[0].data();
-  //     setName(data.name);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+ 
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/login");
   }, [user, loading]);
 
-  // static user
-  // const currentUser = {
-  //   id: 1,
-  //   username: "Anna",
-  //   isSeller: true,
-  // };
-
-  // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -68,9 +52,6 @@ function Navbar() {
           </Link>
         </div>
         <div className="links">
-          <span>Business</span>
-          <span>Explore</span>
-          <span>English</span>
           {!currentUser?.isClient && <span>Become a Seller</span>}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
