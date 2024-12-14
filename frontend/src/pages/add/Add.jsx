@@ -2,7 +2,7 @@ import React, { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Add.css";
-import { UserContext } from '../../context/UserContext.jsx';
+import { UserContext } from "../../context/UserContext.jsx";
 
 const Add = () => {
   const { currentUser } = useContext(UserContext);
@@ -18,6 +18,44 @@ const Add = () => {
     specifications: [],
   });
   const [specificationInput, setSpecificationInput] = useState("");
+  const [formErrors, setFormErrors] = useState({});
+  const [errorMessage, setErrorMessage] = useState("");
+
+  const validateForm = () => {
+    const errors = {};
+
+    if (!formData.title.trim()) {
+      errors.title = "Title is required.";
+    } else if (formData.title.length < 5) {
+      errors.title = "Title must be at least 5 characters long.";
+    }
+
+    if (!formData.description.trim()) {
+      errors.description = "Description is required.";
+    } else if (formData.description.length < 10) {
+      errors.description = "Description must be at least 10 characters long.";
+    }
+
+    if (!formData.budget) {
+      errors.budget = "Budget is required.";
+    } else if (formData.budget <= 0) {
+      errors.budget = "Budget must be greater than 0.";
+    }
+
+    if (!formData.expected_delivery_time) {
+      errors.expected_delivery_time = "Expected delivery time is required.";
+    }
+
+    if (formData.specifications.length === 0) {
+      errors.specifications = "At least one specification is required.";
+    } else if (formData.specifications.some((spec) => spec.length < 10)) {
+      errors.specifications =
+        "Each specification must be at least 10 characters long.";
+    }
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
 
   const handleChange = (e) => {
     const { id, value } = e.target;
@@ -43,20 +81,26 @@ const Add = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-    try {
-      const response = await axios.post("http://localhost:3000/api/projects", formData, {
-        headers: {
-          "Content-Type": "application/json",
-        },
-      });
+    if (validateForm()) {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/projects",
+          formData,
+          {
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
 
-      alert("Project created successfully!");
-      console.log("Response: ", response.data);
-
-      navigate(`/project/${response.data._id}`);
-    } catch (error) {
-      console.error("Error creating project: ", error.response?.data || error.message);
-      alert("Failed to create project. Please check your inputs and try again.");
+        navigate(`/project/${response.data._id}`);
+      } catch (error) {
+        console.error(
+          "Error creating project: ",
+          error.response?.data || error.message
+        );
+        setErrorMessage("Failed to create project. Please try again.");
+      }
     }
   };
 
@@ -64,6 +108,7 @@ const Add = () => {
     <div className="add">
       <div className="container">
         <h1>Add New Project</h1>
+        {errorMessage && <div className="error-message">{errorMessage}</div>}
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="title">Title</label>
@@ -73,8 +118,10 @@ const Add = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter project title"
-              required
             />
+            {formErrors.title && (
+              <div className="error-message">{formErrors.title}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -85,13 +132,20 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter a detailed description"
               rows="4"
-              required
             ></textarea>
+            {formErrors.description && (
+              <div className="error-message">{formErrors.description}</div>
+            )}
           </div>
 
           <div className="form-group">
             <label htmlFor="category">Category</label>
-            <select id="category" value={formData.category} onChange={handleChange} required>
+            <select
+              id="category"
+              value={formData.category}
+              onChange={handleChange}
+              required
+            >
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
@@ -108,19 +162,27 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter your budget"
               min="1"
-              required
             />
+            {formErrors.budget && (
+              <div className="error-message">{formErrors.budget}</div>
+            )}
           </div>
 
           <div className="form-group">
-            <label htmlFor="expected_delivery_time">Expected Delivery Time</label>
+            <label htmlFor="expected_delivery_time">
+              Expected Delivery Time
+            </label>
             <input
               type="date"
               id="expected_delivery_time"
               value={formData.expected_delivery_time}
               onChange={handleChange}
-              required
             />
+            {formErrors.expected_delivery_time && (
+              <div className="error-message">
+                {formErrors.expected_delivery_time}
+              </div>
+            )}
           </div>
 
           <div className="form-group">
@@ -139,10 +201,19 @@ const Add = () => {
             <ul className="specifications-list">
               {formData.specifications.map((spec, index) => (
                 <li key={index}>
-                  {spec} <button type="button" onClick={() => handleRemoveSpecification(index)}>Remove</button>
+                  {spec}{" "}
+                  <button
+                    type="button"
+                    onClick={() => handleRemoveSpecification(index)}
+                  >
+                    Remove
+                  </button>
                 </li>
               ))}
             </ul>
+            {formErrors.specifications && (
+              <div className="error-message">{formErrors.specifications}</div>
+            )}
           </div>
 
           <button type="submit">Create Project</button>
