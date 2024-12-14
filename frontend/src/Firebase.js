@@ -20,7 +20,8 @@ import {
   onSnapshot,
   getDocs,
 } from "firebase/firestore";
-
+import { UserContext } from "./context/UserContext";
+import { useContext } from "react";
 const firebaseConfig = {
   apiKey: "AIzaSyAbo5YveWINu2Y3jsBK0xC5Oh5zDzFPSA8",
   authDomain: "opuslink-a7870.firebaseapp.com",
@@ -60,17 +61,17 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
       console.log(err.message);
     });
 
-    const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uid }),
-    });
+    // const response = await fetch("http://localhost:3000/api/auth/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ uid }),
+    // });
 
-    const user = await response.json();
+    // const user = await response.json();
 
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    // localStorage.setItem("currentUser", JSON.stringify(user));
 };
 
 // const signInWithGoogle = async () => {
@@ -98,17 +99,18 @@ const logInWithEmailAndPassword = async (email, password) => {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const uid = res.user.uid;
 
-    const response = await fetch("http://localhost:3000/api/auth/login", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify({ uid }),
-    });
+    // const response = await fetch("http://localhost:3000/api/auth/login", {
+    //   method: "POST",
+    //   headers: {
+    //     "Content-Type": "application/json",
+    //   },
+    //   body: JSON.stringify({ uid }),
+    // });
 
-    const user = await response.json();
+    // const user = await response.json();
 
-    localStorage.setItem("currentUser", JSON.stringify(user));
+    // localStorage.setItem("currentUser", JSON.stringify(user));
+
   } catch (error) {
     console.log(error);
     alert(error.message);

@@ -42,6 +42,7 @@ export const login = async (req, res) => {
 
     const user = await User.findOne({ uid });
     console.log(user)
+    console.log(uid)
 
     if (user) {
       res.status(201).send(user);
