@@ -1,92 +1,153 @@
-.projects {
+.add {
   width: 100%;
   display: flex;
   justify-content: center;
-}
-.projects .container {
-  width: 1400px;
-  padding: 30px 0px;
-  display: flex;
-  flex-direction: column;
-  gap: 15px;
-}
-.projects .container .breadcrumbs {
-  font-weight: 300;
-  text-transform: uppercase;
-  font-size: 13px;
-  color: #555;
-}
-.projects .container p {
-  color: #999;
-  font-weight: 300;
-}
-.projects .container .menu {
-  display: flex;
   align-items: center;
-  justify-content: space-between;
-  margin-bottom: 20px;
+  padding: 30px 0;
+  background-color: #f9f9f9;
 }
-.projects .container .menu .left {
-  display: flex;
-  align-items: center;
-  gap: 10px;
-  color: #555;
-  font-weight: 300;
-}
-.projects .container .menu .left input {
-  padding: 5px;
-  border: 1px solid lightgrey;
-  border-radius: 5px;
-  outline: none;
-}
-.projects .container .menu .left input::placeholder {
-  color: #999;
-}
-.projects .container .menu .left button {
-  padding: 5px 10px;
-  background-color: #1dbf73;
-  color: white;
-  border: none;
-  font-weight: 500;
-  border-radius: 5px;
-  cursor: pointer;
-}
-.projects .container .menu .right {
-  position: relative;
-  display: flex;
-  align-items: center;
-  gap: 10px;
-}
-.projects .container .menu .right .sortBy {
-  color: #555;
-  font-weight: 300;
-}
-.projects .container .menu .right .sortType {
-  font-weight: 500;
-}
-.projects .container .menu .right img {
-  width: 15px;
-  cursor: pointer;
-}
-.projects .container .menu .right .rightMenu {
-  padding: 20px;
+
+.add .container {
+  width: 800px;
   background-color: white;
-  border: 0.5px solid lightgrey;
-  border-radius: 5px;
-  position: absolute;
-  top: 30px;
-  right: 0;
-  z-index: 9;
+  padding: 30px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   display: flex;
   flex-direction: column;
   gap: 20px;
+}
+
+.add .container h1 {
+  font-size: 24px;
+  font-weight: bold;
+  color: #333;
+  margin-bottom: 20px;
+}
+
+.add .container .form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add .container .form-group label {
+  font-size: 16px;
+  font-weight: 500;
   color: #555;
 }
-.projects .container .menu .right .rightMenu span {
+
+.add .container .form-group input,
+.add .container .form-group textarea,
+.add .container .form-group select {
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.add .container .form-group input:focus,
+.add .container .form-group textarea:focus,
+.add .container .form-group select:focus {
+  border-color: #1dbf73;
+}
+
+.add .container .form-group textarea {
+  resize: vertical;
+}
+
+.add .container .form-group select {
   cursor: pointer;
 }
-.projects .container .cards {
+
+.add .container .specifications-input {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+
+.add .container .specifications-input input {
+  flex: 1;
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #333;
+  outline: none;
+  transition: border-color 0.3s ease;
+}
+
+.add .container .specifications-input input:focus {
+  border-color: #1dbf73;
+}
+
+.add .container .specifications-input button {
+  padding: 10px 15px;
+  background-color: #1dbf73;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 14px;
+  font-weight: bold;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add .container .specifications-input button:hover {
+  background-color: #17a85e;
+}
+
+.add .container .specifications-list {
+  list-style-type: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.add .container .specifications-list li {
   display: flex;
   justify-content: space-between;
-  flex-wrap: wrap;
+  align-items: center;
+  padding: 10px;
+  background-color: #f1f1f1;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 14px;
+  color: #555;
+}
+
+.add .container .specifications-list li button {
+  padding: 5px 10px;
+  background-color: #ff4d4d;
+  color: white;
+  border: none;
+  border-radius: 5px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add .container .specifications-list li button:hover {
+  background-color: #e60000;
+}
+
+.add .container button[type="submit"] {
+  padding: 15px;
+  background-color: #1dbf73;
+  color: white;
+  border: none;
+  font-size: 16px;
+  font-weight: bold;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.add .container button[type="submit"]:hover {
+  background-color: #17a85e;
 }

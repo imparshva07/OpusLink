@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../register/Register.css";
 import { auth, registerInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -11,16 +11,47 @@ function Register() {
   const [img, setImg] = useState(null);
   const [bio, setBio] = useState("");
   const [isClient, setIsClient] = useState(false);
+  const [errorMessage, setErrorMessage] = useState("");
+  const [formErrors, setFormErrors] = useState({});
 
   const navigate = useNavigate();
   const [user, loading, error] = useAuthState(auth);
 
-  const register = async() => {
-    if (name !== "") {
-      await registerInWithEmailAndPassword(name, email, password, img, isClient, bio);
-      navigate("/login");
-    } else {
-      alert("Please enter a name");
+  const validateForm = () => {
+    const errors = {};
+
+    if (!name.trim()) errors.name = "Full Name is required";
+    if (!email.trim()) {
+      errors.email = "Email is required";
+    } else if (!/^[\w.%+-]+@[\w.-]+\.[a-zA-Z]{2,}$/.test(email)) {
+      errors.email = "Invalid email format";
+    }
+    if (!password.trim()) {
+      errors.password = "Password is required";
+    } else if (password.length < 6) {
+      errors.password = "Password must be at least 6 characters";
+    }
+    if (!bio.trim()) errors.bio = "Bio is required";
+
+    setFormErrors(errors);
+    return Object.keys(errors).length === 0;
+  };
+
+  const register = async () => {
+    if (validateForm()) {
+      try {
+        await registerInWithEmailAndPassword(
+          name,
+          email,
+          password,
+          img,
+          isClient,
+          bio
+        );
+        navigate("/login");
+      } catch (error) {
+        setErrorMessage(error.message);
+      }
     }
   };
 
@@ -39,6 +70,8 @@ function Register() {
         <div className="left">
           <h1>Create a new account</h1>
 
+          {errorMessage && <div className="error-message">{errorMessage}</div>}
+
           <label htmlFor="name">Full Name</label>
           <input
             name="name"
@@ -47,6 +80,9 @@ function Register() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
+          {formErrors.name && (
+            <div className="error-message">{formErrors.name}</div>
+          )}
 
           <label htmlFor="email">Email</label>
           <input
@@ -56,6 +92,9 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
+          {formErrors.email && (
+            <div className="error-message">{formErrors.email}</div>
+          )}
 
           <label htmlFor="password">Password</label>
           <input
@@ -65,6 +104,9 @@ function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
+          {formErrors.password && (
+            <div className="error-message">{formErrors.password}</div>
+          )}
 
           <label htmlFor="profilePicture">Profile Picture</label>
           <input
@@ -81,9 +123,18 @@ function Register() {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
+          {formErrors.bio && (
+            <div className="error-message">{formErrors.bio}</div>
+          )}
 
           <button type="submit">Register</button>
           {error && <div className="error-message">{error.message}</div>}
+
+          <div className="extra_options">
+            <div>
+              Already have an account? <Link to="/login">Login</Link> now.
+            </div>
+          </div>
         </div>
 
         <div className="right">
