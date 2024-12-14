@@ -148,7 +148,7 @@ function Project() {
           <div className="price">
             <h2>Budget :${project.budget}</h2>
           </div>
-          <p>{project.description}</p>
+          <p>Category: {project.category}</p>
           <div className="details">
             <div className="item">
               <img src="/img/clock.png" alt="" />
