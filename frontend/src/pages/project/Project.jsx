@@ -2,7 +2,6 @@ import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Project.css";
-import { Slider } from "infinite-react-carousel/lib";
 
 function Project() {
   const { id } = useParams();
@@ -14,9 +13,7 @@ function Project() {
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(
-          `http://localhost:3000/api/projects/${id}`
-        );
+        const response = await axios.get(`http://localhost:3000/api/projects/${id}`);
         setProject(response.data);
         if (response.data.userId) {
           fetchUserName(response.data.userId);
@@ -30,10 +27,7 @@ function Project() {
 
     const fetchUserName = async (userId) => {
       try {
-        const response = await axios.post(
-          "http://localhost:3000/api/auth/getUser",
-          { _id: userId }
-        );
+        const response = await axios.post("http://localhost:3000/api/auth/getUser", { _id: userId });
         if (response.data && response.data.name) {
           setUserName(response.data.name);
         } else {
@@ -74,17 +68,7 @@ function Project() {
             <img className="pp" src={userImage} alt="Project Image" />
             <span>Project by {userName}</span>
           </div>
-          <Slider slidesToShow={1} arrowsScroll={1} className="slider">
-            <img src={project.img} alt="Project Slide 1" />
-            <img
-              src="https://via.placeholder.com/300x200"
-              alt="Placeholder Slide 2"
-            />
-            <img
-              src="https://via.placeholder.com/300x200"
-              alt="Placeholder Slide 3"
-            />
-          </Slider>
+          <img src={project.img} alt="Project Image" className="project-image" style={{ width: '100%', height: 'auto', borderRadius: '8px' }} />
           <h2>About This Project</h2>
           <p>{project.description}</p>
           <div className="seller">
@@ -135,18 +119,11 @@ function Project() {
             <h2>Customer Reviews</h2>
             <div className="item">
               <div className="user">
-                <img
-                  className="pp"
-                  src="https://via.placeholder.com/100x100"
-                  alt="User Profile"
-                />
+                <img className="pp" src="https://via.placeholder.com/100x100" alt="User Profile" />
                 <div className="info">
                   <span>John Doe</span>
                   <div className="country">
-                    <img
-                      src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                      alt="Country"
-                    />
+                    <img src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png" alt="Country" />
                     <span>United States</span>
                   </div>
                 </div>
