@@ -53,11 +53,11 @@ const Add = () => {
       errors.category = "Category is required.";
     }
 
-    if (formData.specifications.length === 0) {
+    if (!formData.specifications.length) {
       errors.specifications = "At least one specification is required.";
-    } else if (formData.specifications.some((spec) => spec.length < 10)) {
+    } else if (formData.specifications.some((spec) => spec.length < 4)) {
       errors.specifications =
-        "Each specification must be at least 10 characters long.";
+        "Each specification must be at least 4 characters long.";
     }
 
     setFormErrors(errors);

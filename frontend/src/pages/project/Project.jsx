@@ -5,19 +5,48 @@ import "./Project.css";
 import { Slider } from "infinite-react-carousel/lib";
 
 function Project() {
-  const { id } = useParams(); 
-  const [project, setProject] = useState(null); 
-  const [loading, setLoading] = useState(true); 
+  const { id } = useParams();
+  const [project, setProject] = useState(null);
+  const [loading, setLoading] = useState(true);
+  const [userName, setUserName] = useState("");
+  const [userImage, setUserImage] = useState("");
 
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/projects/${id}`); 
-        setProject(response.data); 
-        setLoading(false); 
+        const response = await axios.get(
+          `http://localhost:3000/api/projects/${id}`
+        );
+        setProject(response.data);
+        if (response.data.userId) {
+          fetchUserName(response.data.userId);
+        }
+        setLoading(false);
       } catch (error) {
         console.error("Error fetching project:", error);
-        setLoading(false); 
+        setLoading(false);
+      }
+    };
+
+    const fetchUserName = async (userId) => {
+      try {
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/getUser",
+          { _id: userId }
+        );
+        if (response.data && response.data.name) {
+          setUserName(response.data.name);
+        } else {
+          setUserName("Unknown User");
+        }
+        if (response.data && response.data.img) {
+          setUserImage(response.data.img);
+        } else {
+          setUserImage("https://img.freepik.com/free-photo/teenager-boy-portrait_23-2148105678.jpg");
+        }
+      } catch (error) {
+        console.error("Error fetching user name:", error);
+        setUserName("Unknown User");
       }
     };
 
@@ -37,42 +66,33 @@ function Project() {
       <div className="container">
         <div className="left">
           <span className="breadcrumbs">
-            OpusLink &gt; {project.category} &gt; 
+            OpusLink &gt; {project.category} &gt;
           </span>
 
           <h1>{project.title}</h1>
           <div className="user">
-            <img
-              className="pp"
-              src={project.img}
-              alt="Project Image"
-            />
-            <span>Project by {project.userId}</span>
-            <div className="stars">
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <img src="/img/star.png" alt="" />
-              <span>5</span>
-            </div>
+            <img className="pp" src={userImage} alt="Project Image" />
+            <span>Project by {userName}</span>
           </div>
           <Slider slidesToShow={1} arrowsScroll={1} className="slider">
             <img src={project.img} alt="Project Slide 1" />
-            <img src="https://via.placeholder.com/300x200" alt="Placeholder Slide 2" />
-            <img src="https://via.placeholder.com/300x200" alt="Placeholder Slide 3" />
+            <img
+              src="https://via.placeholder.com/300x200"
+              alt="Placeholder Slide 2"
+            />
+            <img
+              src="https://via.placeholder.com/300x200"
+              alt="Placeholder Slide 3"
+            />
           </Slider>
           <h2>About This Project</h2>
           <p>{project.description}</p>
           <div className="seller">
             <h2>About The Artist</h2>
             <div className="user">
-              <img
-                src={project.img}
-                alt="Artist"
-              />
+              <img src={project.img} alt="Artist" />
               <div className="info">
-                <span>Artist ID: {project.userId}</span>
+                <span>Artist: {userName}</span>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
                   <img src="/img/star.png" alt="" />
@@ -108,7 +128,7 @@ function Project() {
                 </div>
               </div>
               <hr />
-              <p>{project.specifications.join(', ')}</p>
+              <p>{project.specifications.join(", ")}</p>
             </div>
           </div>
           <div className="reviews">
@@ -152,7 +172,10 @@ function Project() {
           <div className="details">
             <div className="item">
               <img src="/img/clock.png" alt="" />
-              <span>Delivery: {new Date(project.expected_delivery_time).toLocaleDateString()}</span>
+              <span>
+                Delivery:{" "}
+                {new Date(project.expected_delivery_time).toLocaleDateString()}
+              </span>
             </div>
             <div className="item">
               <span>Specifications</span>

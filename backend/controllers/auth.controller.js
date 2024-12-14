@@ -54,4 +54,20 @@ export const login = async (req, res) => {
 };
 
 
-export const logout = (req, res) => {};
+export const getUser = async (req, res) => {
+  try {
+    const { _id } = req.body;
+
+    const user = await User.findOne({ _id });
+    console.log(user)
+
+    if (user) {
+      res.status(201).send(user);
+    } else {
+      res.status(422).send("User not Found!");
+    }
+  } catch (error) {
+    res.status(500).send(error.message);
+  }
+};
+
