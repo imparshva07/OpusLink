@@ -1,26 +1,44 @@
 import React, { useState, useContext } from "react";
 import axios from "axios";
-import { useNavigate } from "react-router-dom"; // Import useNavigate
+import { useNavigate } from "react-router-dom";
 import "./Add.css";
 import { UserContext } from '../../context/UserContext.jsx';
 
 const Add = () => {
-  const { currentUser } = useContext(UserContext); // Access currentUser from context
-  const navigate = useNavigate(); // Initialize the navigate function
+  const { currentUser } = useContext(UserContext);
+  const navigate = useNavigate();
 
   const [formData, setFormData] = useState({
-    userId: currentUser._id, // Set userId from currentUser
+    userId: currentUser._id,
     title: "",
     description: "",
     category: "design",
     budget: "",
     expected_delivery_time: "",
-    specifications: "",
+    specifications: [],
   });
+  const [specificationInput, setSpecificationInput] = useState("");
 
   const handleChange = (e) => {
     const { id, value } = e.target;
     setFormData((prev) => ({ ...prev, [id]: value }));
+  };
+
+  const handleAddSpecification = () => {
+    if (specificationInput.trim()) {
+      setFormData((prev) => ({
+        ...prev,
+        specifications: [...prev.specifications, specificationInput.trim()],
+      }));
+      setSpecificationInput("");
+    }
+  };
+
+  const handleRemoveSpecification = (index) => {
+    setFormData((prev) => ({
+      ...prev,
+      specifications: prev.specifications.filter((_, i) => i !== index),
+    }));
   };
 
   const handleSubmit = async (e) => {
@@ -35,9 +53,7 @@ const Add = () => {
       alert("Project created successfully!");
       console.log("Response: ", response.data);
 
-      // Redirect to the newly created project page using the project's ID
       navigate(`/project/${response.data._id}`);
-      
     } catch (error) {
       console.error("Error creating project: ", error.response?.data || error.message);
       alert("Failed to create project. Please check your inputs and try again.");
@@ -109,14 +125,24 @@ const Add = () => {
 
           <div className="form-group">
             <label htmlFor="specifications">Specifications</label>
-            <textarea
-              id="specifications"
-              value={formData.specifications}
-              onChange={handleChange}
-              placeholder="Enter the specifications"
-              rows="4"
-              required
-            ></textarea>
+            <div className="specifications-input">
+              <input
+                type="text"
+                value={specificationInput}
+                onChange={(e) => setSpecificationInput(e.target.value)}
+                placeholder="Add a specification"
+              />
+              <button type="button" onClick={handleAddSpecification}>
+                Add
+              </button>
+            </div>
+            <ul className="specifications-list">
+              {formData.specifications.map((spec, index) => (
+                <li key={index}>
+                  {spec} <button type="button" onClick={() => handleRemoveSpecification(index)}>Remove</button>
+                </li>
+              ))}
+            </ul>
           </div>
 
           <button type="submit">Create Project</button>
