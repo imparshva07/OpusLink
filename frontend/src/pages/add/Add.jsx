@@ -12,7 +12,7 @@ const Add = () => {
     userId: currentUser._id,
     title: "",
     description: "",
-    category: "design",
+    category: "Other",
     budget: "",
     expected_delivery_time: "",
     specifications: [],
@@ -45,6 +45,10 @@ const Add = () => {
 
     if (!formData.expected_delivery_time) {
       errors.expected_delivery_time = "Expected delivery time is required.";
+    }
+
+    if (!formData.category.trim().length < 1) {
+      errors.category = "Category is required.";
     }
 
     if (formData.specifications.length === 0) {
@@ -122,7 +126,6 @@ const Add = () => {
               value={formData.title}
               onChange={handleChange}
               placeholder="Enter project title"
-              required
             />
             {formErrors.title && (
               <div className="error-message">{formErrors.title}</div>
@@ -137,7 +140,6 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter a detailed description"
               rows="4"
-              required
             ></textarea>
             {formErrors.description && (
               <div className="error-message">{formErrors.description}</div>
@@ -150,13 +152,28 @@ const Add = () => {
               id="category"
               value={formData.category}
               onChange={handleChange}
-              required
             >
+              <option value=""></option>
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
               <option value="music">Music</option>
+              <option value="graphic_design">Graphic Design</option>
+              <option value="mobile_app">Mobile App Development</option>
+              <option value="game_development">Game Development</option>
+              <option value="content_writing">Content Writing</option>
+              <option value="seo">SEO & Marketing</option>
+              <option value="business_consulting">Business Consulting</option>
+              <option value="data_analysis">Data Analysis</option>
+              <option value="photography">Photography</option>
+              <option value="videography">Videography</option>
+              <option value="digital_marketing">Digital Marketing</option>
+              <option value="blockchain">Blockchain Development</option>
+              <option value="ai_ml">AI & Machine Learning</option>
             </select>
+            {formErrors.category && (
+              <div className="error-message">{formErrors.category}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -168,7 +185,6 @@ const Add = () => {
               onChange={handleChange}
               placeholder="Enter your budget"
               min="1"
-              required
             />
             {formErrors.budget && (
               <div className="error-message">{formErrors.budget}</div>
@@ -184,7 +200,6 @@ const Add = () => {
               id="expected_delivery_time"
               value={formData.expected_delivery_time}
               onChange={handleChange}
-              required
             />
             {formErrors.expected_delivery_time && (
               <div className="error-message">
