@@ -104,15 +104,19 @@
 }
 
 .register form .left .toggle input:checked + .slider {
+  background-color: #007bff; /* Blue color when toggled */
+}
+
+.register form .left .toggle .switch {
+  background-color: #e0e0e0;
+}
+
+.register form .left .toggle input:checked + .slider {
   background-color: #007bff;
 }
 
 .register form .left .toggle input:focus + .slider, .register form .right .toggle input:focus + .slider {
   box-shadow: 0 0 2px #007bff;
-}
-
-.register form .left .toggle input:checked + .slider {
-  background-color: #28a745;
 }
 
 .register form .right input[type="file"] {
@@ -160,4 +164,11 @@
   color: #007bff;
   font-size: 18px;
   pointer-events: none;
+}
+
+.error-message {
+  color: red;
+  font-size: 14px;
+  margin-top: -10px;
+  margin-bottom: 10px;
 }

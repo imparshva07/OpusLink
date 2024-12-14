@@ -62,15 +62,12 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
     });
 };
 
-
 const logInWithEmailAndPassword = async (email, password) => {
   try {
     const res = await signInWithEmailAndPassword(auth, email, password);
     const uid = res.user.uid;
-
   } catch (error) {
-    console.log(error);
-    alert(error.message);
+    throw new Error("Invalid email or password");
   }
 };
 
@@ -91,12 +88,11 @@ const registerInWithEmailAndPassword = async (
     const user = response.user;
     const profilePic = img
       ? img
-      : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg?t=st=1733884083~exp=1733887683~hmac=3acdac16f592cc2761772a7f961212010f6dc103c2024b14a37f084a7a552969&w=740";
-    
+      : "https://img.freepik.com/free-vector/illustration-user-avatar-icon_53876-5907.jpg";
+
     await registerUserToMongo(name, email, user.uid, profilePic, isClient, bio);
   } catch (error) {
-    console.log(error);
-    alert(error.message);
+    throw new Error(error.message);
   }
 };
 

@@ -27,6 +27,15 @@ export const createProject = async (req, res) => {
       throw new Error("Only clients are authorized to create a project.");
     }
 
+    if (!Array.isArray(specifications) || specifications.length === 0) {
+      throw new Error("Specifications must be an array with at least one item.");
+    }
+
+    const invalidSpecs = specifications.filter(spec => spec.length < 3);
+    if (invalidSpecs.length > 0) {
+      throw new Error("Each specification should be at least 3 characters long.");
+    }
+
     const newProject = new Project({
       userId,
       title,
@@ -40,12 +49,12 @@ export const createProject = async (req, res) => {
 
     await newProject.save();
 
-    await indexProject(newProject);
+    await indexProject(newProject); // Assuming this function handles indexing for search
 
-    return res.status(200).json(newProject);
+    return res.status(201).json(newProject);
   } catch (e) {
     console.error("Error creating project:", e); // Log the full error object
-    const errorMessage = e.message ? e.message : "An unexpected error occurred";
+    const errorMessage = e.message || "An unexpected error occurred";
     return res.status(500).json({ error: errorMessage });
   }
 };

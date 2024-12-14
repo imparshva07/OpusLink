@@ -4,7 +4,7 @@ import "./Navbar.css";
 import { auth, db, logOut } from "../../Firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-import { UserContext } from '../../context/UserContext.jsx';
+import { UserContext } from "../../context/UserContext.jsx";
 function Navbar() {
   // scrolling effect
   const [active, setActive] = useState(false);
@@ -20,7 +20,7 @@ function Navbar() {
   const removeUser = () => {
     logoutUser();
     logOut();
-  }
+  };
 
   useEffect(() => {
     window.addEventListener("scroll", isActive);
@@ -34,30 +34,14 @@ function Navbar() {
   const [name, setName] = useState("");
   const navigate = useNavigate();
 
-  // const fetchUserName = async () => {
-  //   try {
-  //     const q = query(collection(db, "users"), where("uid", "==", user?.uid));
-  //     const doc = await getDocs(q);
-  //     const data = doc.docs[0].data();
-  //     setName(data.name);
-  //   } catch (error) {
-  //     console.log(error.message);
-  //   }
-  // };
+ 
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/login");
   }, [user, loading]);
 
-  // static user
-  // const currentUser = {
-  //   id: 1,
-  //   username: "Anna",
-  //   isSeller: true,
-  // };
-
-  // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -68,16 +52,10 @@ function Navbar() {
           </Link>
         </div>
         <div className="links">
-          <span>Business</span>
-          <span>Explore</span>
-          <span>English</span>
           {!currentUser?.isClient && <span>Become a Seller</span>}
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
-              <img
-                src={ currentUser.img || "/img/noavatar.jpg"}
-                alt=""
-              />
+              <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
               <span>{currentUser.name}</span>
               {open && (
                 <div className="options">
@@ -113,41 +91,6 @@ function Navbar() {
           )}
         </div>
       </div>
-      {(active || pathname !== "/") && (
-        <>
-          <hr />
-          <div className="menu">
-            <Link className="link menuLink" to="/">
-              Graphics & Design
-            </Link>
-            <Link className="link menuLink" to="/">
-              Video & Animation
-            </Link>
-            <Link className="link menuLink" to="/">
-              Writing & Translation
-            </Link>
-            <Link className="link menuLink" to="/">
-              AI Services
-            </Link>
-            <Link className="link menuLink" to="/">
-              Digital Marketing
-            </Link>
-            <Link className="link menuLink" to="/">
-              Music & Audio
-            </Link>
-            <Link className="link menuLink" to="/">
-              Programming & Tech
-            </Link>
-            <Link className="link menuLink" to="/">
-              Business
-            </Link>
-            <Link className="link menuLink" to="/">
-              Lifestyle
-            </Link>
-          </div>
-          <hr />
-        </>
-      )}
     </div>
   );
 }
