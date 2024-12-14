@@ -1,20 +1,26 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
 import { auth, db, logOut } from "../../Firebase";
 import { query, collection, getDocs, where } from "firebase/firestore";
 import { useAuthState } from "react-firebase-hooks/auth";
-
+import { UserContext } from '../../context/UserContext.jsx';
 function Navbar() {
   // scrolling effect
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const { currentUser, logoutUser } = useContext(UserContext);
 
   const { pathname } = useLocation();
 
   const isActive = () => {
     window.scrollY > 0 ? setActive(true) : setActive(false);
   };
+
+  const removeUser = () => {
+    logoutUser();
+    logOut();
+  }
 
   useEffect(() => {
     window.addEventListener("scroll", isActive);
@@ -51,7 +57,7 @@ function Navbar() {
   //   isSeller: true,
   // };
 
-  const currentUser = JSON.parse(localStorage.getItem("currentUser"));
+  // const currentUser = JSON.parse(localStorage.getItem("currentUser"));
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -91,7 +97,7 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
-                  <Link className="link" onClick={logOut}>
+                  <Link className="link" onClick={removeUser}>
                     Logout
                   </Link>
                 </div>
