@@ -1,20 +1,35 @@
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
-
 import "./Login.css";
+import { UserContext } from "../../context/UserContext";
 
 function Login() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [user, loading, error] = useAuthState(auth);
-
+  const { updateUser } = useContext(UserContext);
   const navigate = useNavigate();
 
   useEffect(() => {
-    if (loading) return;
-    if (user) navigate("/");
+    // if (loading) return;
+    // if (user){
+    //   await updateUser(user.uid);
+    //   navigate("/"); 
+    // }
+    const fetchAndNavigate = async () => {
+      if (loading) return;
+      if (user) {
+        try {
+          await updateUser(user.uid);
+          navigate("/");
+        } catch (error) {
+          console.error("Error updating user:", error);
+        }
+      }
+    };
+    fetchAndNavigate();
   }, [user, loading, navigate]);
 
   const handleSubmit = (e) => {

@@ -6,7 +6,7 @@
 
 .add .container {
   width: 100%;
-  max-width: 1200px;
+  max-width: 800px;
   background-color: #f8f9fa;
   padding: 40px;
   border-radius: 10px;
@@ -20,30 +20,27 @@
   font-size: 2.5rem;
 }
 
-.add .container .sections {
+.add .container form {
   display: flex;
-  justify-content: space-between;
-  gap: 40px;
+  flex-direction: column;
+  gap: 20px;
 }
 
-.add .container .sections label {
+.add .container .form-group {
+  display: flex;
+  flex-direction: column;
+}
+
+.add .container .form-group label {
   color: #555;
   font-size: 16px;
   font-weight: 500;
   margin-bottom: 10px;
 }
 
-.add .container .sections .info,
-.add .container .sections .details {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.add .container .sections input,
-.add .container .sections select,
-.add .container .sections textarea {
+.add .container .form-group input,
+.add .container .form-group select,
+.add .container .form-group textarea {
   padding: 12px;
   border-radius: 6px;
   border: 1px solid #dcdcdc;
@@ -51,15 +48,31 @@
   transition: border 0.3s ease;
 }
 
-.add .container .sections input:focus,
-.add .container .sections select:focus,
-.add .container .sections textarea:focus {
+.add .container .form-group input:focus,
+.add .container .form-group select:focus,
+.add .container .form-group textarea:focus {
   border-color: #1dbf73;
   outline: none;
 }
 
-.add .container .sections .info button,
-.add .container .sections .details button {
+.add .container .form-group input[type="file"] {
+  border: none;
+  padding: 8px;
+  font-size: 14px;
+}
+
+.add .container .form-group textarea {
+  font-family: Arial, sans-serif;
+  resize: vertical;
+}
+
+.add .container .form-group input[type="text"],
+.add .container .form-group input[type="number"],
+.add .container .form-group input[type="date"] {
+  font-weight: 300;
+}
+
+.add .container button[type="submit"] {
   padding: 12px 20px;
   background-color: #1dbf73;
   color: white;
@@ -68,25 +81,9 @@
   border-radius: 6px;
   cursor: pointer;
   transition: background-color 0.3s ease;
+  width: 100%;
 }
 
-.add .container .sections .info button:hover,
-.add .container .sections .details button:hover {
+.add .container button[type="submit"]:hover {
   background-color: #17a64a;
-}
-
-.add .container .sections input[type="file"] {
-  border: none;
-  padding: 8px;
-  font-size: 14px;
-}
-
-.add .container .sections textarea {
-  font-family: Arial, sans-serif;
-  resize: vertical;
-}
-
-.add .container .sections .info input[type="text"],
-.add .container .sections .details input[type="text"] {
-  font-weight: 300;
 }

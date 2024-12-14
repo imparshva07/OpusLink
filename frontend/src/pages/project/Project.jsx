@@ -1,25 +1,55 @@
 /* eslint-disable no-unused-vars */
-import React from "react";
+import React, { useEffect, useState } from "react";
+import { useParams } from "react-router-dom";
+import axios from "axios";
 import "./Project.css";
 import { Slider } from "infinite-react-carousel/lib";
 
 function Project() {
+  const { id } = useParams(); // Get project ID from the URL
+  const [project, setProject] = useState(null); // State to store project data
+  const [loading, setLoading] = useState(true); // Loading state
+
+  // Fetch the project data when the component mounts
+  useEffect(() => {
+    const fetchProject = async () => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/projects/${id}`); // Fetch data from API
+        setProject(response.data); // Set the project data
+        setLoading(false); // Loading complete
+      } catch (error) {
+        console.error("Error fetching project:", error);
+        setLoading(false); // Even on error, set loading to false
+      }
+    };
+
+    fetchProject();
+  }, [id]);
+
+  if (loading) {
+    return <div className="loading">Loading Project...</div>;
+  }
+
+  if (!project) {
+    return <div className="error">Project not found</div>;
+  }
+
   return (
     <div className="project">
       <div className="container">
         <div className="left">
           <span className="breadcrumbs">
-            OpusLink &gt; Creative Projects &gt;
+            OpusLink &gt; {project.category} &gt; 
           </span>
 
-          <h1>AI-Generated Art: Personalized Creations Just for You</h1>
+          <h1>{project.title}</h1>
           <div className="user">
             <img
               className="pp"
-              src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
+              src={project.img}
+              alt="Project Image"
             />
-            <span>Anna Bell</span>
+            <span>Project by {project.userId}</span>
             <div className="stars">
               <img src="/img/star.png" alt="" />
               <img src="/img/star.png" alt="" />
@@ -30,32 +60,21 @@ function Project() {
             </div>
           </div>
           <Slider slidesToShow={1} arrowsScroll={1} className="slider">
-            <img
-              src="https://images.pexels.com/photos/1074535/pexels-photo-1074535.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-            />
-            <img
-              src="https://images.pexels.com/photos/1462935/pexels-photo-1462935.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-            />
-            <img
-              src="https://images.pexels.com/photos/1054777/pexels-photo-1054777.jpeg?auto=compress&cs=tinysrgb&w=1600"
-              alt=""
-            />
+            <img src={project.img} alt="Project Slide 1" />
+            <img src="https://via.placeholder.com/300x200" alt="Placeholder Slide 2" />
+            <img src="https://via.placeholder.com/300x200" alt="Placeholder Slide 3" />
           </Slider>
           <h2>About This Project</h2>
-          <p>
-            Using AI, I create unique artworks based on your description, helping you visualize anything from characters to landscapes. Whether youre vague or specific in your prompt, I can provide you with stunning and original pieces.
-          </p>
+          <p>{project.description}</p>
           <div className="seller">
             <h2>About The Artist</h2>
             <div className="user">
               <img
-                src="https://images.pexels.com/photos/720327/pexels-photo-720327.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                alt=""
+                src={project.img}
+                alt="Artist"
               />
               <div className="info">
-                <span>Anna Bell</span>
+                <span>Artist ID: {project.userId}</span>
                 <div className="stars">
                   <img src="/img/star.png" alt="" />
                   <img src="/img/star.png" alt="" />
@@ -91,9 +110,7 @@ function Project() {
                 </div>
               </div>
               <hr />
-              <p>
-                Im Anna, and I love creating AI-generated art. I know exactly how to craft prompts that yield stunning and detailed results, no matter your vision.
-              </p>
+              <p>{project.specifications}</p>
             </div>
           </div>
           <div className="reviews">
@@ -102,15 +119,15 @@ function Project() {
               <div className="user">
                 <img
                   className="pp"
-                  src="https://images.pexels.com/photos/839586/pexels-photo-839586.jpeg?auto=compress&cs=tinysrgb&w=1600"
-                  alt=""
+                  src="https://via.placeholder.com/100x100"
+                  alt="User Profile"
                 />
                 <div className="info">
-                  <span>Garner David</span>
+                  <span>John Doe</span>
                   <div className="country">
                     <img
                       src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png"
-                      alt=""
+                      alt="Country"
                     />
                     <span>United States</span>
                   </div>
@@ -124,9 +141,7 @@ function Project() {
                 <img src="/img/star.png" alt="" />
                 <span>5</span>
               </div>
-              <p>
-                Amazing service! The communication was fantastic, and I loved the custom images created for my project. Highly recommended.
-              </p>
+              <p>Excellent project, on time and on budget.</p>
             </div>
             <hr />
           </div>
@@ -134,15 +149,13 @@ function Project() {
         <div className="right">
           <div className="price">
             <h3>1 Custom AI Image</h3>
-            <h2>$59.99</h2>
+            <h2>${project.budget}</h2>
           </div>
-          <p>
-            Receive a fully customized AI-generated image based on your exact description and requirements.
-          </p>
+          <p>{project.description}</p>
           <div className="details">
             <div className="item">
               <img src="/img/clock.png" alt="" />
-              <span>2-Day Delivery</span>
+              <span>Delivery: {new Date(project.expected_delivery_time).toLocaleDateString()}</span>
             </div>
             <div className="item">
               <img src="/img/recycle.png" alt="" />
