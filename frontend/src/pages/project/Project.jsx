@@ -9,6 +9,7 @@ function Project() {
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState("");
+  const [categoryImage, setCategoryImage] = useState("");
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -17,6 +18,9 @@ function Project() {
         setProject(response.data);
         if (response.data.userId) {
           fetchUserName(response.data.userId);
+        }
+        if (response.data.category) {
+          fetchRandomImage(response.data.category);
         }
         setLoading(false);
       } catch (error) {
@@ -44,6 +48,22 @@ function Project() {
       }
     };
 
+    const fetchRandomImage = async (category) => {
+      try {
+        const response = await axios.get("https://api.unsplash.com/photos/random", {
+          params: { query: category, client_id: 'uJ5AA6wgZQ2QQWQAkUfhEac2_iZZRIBNBovaV4Ur3uI' },
+        });
+        if (response.data && response.data.urls && response.data.urls.regular) {
+          setCategoryImage(response.data.urls.regular);
+        } else {
+          setCategoryImage("https://via.placeholder.com/300x200");
+        }
+      } catch (error) {
+        console.error("Error fetching random image:", error);
+        setCategoryImage("https://via.placeholder.com/300x200");
+      }
+    };
+
     fetchProject();
   }, [id]);
 
@@ -68,7 +88,7 @@ function Project() {
             <img className="pp" src={userImage} alt="Project Image" />
             <span>Project by {userName}</span>
           </div>
-          <img src={project.img} alt="Project Image" className="project-image" style={{ width: '100%', height: 'auto', borderRadius: '8px' }} />
+          <img src={categoryImage} alt="Project Image" className="project-image" style={{ width: '100%', height: 'auto', borderRadius: '8px' }} />
           <h2>About This Project</h2>
           <p>{project.description}</p>
           <div className="seller">
