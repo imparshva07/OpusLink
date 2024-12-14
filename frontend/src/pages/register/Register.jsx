@@ -1,5 +1,5 @@
 import React, { useEffect, useState, useContext } from "react";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import "../register/Register.css";
 import { auth, registerInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -32,7 +32,7 @@ function Register() {
       errors.password = "Password must be at least 6 characters";
     }
     if (!bio.trim()) errors.bio = "Bio is required";
-    
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -40,7 +40,14 @@ function Register() {
   const register = async () => {
     if (validateForm()) {
       try {
-        await registerInWithEmailAndPassword(name, email, password, img, isClient, bio);
+        await registerInWithEmailAndPassword(
+          name,
+          email,
+          password,
+          img,
+          isClient,
+          bio
+        );
         navigate("/login");
       } catch (error) {
         setErrorMessage(error.message);
@@ -73,7 +80,9 @@ function Register() {
             value={name}
             onChange={(e) => setName(e.target.value)}
           />
-          {formErrors.name && <div className="error-message">{formErrors.name}</div>}
+          {formErrors.name && (
+            <div className="error-message">{formErrors.name}</div>
+          )}
 
           <label htmlFor="email">Email</label>
           <input
@@ -83,7 +92,9 @@ function Register() {
             value={email}
             onChange={(e) => setEmail(e.target.value)}
           />
-          {formErrors.email && <div className="error-message">{formErrors.email}</div>}
+          {formErrors.email && (
+            <div className="error-message">{formErrors.email}</div>
+          )}
 
           <label htmlFor="password">Password</label>
           <input
@@ -93,7 +104,9 @@ function Register() {
             value={password}
             onChange={(e) => setPassword(e.target.value)}
           />
-          {formErrors.password && <div className="error-message">{formErrors.password}</div>}
+          {formErrors.password && (
+            <div className="error-message">{formErrors.password}</div>
+          )}
 
           <label htmlFor="profilePicture">Profile Picture</label>
           <input
@@ -110,10 +123,18 @@ function Register() {
             value={bio}
             onChange={(e) => setBio(e.target.value)}
           />
-          {formErrors.bio && <div className="error-message">{formErrors.bio}</div>}
+          {formErrors.bio && (
+            <div className="error-message">{formErrors.bio}</div>
+          )}
 
           <button type="submit">Register</button>
           {error && <div className="error-message">{error.message}</div>}
+
+          <div className="extra_options">
+            <div>
+              Already have an account? <Link to="/login">Login</Link> now.
+            </div>
+          </div>
         </div>
 
         <div className="right">
