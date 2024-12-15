@@ -22,20 +22,19 @@ export const createBid = async (req, res) => {
         if (!freelancer) {
             return res.status(404).json({ error: "Freelancer not found!" });
         }
-        if (freelancer.role !== "freelancer") {
+        if (freelancer.isClient) {
             return res.status(400).json({ error: "Only freelancers can place bids!" });
         }
 
-        if(freelancer && freelancer.name) {
-            freelancerName = freelancer.name;
-            console.log(freelancerName);
-        }
+        // if(freelancer && freelancer.name) {
+        //     freelancerName = freelancer.name;
+        //     console.log(freelancerName);
+        // }
 
         const newBid = new Bid({
             projectId,
             clientId,
             freelancerId,
-            freelancerName,
             bidAmount,
             proposal,
         });
@@ -49,7 +48,6 @@ export const createBid = async (req, res) => {
 
 export const getBidsByProject = async (req, res) => {
     const { projectId } = req.params;
-
     try {
         const bids = await Bid.find({ projectId }).populate("freelancerId", "name email");
         return res.status(200).json(bids);

@@ -75,6 +75,9 @@ function Navbar() {
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
+                  <Link className="link" to={`/profile/${currentUser._id}`}>
+                    Edit Profile
+                  </Link>
                   <Link className="link" onClick={removeUser}>
                     Logout
                   </Link>

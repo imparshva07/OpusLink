@@ -44,7 +44,7 @@ const projectSchema = new mongoose.Schema(
           message: "At least one specification is required.",
         },
         {
-          validator: (specs) => specs.every((spec) => spec.length >= 10),
+          validator: (specs) => specs.every((spec) => spec.length >= 0),
           message: "Each specification should be at least 10 characters long.",
         },
       ],
