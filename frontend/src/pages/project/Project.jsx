@@ -1,8 +1,10 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useState, useContext } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
 import "./Project.css";
+import BidModal from "../../components/bidModal/BidModal";
+import { UserContext } from "../../context/UserContext";
 
 function Project() {
   const { id } = useParams();
@@ -12,6 +14,18 @@ function Project() {
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState("");
   const [categoryImage, setCategoryImage] = useState("");
+  const [showBidModal, setShowBidModal] = useState(false);
+  const [bidSubmitted, setBidSubmitted] = useState(false);
+  const [userBid, setUserBid] = useState("")
+  const { currentUser } = useContext(UserContext);
+
+  const handleOpenModal = () => {
+    setShowBidModal(true)
+  }
+
+  const handleCloseModal = () => {
+    setShowBidModal(false)
+  }
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -24,7 +38,12 @@ function Project() {
         if (response.data.category) {
           fetchRandomImage(response.data.category);
         }
-        fetchBids(response.data._id); // Fetch bids for the project
+        if (currentUser.isClient) {
+          await fetchBids(response.data._id); // Fetch bids for the project
+        }
+        if (!currentUser.isClient) {
+          findCurrentUserBid(response.data._id);
+        }
         setLoading(false);
       } catch (error) {
         console.error("Error fetching project:", error);
@@ -69,8 +88,7 @@ function Project() {
 
     const fetchBids = async (projectId) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/bids/project/${id}`);
-        
+        const response = await axios.get(`http://localhost:3000/api/bids/project/${projectId}`);
         setBids(response.data);
       } catch (error) {
         console.error("Error fetching bids:", error);
@@ -78,8 +96,23 @@ function Project() {
       }
     };
 
+    const findCurrentUserBid = async (projectId) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/bids/project/${projectId}`);
+        if (Array.isArray(response.data) && response.data.length !== 0) {
+          const userBid = response.data.find(bid => bid.freelancerId._id === currentUser._id);
+          console.log(userBid)
+          if (userBid) {
+            setUserBid(userBid);
+            setBidSubmitted(true);
+          }
+        }
+      } catch (error) {
+        console.error("Error fetching bids:", error);
+      }
+    };
     fetchProject();
-  }, [id]);
+  }, [id, bidSubmitted]);
 
   if (loading) {
     return <div className="loading">Loading Project...</div>;
@@ -110,39 +143,70 @@ function Project() {
           />
           <h2>About This Project</h2>
           <p>{project.description}</p>
-          <div className="bids-section">
-            <h2>Bids for this Project</h2>
-            <table className="bids-table">
-              <thead>
-                <tr>
-                  <th>Image</th>
-                  <th>Bid Amount</th>
-                  <th>Freelancer</th>
-                  <th>Proposal</th>
-                  <th>Contact</th>
-                </tr>
-              </thead>
-              <tbody>
-                {bids.map((bid, index) => (
-                  <tr key={index}>
+          {currentUser.isClient && (
+            <div className="bids-section">
+              <h2>Bids for this Project</h2>
+              <table className="bids-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Bid Amount</th>
+                    <th>Freelancer</th>
+                    <th>Proposal</th>
+                    <th>Contact</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  {bids.map((bid, index) => (
+                    <tr key={index}>
+                      <td>
+                        <img
+                          className="bid-image"
+                          src={bid.freelancerImg || "https://via.placeholder.com/100x100"}
+                          alt="Freelancer"
+                        />
+                      </td>
+                      <td>${bid.bidAmount}</td>
+                      <td>{bid.freelancerId.name || "Anonymous"}</td>
+                      <td>{bid.proposal}</td>
+                      <td>
+                        <img className="message-icon" src="/img/message.png" alt="Message" />
+                      </td>
+                    </tr>
+                  ))}
+                </tbody>
+              </table>
+            </div>
+          )}
+          {!currentUser.isClient && (
+            <div className="bids-section">
+              <h2>Your Bid for this Project</h2>
+              <table className="bids-table">
+                <thead>
+                  <tr>
+                    <th>Image</th>
+                    <th>Bid Amount</th>
+                    <th>Freelancer</th>
+                    <th>Proposal</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
                     <td>
                       <img
                         className="bid-image"
-                        src={bid.freelancerImg || "https://via.placeholder.com/100x100"}
+                        src={userBid?.freelancerImg || "https://via.placeholder.com/100x100"}
                         alt="Freelancer"
                       />
                     </td>
-                    <td>${bid.bidAmount}</td>
-                    <td>{bid.freelancerName || "Anonymous"}</td>
-                    <td>{bid.proposal}</td>
-                    <td>
-                      <img className="message-icon" src="/img/message.png" alt="Message" />
-                    </td>
+                    <td>${userBid?.bidAmount}</td>
+                    <td>{userBid?.freelancerId?.name || "Anonymous"}</td>
+                    <td>{userBid?.proposal}</td>
                   </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+                </tbody>
+              </table>
+            </div>
+          )}
         </div>
 
         <div className="right">
@@ -170,9 +234,18 @@ function Project() {
               </div>
             ))}
           </div>
-          <button>Continue</button>
+          {!currentUser.isClient && bidSubmitted && (
+            <>
+              <button onClick={handleOpenModal} disabled>Submit Bid</button>
+              <span>You have already submitted the bid!</span>
+            </>
+          )}
+          {!currentUser.isClient && !bidSubmitted && (<button onClick={handleOpenModal}>Submit Bid</button>)}
         </div>
       </div>
+      {showBidModal && (
+        <BidModal project={project} showModal={showBidModal} handleClose={handleCloseModal} setBidSubmitted={setBidSubmitted} />
+      )}
     </div>
   );
 }
