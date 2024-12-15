@@ -3,6 +3,7 @@ import { Link, useNavigate } from "react-router-dom";
 import "../register/Register.css";
 import { auth, registerInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
+import upload from "../../utils/upload.js";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -39,12 +40,13 @@ function Register() {
 
   const register = async () => {
     if (validateForm()) {
+      const url = await upload(img);
       try {
         await registerInWithEmailAndPassword(
           name,
           email,
           password,
-          img,
+          url,
           isClient,
           bio
         );
