@@ -1,13 +1,51 @@
-import React from "react";
+/* eslint-disable no-unused-vars */
+import React, { useState, useEffect } from "react";
 import { Link } from "react-router-dom";
+import axios from "axios";
 import "./MyProjects.css";
 
 function MyProjects() {
+  const [projects, setProjects] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
   const currentUser = {
-    id: 1,
+    id: "1",
     username: "Anna",
     isSeller: true,
+  };  
+
+  useEffect(() => {
+    const fetchProjects = async () => {
+      try {
+        setLoading(true);
+        const response = await axios.get(`http://localhost:3000/api/projects`, {
+          params: { userId: currentUser.id }, 
+        });
+        setProjects(response.data); 
+      } catch (err) {
+        setError(err.message || "Failed to fetch projects.");
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchProjects();
+  }, [currentUser.id]);
+
+  const handleDelete = async (projectId) => {
+    try {
+      await axios.delete(`/api/projects/${projectId}`);
+      setProjects((prevProjects) =>
+        prevProjects.filter((project) => project._id !== projectId)
+      );
+    } catch (err) {
+      alert("Failed to delete the project. Please try again.");
+    }
   };
+
+  if (loading) return <div>Loading...</div>;
+  if (error) return <div>Error: {error}</div>;
 
   return (
     <div className="projects">
@@ -25,33 +63,39 @@ function MyProjects() {
             <tr>
               <th>Image</th>
               <th>Title</th>
-              <th>Price</th>
-              <th>Sales</th>
+              <th>Budget</th>
+              <th>Category</th>
+              <th>Delivery Time</th>
               <th>Action</th>
             </tr>
           </thead>
           <tbody>
-            {[
-              { title: "Stunning Concept Art", price: "59.99", sales: 13 },
-              { title: "AI Generated Concept Art", price: "120.99", sales: 41 },
-              { title: "Digital Character", price: "79.99", sales: 55 },
-              { title: "Hyper Realistic Painting", price: "119.99", sales: 29 },
-              { title: "AI Generated Art", price: "59.99", sales: 34 },
-              { title: "Text-Based AI Art", price: "110.99", sales: 16 },
-            ].map((project, index) => (
-              <tr key={index}>
+            {projects.map((project) => (
+              <tr key={project._id}>
                 <td>
                   <img
                     className="project-image"
-                    src="https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                    src={project.img || "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"}
                     alt={project.title}
                   />
                 </td>
-                <td>{project.title}</td>
-                <td>{project.price}</td>
-                <td>{project.sales}</td>
                 <td>
-                  <img className="delete-btn" src="./img/delete.png" alt="Delete" />
+                <Link to={`/project/${project._id}`} className="project-title-link">
+                  {project.title}
+                  </Link>
+                  </td>
+                <td>${project.budget.toFixed(2)}</td>
+                <td>{project.category}</td>
+                <td>
+                  {new Date(project.expected_delivery_time).toLocaleDateString()}
+                </td>
+                <td>
+                  <img
+                    className="delete-btn"
+                    src="./img/delete.png"
+                    alt="Delete"
+                    onClick={() => handleDelete(project._id)}
+                  />
                 </td>
               </tr>
             ))}

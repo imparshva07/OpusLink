@@ -10,11 +10,11 @@ export const createBid = async (req, res) => {
         if (!project) {
             return res.status(404).json({ error: "Project not found!" });
         }
-        if (project.status !== "open") {
-            return res.status(400).json({ error: "Bidding is not allowed on closed projects!" });
-        }
+        // if (project.status !== "open") {
+        //     return res.status(400).json({ error: "Bidding is not allowed on closed projects!" });
+        // }
 
-        if (String(project.clientId) !== clientId) {
+        if (String(project.userId) !== clientId) {
             return res.status(400).json({ error: "Client ID mismatch!" });
         }
 
@@ -26,10 +26,16 @@ export const createBid = async (req, res) => {
             return res.status(400).json({ error: "Only freelancers can place bids!" });
         }
 
+        if(freelancer && freelancer.name) {
+            freelancerName = freelancer.name;
+            console.log(freelancerName);
+        }
+
         const newBid = new Bid({
             projectId,
             clientId,
             freelancerId,
+            freelancerName,
             bidAmount,
             proposal,
         });
