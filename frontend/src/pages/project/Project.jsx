@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import axios from "axios";
@@ -6,6 +7,7 @@ import "./Project.css";
 function Project() {
   const { id } = useParams();
   const [project, setProject] = useState(null);
+  const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState("");
@@ -22,6 +24,7 @@ function Project() {
         if (response.data.category) {
           fetchRandomImage(response.data.category);
         }
+        fetchBids(response.data._id); // Fetch bids for the project
         setLoading(false);
       } catch (error) {
         console.error("Error fetching project:", error);
@@ -64,6 +67,17 @@ function Project() {
       }
     };
 
+    const fetchBids = async (projectId) => {
+      try {
+        const response = await axios.get(`http://localhost:3000/api/bids/project/${id}`);
+        
+        setBids(response.data);
+      } catch (error) {
+        console.error("Error fetching bids:", error);
+        setBids([]);
+      }
+    };
+
     fetchProject();
   }, [id]);
 
@@ -88,79 +102,49 @@ function Project() {
             <img className="pp" src={userImage} alt="Project Image" />
             <span>Project by {userName}</span>
           </div>
-          <img src={categoryImage} alt="Project Image" className="project-image" style={{ width: '100%', height: 'auto', borderRadius: '8px' }} />
+          <img
+            src={categoryImage}
+            alt="Project Image"
+            className="project-image"
+            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+          />
           <h2>About This Project</h2>
           <p>{project.description}</p>
-          <div className="seller">
-            <h2>About The Artist</h2>
-            <div className="user">
-              <img src={project.img} alt="Artist" />
-              <div className="info">
-                <span>Artist: {userName}</span>
-                <div className="stars">
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <img src="/img/star.png" alt="" />
-                  <span>5</span>
-                </div>
-                <button>Contact Me</button>
-              </div>
-            </div>
-            <div className="box">
-              <div className="items">
-                <div className="item">
-                  <span className="title">From</span>
-                  <span className="desc">USA</span>
-                </div>
-                <div className="item">
-                  <span className="title">Member Since</span>
-                  <span className="desc">Aug 2022</span>
-                </div>
-                <div className="item">
-                  <span className="title">Avg. Response Time</span>
-                  <span className="desc">4 hours</span>
-                </div>
-                <div className="item">
-                  <span className="title">Last Delivery</span>
-                  <span className="desc">1 day</span>
-                </div>
-                <div className="item">
-                  <span className="title">Languages</span>
-                  <span className="desc">English</span>
-                </div>
-              </div>
-              <hr />
-              <p>{project.specifications.join(", ")}</p>
-            </div>
-          </div>
-          <div className="reviews">
-            <h2>Customer Reviews</h2>
-            <div className="item">
-              <div className="user">
-                <img className="pp" src="https://via.placeholder.com/100x100" alt="User Profile" />
-                <div className="info">
-                  <span>John Doe</span>
-                  <div className="country">
-                    <img src="https://fiverr-dev-res.cloudinary.com/general_assets/flags/1f1fa-1f1f8.png" alt="Country" />
-                    <span>United States</span>
-                  </div>
-                </div>
-              </div>
-              <div className="stars">
-                <img src="/img/star.png" alt="" />
-                <img src="/img/star.png" alt="" />
-                <img src="/img/star.png" alt="" />
-                <img src="/img/star.png" alt="" />
-                <img src="/img/star.png" alt="" />
-                <span>5</span>
-              </div>
-              <p>Excellent project, on time and on budget.</p>
-            </div>
-            <hr />
+          <div className="bids-section">
+            <h2>Bids for this Project</h2>
+            <table className="bids-table">
+              <thead>
+                <tr>
+                  <th>Image</th>
+                  <th>Bid Amount</th>
+                  <th>Freelancer</th>
+                  <th>Proposal</th>
+                  <th>Contact</th>
+                </tr>
+              </thead>
+              <tbody>
+                {bids.map((bid, index) => (
+                  <tr key={index}>
+                    <td>
+                      <img
+                        className="bid-image"
+                        src={bid.freelancerImg || "https://via.placeholder.com/100x100"}
+                        alt="Freelancer"
+                      />
+                    </td>
+                    <td>${bid.bidAmount}</td>
+                    <td>{bid.freelancerName || "Anonymous"}</td>
+                    <td>{bid.proposal}</td>
+                    <td>
+                      <img className="message-icon" src="/img/message.png" alt="Message" />
+                    </td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
         </div>
+
         <div className="right">
           <div className="price">
             <h2>Budget :${project.budget}</h2>
