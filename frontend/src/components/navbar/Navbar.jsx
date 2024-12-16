@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import "./Navbar.css";
@@ -69,9 +70,6 @@ function Navbar() {
                       </Link>
                     </>
                   )}
-                  <Link className="link" to="/orders">
-                    Orders
-                  </Link>
                   <Link className="link" to="/messages">
                     Messages
                   </Link>
