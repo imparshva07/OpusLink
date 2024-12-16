@@ -16,6 +16,7 @@ import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
 import Orders from "./pages/orders/Orders";
 import Search from "./components/search/search";
+import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
 
 function App() {
   const Layout = () => {
@@ -56,6 +57,10 @@ function App() {
         {
           path: "/message/:id",
           element: <Message />,
+        },
+        {
+          path: "/profile/:id",
+          element: <FreelancerProfile />,
         },
         {
           path: "/add",
