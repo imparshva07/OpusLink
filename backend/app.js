@@ -39,4 +39,60 @@ app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
 
+
+// elasticSearch initialization and sync for updates
+const syncElasticsearch = async () => {
+  const indexName = "projects";
+
+  try {
+
+    const indexExists = await client.indices.exists({ index: indexName });
+    if (indexExists) {
+      await client.indices.delete({ index: indexName });
+      console.log(`Index "${indexName}" deleted.`);
+    }
+
+
+    await client.indices.create({
+      index: indexName,
+      body: {
+        mappings: {
+          properties: {
+            title: { type: "text" },
+            description: { type: "text" },
+            budget: { type: "float" },
+            clientId: { type: "keyword" },
+            status: { type: "keyword" },
+            createdAt: { type: "date" },
+          },
+        },
+      },
+    });
+    console.log(`Index "${indexName}" created with mappings.`);
+
+
+    const projects = await Project.find();
+    for (const project of projects) {
+      await client.index({
+        index: indexName,
+        id: project._id.toString(),
+        body: {
+          title: project.title || "Untitled",
+          description: project.description || "No description available",
+          budget: project.budget || 0,
+          clientId: project.clientId ? project.clientId.toString() : "Unknown",
+          status: project.status || "unknown",
+          createdAt: project.createdAt || new Date(),
+        },
+      });
+      console.log(`Elasticsearch: Project indexed with ID ${project._id}`);
+    }
+    console.log("All projects reindexed successfully!");
+  } catch (error) {
+    console.error("Error resetting Elasticsearch index:", error);
+  }
+};
+
+syncElasticsearch();
+
 createIndex();

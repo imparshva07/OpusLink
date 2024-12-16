@@ -39,7 +39,7 @@ function Project() {
           fetchRandomImage(response.data.category);
         }
         if (currentUser.isClient) {
-          await fetchBids(response.data._id); // Fetch bids for the project
+          await fetchBids(response.data._id); 
         }
         if (!currentUser.isClient) {
           findCurrentUserBid(response.data._id);
