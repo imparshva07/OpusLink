@@ -18,7 +18,6 @@ mongoose.set("strictQuery", true);
 
 const connect = async () => {
   try {
-    console.log(process.env.MONGO_URI + "/" + process.env.DB_NAME);
     await mongoose.connect(process.env.MONGO_URI + "/" + process.env.DB_NAME);
     console.log("Connected to MongoDB");
   } catch (error) {
@@ -39,19 +38,16 @@ app.listen(3000, () => {
   console.log("Server is running on port 3000");
 });
 
-
 // elasticSearch initialization and sync for updates
 const syncElasticsearch = async () => {
   const indexName = "projects";
 
   try {
-
     const indexExists = await client.indices.exists({ index: indexName });
     if (indexExists) {
       await client.indices.delete({ index: indexName });
       console.log(`Index "${indexName}" deleted.`);
     }
-
 
     await client.indices.create({
       index: indexName,
@@ -69,7 +65,6 @@ const syncElasticsearch = async () => {
       },
     });
     console.log(`Index "${indexName}" created with mappings.`);
-
 
     const projects = await Project.find();
     for (const project of projects) {
