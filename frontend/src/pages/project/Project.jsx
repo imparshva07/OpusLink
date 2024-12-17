@@ -57,7 +57,7 @@ function Project() {
           fetchRandomImage(response.data.category);
         }
         if (currentUser.isClient) {
-          await fetchBids(response.data._id); // Fetch bids for the project
+          await fetchBids(response.data._id); 
         }
         if (!currentUser.isClient) {
           findCurrentUserBid(response.data._id);
@@ -154,7 +154,7 @@ function Project() {
             <span>Project by {userName}</span>
           </div>
           <img
-            src={categoryImage}
+            src={project.img}
             alt="Project Image"
             className="project-image"
             style={{ width: '100%', height: 'auto', borderRadius: '8px' }}

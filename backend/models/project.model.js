@@ -29,7 +29,7 @@ const projectSchema = new mongoose.Schema(
     },
     img: {
       type: String,
-      default: "https://via.placeholder.com/300x200", // Placeholder image URL
+      default: "https://via.placeholder.com/300x200",
     },
     expected_delivery_time: {
       type: Date,
@@ -52,5 +52,40 @@ const projectSchema = new mongoose.Schema(
   },
   { timestamps: true }
 );
+
+
+projectSchema.post("save", async function (proj) {
+  try {
+    await client.index({
+      index: "projects",
+      id: proj._id.toString(),
+      body: {
+        title: proj.title,
+        description: proj.description,
+        budget: proj.budget,
+        clientId: proj.clientId.toString(),
+        status: proj.status,
+        createdAt: proj.createdAt
+      },
+    });
+    console.log(`Elasticsearch: Project indexed with ID ${proj._id}`);
+  } catch (error) {
+    console.error("Error indexing project to Elasticsearch:", error);
+  }
+});
+
+
+projectSchema.post("remove", async function (proj) {
+  try {
+    await client.delete({
+      index: "projects",
+      id: proj._id.toString(),
+    });
+    console.log(`Elasticsearch: Project deleted with ID ${proj._id}`);
+  } catch (error) {
+    console.error("Error deleting project from Elasticsearch:", error);
+  }
+});
+
 
 export const Project = mongoose.model("Project", projectSchema);

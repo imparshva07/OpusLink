@@ -49,11 +49,11 @@ export const createProject = async (req, res) => {
 
     await newProject.save();
 
-    await indexProject(newProject); // Assuming this function handles indexing for search
+    await indexProject(newProject); 
 
     return res.status(201).json(newProject);
   } catch (e) {
-    console.error("Error creating project:", e); // Log the full error object
+    console.error("Error creating project:", e);
     const errorMessage = e.message || "An unexpected error occurred";
     return res.status(500).json({ error: errorMessage });
   }
@@ -71,15 +71,48 @@ export const updateProject = async (req, res) => {
       return res.status(404).json({ error: "Project not found!" });
     }
 
+    await client.index({
+      index: "projects",
+      id: updatedProject._id.toString(),
+      body: {
+        title: updatedProject.title,
+        description: updatedProject.description,
+        budget: updatedProject.budget,
+        clientId: updatedProject.clientId.toString(),
+        status: updatedProject.status,
+        createdAt: updatedProject.createdAt,
+      },
+    });
+
     return res.status(200).json(updatedProject);
   } catch (e) {
     return res.status(500).json({ error: e });
   }
 };
 
+export const deleteProject = async (req, res) => {
+  const { id } = req.params;
+
+  try {
+    const deletedProject = await Project.findByIdAndDelete(id);
+    if (!deletedProject) {
+      return res.status(404).json({ error: "Project not found!" });
+    }
+
+    await client.delete({
+      index: "projects",
+      id: deletedProject._id.toString(),
+    });
+
+    return res.status(200).json({ message: "Project deleted successfully!" });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
 export const getClientProject = async (req, res) => {
   const { userId } = req.params;
-  console.log("Received userId:", userId); // Log userId for debugging
+  console.log("Received userId:", userId);
 
   if (!userId) {
     return res.status(400).json({ error: "userId is missing or undefined" });
@@ -213,3 +246,56 @@ export const searchProjects = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
+
+export const searchProjectsByUserId = async (req, res) => {
+  const { query, userId } = req.query;
+
+  try {
+    if (!query && !userId) {
+      return res
+        .status(400)
+        .json({ error: "At least one of query or userId is required." });
+    }
+
+    const esQuery = {
+      bool: {
+        must: [], 
+        filter: [], 
+      },
+    };
+
+    if (userId) {
+      esQuery.bool.filter.push({
+        term: {
+          clientId: userId,
+        },
+      });
+    }
+    
+    if (query) {
+      esQuery.bool.must.push({
+        multi_match: {
+          query,
+          fields: ["title", "description"],
+        },
+      });
+    }
+
+    const result = await client.search({
+      index: "projects",
+      body: {
+        query: esQuery,
+      },
+    });
+
+    const projects = result.hits.hits.map((hit) => ({
+      id: hit._id,
+      ...hit._source,
+    }));
+
+    return res.status(200).json(projects);
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+};
+
