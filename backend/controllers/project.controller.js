@@ -78,8 +78,7 @@ export const updateProject = async (req, res) => {
         title: updatedProject.title,
         description: updatedProject.description,
         budget: updatedProject.budget,
-        clientId: updatedProject.clientId.toString(),
-        status: updatedProject.status,
+        userId: updatedProject.userId.toString(),
         createdAt: updatedProject.createdAt,
       },
     });

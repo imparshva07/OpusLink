@@ -3,7 +3,7 @@ import { Project } from "../models/project.model.js";
 import User  from "../models/user.model.js";
 
 export const createBid = async (req, res) => {
-    const { projectId, clientId, freelancerId, bidAmount, proposal } = req.body;
+    const { projectId, userId, freelancerId, bidAmount, proposal } = req.body;
 
     try {
         const project = await Project.findById(projectId);
@@ -14,7 +14,7 @@ export const createBid = async (req, res) => {
         //     return res.status(400).json({ error: "Bidding is not allowed on closed projects!" });
         // }
 
-        if (String(project.userId) !== clientId) {
+        if (String(project.userId) !== userId) {
             return res.status(400).json({ error: "Client ID mismatch!" });
         }
 
@@ -33,7 +33,7 @@ export const createBid = async (req, res) => {
 
         const newBid = new Bid({
             projectId,
-            clientId,
+            userId,
             freelancerId,
             bidAmount,
             proposal,
