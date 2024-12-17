@@ -65,7 +65,7 @@ function Home() {
   const sliderSettings = {
     infinite: projectData.length > 3,
     speed: 500,
-    slidesToShow: projectData.length >= 3 ? 3 : projectData.length,
+    slidesToShow: projectData.length>0 ? projectData.length >= 3 ? 3 : projectData.length : 1,
     slidesToScroll: 1,
     centerMode: false,
     centerPadding: "0",
@@ -126,9 +126,9 @@ function Home() {
         <Slider {...sliderSettings}>
           {Array.isArray(projectData) && projectData.length > 0
             ? projectData.map((project) => (
-                <div key={project._id} className="catCard">
+                <div key={project._id ? project._id : project.id} className="catCard">
                   <Link
-                    to={`/project/${project._id}`}
+                    to={`/project/${project._id ? project._id : project.id}`}
                     style={{ textDecoration: "none" }}
                   >
                     <img

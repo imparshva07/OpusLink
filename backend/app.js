@@ -50,6 +50,7 @@ const io = new Server(server, {
   },
 });
 
+//elastic search sync on server start
 const syncElasticsearch = async () => {
   const indexName = "projects";
 
