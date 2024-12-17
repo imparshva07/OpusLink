@@ -1,6 +1,5 @@
 /* eslint-disable no-unused-vars */
 import Slider from "react-slick";
-import { cards } from "../../data";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import "./Home.css";
@@ -76,7 +75,6 @@ function Home() {
     focusOnSelect: true,
   };
 
-  console.log(projectData);
 
   return (
     <div className="home">
@@ -126,7 +124,7 @@ function Home() {
 
       <div className="slider">
         <Slider {...sliderSettings}>
-          {projectData.length > 0
+          {Array.isArray(projectData) && projectData.length > 0
             ? projectData.map((project) => (
                 <div key={project._id} className="catCard">
                   <Link
@@ -145,13 +143,9 @@ function Home() {
                   </Link>
                 </div>
               ))
-            : cards.map((card) => (
-                <div key={card.id} className="catCard">
-                  <img src={card.img} alt={card.title} />
-                  <h3>{card.title}</h3>
-                  <p>{card.desc}</p>
-                </div>
-              ))}
+            : (
+              <p>No projects available</p>
+            )}
         </Slider>
       </div>
 

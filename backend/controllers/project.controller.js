@@ -248,7 +248,8 @@ export const searchProjects = async (req, res) => {
 };
 
 export const searchProjectsByUserId = async (req, res) => {
-  const { query, userId } = req.query;
+  const { query } = req.query;
+  const { userId } = req.params;
 
   try {
     if (!query && !userId) {
@@ -267,7 +268,7 @@ export const searchProjectsByUserId = async (req, res) => {
     if (userId) {
       esQuery.bool.filter.push({
         term: {
-          clientId: userId,
+          userId: userId,
         },
       });
     }
