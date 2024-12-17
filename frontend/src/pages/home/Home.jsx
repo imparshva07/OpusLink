@@ -11,8 +11,6 @@ import { Link } from "react-router-dom";
 import { UserContext } from "../../context/UserContext";
 
 function Home() {
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
   const [projectData, setProjectData] = useState("");
   const { currentUser } = useContext(UserContext);
   const [query, setQuery] = useState("");
@@ -65,9 +63,6 @@ function Home() {
     }
   };
 
-  if (loading) return <div>Loading...</div>;
-  if (error) return <div>Error: {error}</div>;
-
   const sliderSettings = {
     infinite: projectData.length > 3,
     speed: 500,
@@ -80,6 +75,8 @@ function Home() {
     autoplaySpeed: 3000,
     focusOnSelect: true,
   };
+
+  console.log(projectData);
 
   return (
     <div className="home">
