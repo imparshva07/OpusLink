@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from "react";
-import { useParams } from "react-router-dom";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Project.css";
 import BidModal from "../../components/bidModal/BidModal";
@@ -18,7 +18,7 @@ function Project() {
   const [bidSubmitted, setBidSubmitted] = useState(false);
   const [userBid, setUserBid] = useState("")
   const { currentUser } = useContext(UserContext);
-
+  const navigate = useNavigate();
   const handleOpenModal = () => {
     setShowBidModal(true)
   }
@@ -26,6 +26,24 @@ function Project() {
   const handleCloseModal = () => {
     setShowBidModal(false)
   }
+  
+  const handleOpenMessaging = async (freelancerId) => {
+    try {
+      // Step 1: Initiate the chat with the backend
+      const { data } = await axios.post("http://localhost:3000/api/chat/initiate", {
+        clientId: currentUser._id,
+        freelancerId,
+      });
+
+      // Step 2: Store chatId in localStorage for consistency (optional)
+      localStorage.setItem("currentChatId", data._id);
+
+      // Step 3: Redirect to the messaging page with chatId
+      navigate(`/messages`);
+    } catch (error) {
+      console.error("Error initiating chat:", error.message);
+    }
+  };
 
   useEffect(() => {
     const fetchProject = async () => {
@@ -39,7 +57,7 @@ function Project() {
           fetchRandomImage(response.data.category);
         }
         if (currentUser.isClient) {
-          await fetchBids(response.data._id); // Fetch bids for the project
+          await fetchBids(response.data._id); 
         }
         if (!currentUser.isClient) {
           findCurrentUserBid(response.data._id);
@@ -136,7 +154,7 @@ function Project() {
             <span>Project by {userName}</span>
           </div>
           <img
-            src={categoryImage}
+            src={project.img}
             alt="Project Image"
             className="project-image"
             style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
@@ -170,8 +188,15 @@ function Project() {
                       <td>{bid.freelancerId.name || "Anonymous"}</td>
                       <td>{bid.proposal}</td>
                       <td>
-                        <img className="message-icon" src="/img/message.png" alt="Message" />
+                        {currentUser.isClient && (
+                          <button onClick={() => handleOpenMessaging(bid.freelancerId._id)}>
+                            Message
+                          </button>
+                        )}
                       </td>
+                      {/* <td>
+                        <img onClick={() => handleOpenMessaging(bid.freelancerId._id)} className="message-icon" src="/img/message.png" alt="Message" />      
+                      </td> */}
                     </tr>
                   ))}
                 </tbody>

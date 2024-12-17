@@ -1,12 +1,17 @@
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from "react";
 import { UserContext } from "../../context/UserContext";
 import axios from "axios";
+import './FreelancerProfile.css';
+
 const EditProfile = () => {
     const { currentUser, updateUser } = useContext(UserContext);
     const [formData, setFormData] = useState({
         name: currentUser.name,
         bio: currentUser.bio
     });
+    const [isModalOpen, setModalOpen] = useState(false);
+    const [modalMessage, setModalMessage] = useState("");
 
     const [error, setError] = useState("");
 
@@ -36,10 +41,14 @@ const EditProfile = () => {
                     const { name, bio, uid } = data;
                     setFormData({name, bio});
                     await updateUser(uid);
+                    setModalMessage("Profile updated successfully!");
+                    setModalOpen(true);
                 }
             } catch (err) {
                 console.log(err)
                 setError(err)
+                setModalMessage("Failed to update profile. Please try again.");
+                    setModalOpen(true);
             }
         }
     };
@@ -72,7 +81,14 @@ const EditProfile = () => {
                     <button type="submit" className="mt-3 btn btn-primary w-100">
                         Update
                     </button>
-
+                                    {isModalOpen && (
+                        <div className="modal-overlay">
+                        <div className="modal-container">
+                            <p>{modalMessage}</p>
+                            <button onClick={() => setModalOpen(false)}>Close</button>
+                        </div>
+                        </div>
+                    )}
                 </div>
             </form>
         </div>
