@@ -13,16 +13,16 @@ function MyProjects() {
     id: "1",
     username: "Anna",
     isSeller: true,
-  };  
+  };
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
         const response = await axios.get(`http://localhost:3000/api/projects`, {
-          params: { userId: currentUser.id }, 
+          params: { userId: currentUser.id },
         });
-        setProjects(response.data); 
+        setProjects(response.data);
       } catch (err) {
         setError(err.message || "Failed to fetch projects.");
       } finally {
@@ -46,6 +46,8 @@ function MyProjects() {
 
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
+
+  console.log(projects);
 
   return (
     <div className="projects">
@@ -75,19 +77,27 @@ function MyProjects() {
                 <td>
                   <img
                     className="project-image"
-                    src={project.img || "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"}
+                    src={
+                      project.img ||
+                      "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
+                    }
                     alt={project.title}
                   />
                 </td>
                 <td>
-                <Link to={`/project/${project._id}`} className="project-title-link">
-                  {project.title}
+                  <Link
+                    to={`/project/${project._id}`}
+                    className="project-title-link"
+                  >
+                    {project.title}
                   </Link>
-                  </td>
+                </td>
                 <td>${project.budget.toFixed(2)}</td>
                 <td>{project.category}</td>
                 <td>
-                  {new Date(project.expected_delivery_time).toLocaleDateString()}
+                  {new Date(
+                    project.expected_delivery_time
+                  ).toLocaleDateString()}
                 </td>
                 <td>
                   <img
