@@ -3,6 +3,7 @@ import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Add.css";
 import { UserContext } from "../../context/UserContext.jsx";
+import upload from "../../utils/upload.js";
 
 const Add = () => {
   const { currentUser } = useContext(UserContext);
@@ -16,11 +17,13 @@ const Add = () => {
     budget: "",
     expected_delivery_time: "",
     specifications: [],
+    img: "", // New field for image URL
   });
   const [specificationInput, setSpecificationInput] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [imageFile, setImageFile] = useState(null);
 
   const validateForm = () => {
     const errors = {};
@@ -56,8 +59,11 @@ const Add = () => {
     if (!formData.specifications.length) {
       errors.specifications = "At least one specification is required.";
     } else if (formData.specifications.some((spec) => spec.length < 4)) {
-      errors.specifications =
-        "Each specification must be at least 4 characters long.";
+      errors.specifications = "Each specification must be at least 4 characters long.";
+    }
+
+    if (!formData.img) {
+      errors.image = "Image is required.";
     }
 
     setFormErrors(errors);
@@ -86,6 +92,24 @@ const Add = () => {
     }));
   };
 
+  const handleImageUpload = async (file) => {
+    try {
+      const uploadedImageUrl = await upload(file);
+      setFormData((prev) => ({ ...prev, img: uploadedImageUrl }));
+    } catch (error) {
+      console.error("Image upload failed", error);
+      setErrorMessage("Image upload failed. Please try again.");
+    }
+  };
+
+  const handleFileChange = (e) => {
+    const file = e.target.files[0];
+    setImageFile(file);
+    if (file) {
+      handleImageUpload(file);
+    }
+  };
+
   const handleSubmit = async (e) => {
     e.preventDefault();
     if (validateForm()) {
@@ -103,10 +127,7 @@ const Add = () => {
 
         navigate(`/project/${response.data._id}`);
       } catch (error) {
-        console.error(
-          "Error creating project: ",
-          error.response?.data || error.message
-        );
+        console.error("Error creating project: ", error.response?.data || error.message);
         setErrorMessage("Failed to create project. Please try again.");
       } finally {
         setIsLoading(false);
@@ -120,6 +141,12 @@ const Add = () => {
         <h1>Add New Project</h1>
         {errorMessage && <div className="error-message">{errorMessage}</div>}
         <form onSubmit={handleSubmit}>
+          <div className="form-group">
+            <label htmlFor="img">Upload Image</label>
+            <input type="file" id="img" accept="image/*" onChange={handleFileChange} />
+            {formErrors.img && <div className="error-message">{formErrors.img}</div>}
+          </div>
+
           <div className="form-group">
             <label htmlFor="title">Title</label>
             <input
