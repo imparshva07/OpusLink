@@ -136,7 +136,7 @@ function Project() {
             <span>Project by {userName}</span>
           </div>
           <img
-            src={categoryImage}
+            src={project.img}
             alt="Project Image"
             className="project-image"
             style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
