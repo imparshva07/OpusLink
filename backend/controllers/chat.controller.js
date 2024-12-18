@@ -64,19 +64,19 @@ export const getUserChats = async (req, res) => {
     }
   };
 
-// Delete a chat and its messages
+
 export const deleteChat = async (req, res) => {
     const { chatId } = req.params;
   
     try {
-      // Delete the chat from the database
+
       const deletedChat = await Chat.findByIdAndDelete(chatId);
   
       if (!deletedChat) {
         return res.status(404).json({ error: "Chat not found" });
       }
   
-      // Emit 'chatDeleted' event to all clients
+
       const io = req.app.get("io");
       io.emit("chatDeleted", { chatId });
   
