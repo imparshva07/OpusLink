@@ -7,7 +7,7 @@ const bidSchema = new Schema({
         ref: 'Project',
         required: true
     },
-    clientId: {
+    userId: {
         type: mongoose.Schema.Types.ObjectId,
         ref: 'User',
         required: true
@@ -17,6 +17,11 @@ const bidSchema = new Schema({
         ref: 'User',
         required: true
     },
+    // freelancerName: {
+    //     type: String,
+    //     required: false,
+    //     unique: true,
+    //   },
     bidAmount: {
         type: Number,
         required: [true, "Bid amount can't be empty!"],

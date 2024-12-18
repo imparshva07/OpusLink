@@ -1,13 +1,12 @@
 /* eslint-disable no-unused-vars */
 import React, { useEffect, useState, useContext } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
-import "./Navbar.css";
-import { auth, db, logOut } from "../../Firebase";
-import { query, collection, getDocs, where } from "firebase/firestore";
+import { auth, logOut } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import { UserContext } from "../../context/UserContext.jsx";
+import "./Navbar.css";
+
 function Navbar() {
-  // scrolling effect
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
   const { currentUser, logoutUser } = useContext(UserContext);
@@ -30,30 +29,28 @@ function Navbar() {
     };
   }, []);
 
-  // Firebase User
-  const [user, loading, error] = useAuthState(auth);
-  const [name, setName] = useState("");
+  const [user, loading] = useAuthState(auth);
   const navigate = useNavigate();
-
- 
 
   useEffect(() => {
     if (loading) return;
     if (!user) navigate("/login");
-  }, [user, loading]);
-
-  
+  }, [loading, navigate, user]);
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
       <div className="container">
         <div className="logo">
           <Link className="link" to="/">
-            <span className="text">OpusLink</span>
+            <span className="text">OPUSLINK</span>
           </Link>
         </div>
         <div className="links">
-          {!currentUser?.isClient && <span>Become a Seller</span>}
+          <>
+            <Link className="link" to="/myprojects">
+              <span>Projects</span>
+            </Link>
+          </>
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
               <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
@@ -62,9 +59,6 @@ function Navbar() {
                 <div className="options">
                   {currentUser.isClient && (
                     <>
-                      <Link className="link" to="/myprojects">
-                        Projects
-                      </Link>
                       <Link className="link" to="/add">
                         Add New Project
                       </Link>
@@ -84,9 +78,8 @@ function Navbar() {
             </div>
           ) : (
             <>
-              <span>Sign in</span>
               <Link className="link" to="/register">
-                <button>Join</button>
+                <button>Sign up</button>
               </Link>
             </>
           )}

@@ -1,3 +1,5 @@
+/* eslint-disable react/prop-types */
+/* eslint-disable no-unused-vars */
 import React, { useState, useContext } from 'react';
 import axios from 'axios';
 import './BidModal.css';
@@ -28,7 +30,7 @@ const BidModal = ({ showModal, handleClose, project, setBidSubmitted }) => {
     try {
       const response = await axios.post("http://localhost:3000/api/bids", {
         projectId: project._id,
-        clientId: project.userId,
+        userId: project.userId,
         freelancerId: currentUser._id,
         bidAmount: formData.bidAmount,
         proposal: formData.proposal
