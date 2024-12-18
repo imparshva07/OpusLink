@@ -129,6 +129,21 @@ function Register() {
             <div className="error-message">{formErrors.bio}</div>
           )}
 
+          <div className="right">
+            <h1>I am Hiring</h1>
+            <div className="toggle">
+              <label htmlFor="isClient">Enable client mode</label>
+              <label className="switch">
+                <input
+                  type="checkbox"
+                  checked={isClient}
+                  onChange={() => setIsClient(!isClient)}
+                />
+                <span className="slider round" style={{ padding: '0px' }}></span>
+              </label>
+            </div>
+          </div>
+
           <button type="submit">Register</button>
           {error && <div className="error-message">{error.message}</div>}
 
@@ -136,21 +151,6 @@ function Register() {
             <div>
               Already have an account? <Link to="/login">Login</Link> now.
             </div>
-          </div>
-        </div>
-
-        <div className="right">
-          <h1>I am Hiring</h1>
-          <div className="toggle">
-            <label htmlFor="isClient">Enable client mode</label>
-            <label className="switch">
-              <input
-                type="checkbox"
-                checked={isClient}
-                onChange={() => setIsClient(!isClient)}
-              />
-              <span className="slider round"></span>
-            </label>
           </div>
         </div>
       </form>
