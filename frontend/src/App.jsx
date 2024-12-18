@@ -14,6 +14,7 @@ import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
 import Orders from "./pages/orders/Orders";
 import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
+import FreelancersList from "./pages/freelancerslist/FreelancersList";
 
 function App() {
   const Layout = () => {
@@ -66,6 +67,10 @@ function App() {
         {
           path: "/orders",
           element: <Orders />,
+        },
+        {
+          path: "/freelancers",
+          element: <FreelancersList />,
         },
       ],
     },

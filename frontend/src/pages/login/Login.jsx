@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useContext } from "react";
+import { useEffect, useState, useContext } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import { auth, logInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -31,6 +31,19 @@ function Login() {
     return Object.keys(errors).length === 0;
   };
 
+  const handleFieldChange = (field, value) => {
+    if (formErrors[field]) {
+      setFormErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[field];
+        return updatedErrors;
+      });
+    }
+
+    if (field === "email") setEmail(value);
+    if (field === "password") setPassword(value);
+  };
+
   useEffect(() => {
     const fetchAndNavigate = async () => {
       if (loading) return;
@@ -44,6 +57,7 @@ function Login() {
       }
     };
     fetchAndNavigate();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, navigate]);
 
   const handleSubmit = async (e) => {
@@ -69,20 +83,24 @@ function Login() {
           id="email"
           type="text"
           value={email}
-          onChange={(e) => setEmail(e.target.value)}
-          placeholder="Enter Your Email Address"
+          onChange={(e) => handleFieldChange("email", e.target.value)}
+          placeholder="Enter your email"
         />
-        {formErrors.email && <div className="error-message">{formErrors.email}</div>}
+        {formErrors.email && (
+          <div className="error-message">{formErrors.email}</div>
+        )}
 
         <label htmlFor="password">Password</label>
         <input
           id="password"
           type="password"
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="Password"
+          onChange={(e) => handleFieldChange("password", e.target.value)}
+          placeholder="Enter your password"
         />
-        {formErrors.password && <div className="error-message">{formErrors.password}</div>}
+        {formErrors.password && (
+          <div className="error-message">{formErrors.password}</div>
+        )}
 
         <button type="submit">Login</button>
 
@@ -93,7 +111,7 @@ function Login() {
             <Link to="/reset">Forgot Password</Link>
           </div>
           <div>
-            Don't have an account? <Link to="/register">Register</Link> now.
+            Don{"'"}t have an account? <Link to="/register">Register</Link> now.
           </div>
         </div>
       </form>

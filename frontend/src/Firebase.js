@@ -1,27 +1,12 @@
 import { initializeApp } from "firebase/app";
 import {
-  GoogleAuthProvider,
   getAuth,
-  signInWithPopup,
   signInWithEmailAndPassword,
   createUserWithEmailAndPassword,
   sendPasswordResetEmail,
   signOut,
 } from "firebase/auth";
-import {
-  getFirestore,
-  collection,
-  addDoc,
-  doc,
-  updateDoc,
-  deleteDoc,
-  query,
-  where,
-  onSnapshot,
-  getDocs,
-} from "firebase/firestore";
-import { UserContext } from "./context/UserContext";
-import { useContext } from "react";
+import { getFirestore } from "firebase/firestore";
 const firebaseConfig = {
   apiKey: "AIzaSyAbo5YveWINu2Y3jsBK0xC5Oh5zDzFPSA8",
   authDomain: "opuslink-a7870.firebaseapp.com",
@@ -35,7 +20,6 @@ const firebaseConfig = {
 const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
-const googleProvider = new GoogleAuthProvider();
 
 // register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
@@ -64,10 +48,9 @@ const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
 
 const logInWithEmailAndPassword = async (email, password) => {
   try {
-    const res = await signInWithEmailAndPassword(auth, email, password);
-    const uid = res.user.uid;
+    await signInWithEmailAndPassword(auth, email, password);
   } catch (error) {
-    throw new Error("Invalid email or password");
+    throw new Error("Invalid email or password, ", error.message);
   }
 };
 

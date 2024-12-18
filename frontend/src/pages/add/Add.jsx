@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import { useState, useContext } from "react";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import "./Add.css";
@@ -17,13 +17,18 @@ const Add = () => {
     budget: "",
     expected_delivery_time: "",
     specifications: [],
-    img: "", // New field for image URL
+    img: "",
   });
   const [specificationInput, setSpecificationInput] = useState("");
   const [formErrors, setFormErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  // eslint-disable-next-line no-unused-vars
   const [imageFile, setImageFile] = useState(null);
+
+  const tomorrow = new Date();
+  tomorrow.setDate(tomorrow.getDate() + 1);
+  const tomorrowDate = tomorrow.toISOString().split("T")[0];
 
   const validateForm = () => {
     const errors = {};
@@ -59,7 +64,8 @@ const Add = () => {
     if (!formData.specifications.length) {
       errors.specifications = "At least one specification is required.";
     } else if (formData.specifications.some((spec) => spec.length < 4)) {
-      errors.specifications = "Each specification must be at least 4 characters long.";
+      errors.specifications =
+        "Each specification must be at least 4 characters long.";
     }
 
     if (!formData.img) {
@@ -70,9 +76,16 @@ const Add = () => {
     return Object.keys(errors).length === 0;
   };
 
-  const handleChange = (e) => {
-    const { id, value } = e.target;
-    setFormData((prev) => ({ ...prev, [id]: value }));
+  const handleFieldChange = (field, value) => {
+    if (formErrors[field]) {
+      setFormErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors[field];
+        return updatedErrors;
+      });
+    }
+
+    setFormData((prev) => ({ ...prev, [field]: value }));
   };
 
   const handleAddSpecification = () => {
@@ -127,7 +140,10 @@ const Add = () => {
 
         navigate(`/project/${response.data._id}`);
       } catch (error) {
-        console.error("Error creating project: ", error.response?.data || error.message);
+        console.error(
+          "Error creating project: ",
+          error.response?.data || error.message
+        );
         setErrorMessage("Failed to create project. Please try again.");
       } finally {
         setIsLoading(false);
@@ -143,8 +159,17 @@ const Add = () => {
         <form onSubmit={handleSubmit}>
           <div className="form-group">
             <label htmlFor="img">Upload Image</label>
-            <input type="file" id="img" accept="image/*" onChange={handleFileChange} />
-            {formErrors.img && <div className="error-message">{formErrors.img}</div>}
+            <input
+              type="file"
+              id="img"
+              accept="image/*"
+              onChange={(e) => {
+                handleFileChange(e);
+              }}
+            />
+            {formErrors.img && (
+              <div className="error-message">{formErrors.img}</div>
+            )}
           </div>
 
           <div className="form-group">
@@ -153,7 +178,9 @@ const Add = () => {
               type="text"
               id="title"
               value={formData.title}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleFieldChange("title", e.target.value);
+              }}
               placeholder="Enter project title"
             />
             {formErrors.title && (
@@ -166,7 +193,9 @@ const Add = () => {
             <textarea
               id="description"
               value={formData.description}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleFieldChange("description", e.target.value);
+              }}
               placeholder="Enter a detailed description"
               rows="4"
             ></textarea>
@@ -180,7 +209,9 @@ const Add = () => {
             <select
               id="category"
               value={formData.category}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleFieldChange("category", e.target.value);
+              }}
             >
               <option value=""></option>
               <option value="design">Design</option>
@@ -211,7 +242,9 @@ const Add = () => {
               type="number"
               id="budget"
               value={formData.budget}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleFieldChange("budget", e.target.value);
+              }}
               placeholder="Enter your budget"
               min="1"
             />
@@ -228,7 +261,10 @@ const Add = () => {
               type="date"
               id="expected_delivery_time"
               value={formData.expected_delivery_time}
-              onChange={handleChange}
+              onChange={(e) => {
+                handleFieldChange("expected_delivery_time", e.target.value);
+              }}
+              min={tomorrowDate}
             />
             {formErrors.expected_delivery_time && (
               <div className="error-message">
