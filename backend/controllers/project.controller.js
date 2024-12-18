@@ -105,8 +105,8 @@ export const updateProject = async (req, res) => {
     let exists = await redisclient.exists('allProjects');
     if(exists) {
       await redisclient.json.del('allProjects');
-      await redisclient.flushDb();
     }
+    await redisclient.flushAll();
   
     return res.status(200).json(updatedProject);
   } catch (e) {
@@ -131,8 +131,8 @@ export const deleteProject = async (req, res) => {
     let exists = await redisclient.exists('allProjects');
     if(exists) {
       await redisclient.json.del('allProjects');
-      await redisclient.flushDb();
     }
+    await redisclient.flushAll();
 
     return res.status(200).json({ message: "Project deleted successfully!" });
   } catch (error) {
