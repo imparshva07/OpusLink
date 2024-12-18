@@ -12,8 +12,15 @@ import { Project } from "./models/project.model.js";
 import { indexProject } from "./controllers/project.controller.js";
 import chatRoutes from "./routes/chat.route.js";
 import http from "http";
+import redis from 'redis';
 import { Server } from "socket.io";
 const app = express();
+
+const redisclient = redis.createClient();
+redisclient.connect().then(() => {
+
+});
+
 dotenv.config();
 const PORT = process.env.PORT || 3000;
 mongoose.set("strictQuery", true);

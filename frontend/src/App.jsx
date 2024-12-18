@@ -3,7 +3,6 @@ import { createBrowserRouter, Outlet, RouterProvider } from "react-router-dom";
 import Navbar from "./components/navbar/Navbar";
 import Footer from "./components/footer/Footer";
 import Home from "./pages/home/Home";
-import Projects from "./pages/projects/Projects";
 import Project from "./pages/project/Project";
 import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
@@ -14,7 +13,6 @@ import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
 import Orders from "./pages/orders/Orders";
-import Search from "./components/search/search";
 import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
 
 function App() {
@@ -36,10 +34,6 @@ function App() {
         {
           path: "/",
           element: <Home />,
-        },
-        {
-          path: "/projects",
-          element: <Projects />,
         },
         {
           path: "/myProjects",
@@ -72,10 +66,6 @@ function App() {
         {
           path: "/orders",
           element: <Orders />,
-        },
-        {
-          path: "/search",
-          element: <Search />,
         },
       ],
     },
