@@ -43,3 +43,12 @@ export const getAll = async (req, res) => {
     return res.status(500).json({ error: e });
   }
 }
+
+export const getAllFreelancers = async (req, res) => {
+  try {
+    const allUsers = await User.find({isClient: false});
+    return res.status(200).json(allUsers)
+  } catch (e) {
+    return res.status(500).json({ error: e });
+  }
+}

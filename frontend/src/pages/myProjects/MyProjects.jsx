@@ -1,28 +1,29 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
+import { UserContext } from "../../context/UserContext";
 import "./MyProjects.css";
 
 function MyProjects() {
   const [projects, setProjects] = useState([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
-
-  const currentUser = {
-    id: "1",
-    username: "Anna",
-    isSeller: true,
-  };
+  const { currentUser } = useContext(UserContext);
 
   useEffect(() => {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        const response = await axios.get(`http://localhost:3000/api/projects`, {
-          params: { userId: currentUser.id },
-        });
-        setProjects(response.data);
+        if(currentUser && currentUser.isClient) {
+          const response = await axios.get(`http://localhost:3000/api/projects/client/${currentUser._id}`);
+          setProjects(response.data);
+        }
+        if(currentUser && !currentUser.isClient) {
+          const response = await axios.get(`http://localhost:3000/api/projects`);
+          setProjects(response.data);
+        }
+        
       } catch (err) {
         setError(err.message || "Failed to fetch projects.");
       } finally {
@@ -31,7 +32,7 @@ function MyProjects() {
     };
 
     fetchProjects();
-  }, [currentUser.id]);
+  }, [currentUser._id]);
 
   const handleDelete = async (projectId) => {
     try {
@@ -53,7 +54,7 @@ function MyProjects() {
     <div className="projects">
       <div className="projects-container">
         <div className="projects-header">
-          <h1>{currentUser.isSeller ? "Your Projects" : "Active Orders"}</h1>
+          <h1>{currentUser.isClient ? "Your Projects" : "All Projects"}</h1>
           {currentUser.isSeller && (
             <Link to="/add" className="add-project-link">
               <button className="add-project-btn">Add Project</button>

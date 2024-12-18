@@ -16,6 +16,7 @@ import MyProjects from "./pages/myProjects/MyProjects";
 import Orders from "./pages/orders/Orders";
 import Search from "./components/search/search";
 import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
+import FreelancersList from "./pages/freelancerslist/FreelancersList";
 
 function App() {
   const Layout = () => {
@@ -76,6 +77,10 @@ function App() {
         {
           path: "/search",
           element: <Search />,
+        },
+        {
+          path: "/freelancers",
+          element: <FreelancersList />,
         },
       ],
     },
