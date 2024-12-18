@@ -1,12 +1,33 @@
 /* eslint-disable no-unused-vars */
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect,useContext } from "react";
+import { useParams,useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./FreelancerList.css";
+import { UserContext } from "../../context/UserContext";
 
 function FreelancersList() {
     const [freelancers, setFreelancers] = useState([]);
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState(null);
+    const { currentUser } = useContext(UserContext);
+    const navigate = useNavigate();
+    const handleOpenMessaging = async (freelancerId) => {
+        try {
+          // Step 1: Initiate the chat with the backend
+          const { data } = await axios.post("http://localhost:3000/api/chat/initiate", {
+            clientId: currentUser._id,
+            freelancerId,
+          });
+    
+          // Step 2: Store chatId in localStorage for consistency (optional)
+          localStorage.setItem("currentChatId", data._id);
+    
+          // Step 3: Redirect to the messaging page with chatId
+          navigate(`/messages`);
+        } catch (error) {
+          console.error("Error initiating chat:", error.message);
+        }
+      };
 
     useEffect(() => {
         const fetchFreelancers = async () => {
@@ -62,9 +83,9 @@ function FreelancersList() {
                                 <td>{freelancer.email}</td>
                                 <td>{freelancer.bio}</td>
                                 <td>
-                                    <button>
+                                <button onClick={() => handleOpenMessaging(freelancer._id)}>
                                         Message
-                                    </button>
+                                </button>
                                 </td>
                             </tr>
                         ))}
