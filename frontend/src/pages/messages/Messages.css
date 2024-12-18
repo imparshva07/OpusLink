@@ -82,3 +82,16 @@
 .messages-table td button:hover {
   background-color: #16a85a;
 }
+.messages-table td .delete-button {
+  background-color: #ff4d4d;
+  color: white;
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.messages-table td .delete-button:hover {
+  background-color: #cc0000;
+}
