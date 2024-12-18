@@ -49,7 +49,7 @@ export const createBid = async (req, res) => {
 export const getBidsByProject = async (req, res) => {
     const { projectId } = req.params;
     try {
-        const bids = await Bid.find({ projectId }).populate("freelancerId", "name email");
+        const bids = await Bid.find({ projectId }).populate("freelancerId", "name email img");
         return res.status(200).json(bids);
     } catch (e) {
         return res.status(500).json({ error: e.message });
@@ -60,7 +60,7 @@ export const getBidById = async (req, res) => {
     const { id } = req.params;
 
     try {
-        const bid = await Bid.findById(id).populate("freelancerId", "name email");
+        const bid = await Bid.findById(id).populate("freelancerId", "name email img");
         if (!bid) {
             return res.status(404).json({ error: "Bid not found!" });
         }
@@ -108,7 +108,7 @@ export const approveBid = async (req, res) => {
         }
 
         const project = await Project.findById(bid.projectId);
-        if (!project || project.status !== "open") {
+        if (!project) {
             return res.status(400).json({ error: "Cannot approve bid for a closed or non-existent project!" });
         }
 

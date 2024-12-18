@@ -11,9 +11,9 @@ function Project() {
   const [project, setProject] = useState(null);
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAction, setShowAction] = useState(true);
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState("");
-  const [categoryImage, setCategoryImage] = useState("");
   const [showBidModal, setShowBidModal] = useState(false);
   const [bidSubmitted, setBidSubmitted] = useState(false);
   const [userBid, setUserBid] = useState("")
@@ -45,6 +45,25 @@ function Project() {
     }
   };
 
+  const acceptBid = async (id) => {
+    try {
+
+      const { bidData } = await axios.post(`http://localhost:3000/api/bids/${id}/approve`);
+      setShowAction(false);
+
+
+      setBids((prevBids) =>
+        prevBids.map((bid) =>
+          bid._id === id ? { ...bid, isApproved: true } : bid
+        )
+      );
+
+      
+    } catch (error) {
+      console.error("Error accepting bid:", error.message);
+    }
+  };
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
@@ -53,11 +72,8 @@ function Project() {
         if (response.data.userId) {
           fetchUserName(response.data.userId);
         }
-        if (response.data.category) {
-          fetchRandomImage(response.data.category);
-        }
         if (currentUser.isClient) {
-          await fetchBids(response.data._id); 
+          await fetchBids(response.data._id);
         }
         if (!currentUser.isClient) {
           findCurrentUserBid(response.data._id);
@@ -88,26 +104,11 @@ function Project() {
       }
     };
 
-    const fetchRandomImage = async (category) => {
-      try {
-        const response = await axios.get("https://api.unsplash.com/photos/random", {
-          params: { query: category, client_id: 'uJ5AA6wgZQ2QQWQAkUfhEac2_iZZRIBNBovaV4Ur3uI' },
-        });
-        if (response.data && response.data.urls && response.data.urls.regular) {
-          setCategoryImage(response.data.urls.regular);
-        } else {
-          setCategoryImage("https://via.placeholder.com/300x200");
-        }
-      } catch (error) {
-        console.error("Error fetching random image:", error);
-        setCategoryImage("https://via.placeholder.com/300x200");
-      }
-    };
-
     const fetchBids = async (projectId) => {
       try {
         const response = await axios.get(`http://localhost:3000/api/bids/project/${projectId}`);
         setBids(response.data);
+        await setShowActionsFlag();
       } catch (error) {
         console.error("Error fetching bids:", error);
         setBids([]);
@@ -129,8 +130,31 @@ function Project() {
         console.error("Error fetching bids:", error);
       }
     };
+
+    const setShowActionsFlag = async () => {
+      for (const bid of bids) {
+        if (bid.isApproved) {
+          setShowAction(false);
+        }
+    
+    }
+  };
+
     fetchProject();
   }, [id, bidSubmitted]);
+
+  useEffect(() => {
+    const setShowActionsFlag = async () => {
+      for (const bid of bids) {
+        if (bid.isApproved) {
+          setShowAction(false);
+        }
+    
+    }
+  };
+    
+  setShowActionsFlag();
+  }, [bids])
 
   if (loading) {
     return <div className="loading">Loading Project...</div>;
@@ -172,6 +196,7 @@ function Project() {
                     <th>Freelancer</th>
                     <th>Proposal</th>
                     <th>Contact</th>
+                    <th>Action</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -180,7 +205,7 @@ function Project() {
                       <td>
                         <img
                           className="bid-image"
-                          src={bid.freelancerImg || "https://via.placeholder.com/100x100"}
+                          src={bid.freelancerId?.img || "https://via.placeholder.com/100x100"}
                           alt="Freelancer"
                         />
                       </td>
@@ -191,6 +216,16 @@ function Project() {
                         {currentUser.isClient && (
                           <button onClick={() => handleOpenMessaging(bid.freelancerId._id)}>
                             Message
+                          </button>
+                        )}
+                      </td>
+                      <td>
+                        {currentUser.isClient && !showAction && bid.isApproved && (
+                          <span style={{color:'blue'}}>Accepted</span>
+                        )}
+                        {currentUser.isClient && showAction && (
+                          <button onClick={() => acceptBid(bid._id)}>
+                            Accept
                           </button>
                         )}
                       </td>
@@ -220,7 +255,7 @@ function Project() {
                     <td>
                       <img
                         className="bid-image"
-                        src={userBid?.freelancerImg || "https://via.placeholder.com/100x100"}
+                        src={userBid?.freelancerId?.img || "https://via.placeholder.com/100x100"}
                         alt="Freelancer"
                       />
                     </td>
@@ -261,7 +296,6 @@ function Project() {
           </div>
           {!currentUser.isClient && bidSubmitted && (
             <>
-              <button onClick={handleOpenModal} disabled>Submit Bid</button>
               <span>You have already submitted the bid!</span>
             </>
           )}
