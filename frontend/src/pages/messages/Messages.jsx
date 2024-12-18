@@ -9,24 +9,24 @@ const Messages = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [chatImage, setImage] = useState({});
   const handleDeleteChat = async (chatId) => {
-      // Ask for confirmation
+
   const confirmDelete = window.confirm(
     "Are you sure you want to delete this chat? This action cannot be undone."
   );
 
-  if (!confirmDelete) return; // If user cancels, do nothing
+  if (!confirmDelete) return; 
 
     try {
-      // Call backend API to delete the chat
+
       await axios.delete(`http://localhost:3000/api/chat/delete/${chatId}`);
   
-      // Update local state to remove the chat
+
       setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
     } catch (error) {
       console.error("Failed to delete chat:", error);
     }
   };
-  // Load currentUser from localStorage or fetch it
+
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     if (user) {
@@ -39,7 +39,7 @@ const Messages = () => {
       if (!currentUser) return;
 
       try {
-        // Replace with your actual endpoint for fetching all chats
+        
         console.log(currentUser);
         const res = await axios.get(`http://localhost:3000/api/chat/${currentUser._id}`);
         const images = res.data.reduce((acc, chat) => {
@@ -50,25 +50,25 @@ const Messages = () => {
           return acc;
         }, {});
         setImage(images);
-        setChats(res.data); // Assuming this returns a list of chat objects
+        setChats(res.data); 
       } catch (error) {
         console.error("Failed to fetch chats:", error);
       }
     };
 
     fetchChats();
-    // Listen for new messages
+
     socket.on("newMessage", ({ chatId, lastMessage, timestamp }) => {
       setChats((prevChats) => {
         const chatExists = prevChats.some((chat) => chat._id === chatId);
     
         if (!chatExists) {
-          // Reload the page if chat does not exist
+         
           window.location.reload();
-          return prevChats; // Return the previous state to avoid errors
+          return prevChats; 
         }
     
-        // If chat exists, update it
+
         return prevChats.map((chat) =>
           chat._id === chatId
             ? {
@@ -79,7 +79,7 @@ const Messages = () => {
         );
       });
     });
- // Listen for chatDeleted event
+
  socket.on("chatDeleted", ({ chatId }) => {
   console.log(`Chat deleted: ${chatId}`);
   setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
