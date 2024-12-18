@@ -36,7 +36,7 @@ function MyProjects() {
 
   const handleDelete = async (projectId) => {
     try {
-      await axios.delete(`/api/projects/${projectId}`);
+      await axios.delete(`http://localhost:3000/api/projects/${projectId}`);
       setProjects((prevProjects) =>
         prevProjects.filter((project) => project._id !== projectId)
       );
