@@ -9,9 +9,9 @@ services:
     ports:
       - "3000:3000"
     environment:
-      - MONGO_URI=mongodb+srv://achaurasia:6W1Fd0svpG5lLoby@dev-opuslink-internal.p39zf.mongodb.net/?retryWrites=true&w=majority&appName=dev-opuslink-internal
-      - DB_NAME=OpusLink
-      - ELASTICSEARCH_HOST=http://elasticsearch:9200
+      - MONGO_URI=${MONGO_URI}
+      - DB_NAME=${DB_NAME}
+      - ELASTICSEARCH_HOST=${ELASTICSEARCH_HOST}
     depends_on:
       - elasticsearch
 
@@ -23,13 +23,13 @@ services:
     ports:
       - "5173:5173"
     environment:
-      - VITE_API_URL=http://localhost:3000/api
-      - VITE_FIREBASE_KEY = AIzaSyCukZtpxtR9e7bNYvxh6ogTO6TgdMg7cyY
-      - VITE_FIREBASE_DOMAIN= opuslink.firebaseapp.com
-      - VITE_FIREBASE_PROJECT_ID = opuslink 
-      - VITE_FIREBASE_STORAGE_BUCKET =opuslink.firebasestorage.app
-      - VITE_FIREBASE_SENDER_ID =  696724111445
-      - VITE_FIREBASE_APP_ID = 1:696724111445:web:14b72fa6402176857794dc
+      - VITE_API_URL=${VITE_API_URL}
+      - VITE_FIREBASE_KEY = ${VITE_FIREBASE_KEY}
+      - VITE_FIREBASE_DOMAIN=${VITE_FIREBASE_DOMAIN}
+      - VITE_FIREBASE_PROJECT_ID = ${VITE_FIREBASE_PROJECT_ID}
+      - VITE_FIREBASE_STORAGE_BUCKET =${VITE_FIREBASE_STORAGE_BUCKET}
+      - VITE_FIREBASE_SENDER_ID =  ${VITE_FIREBASE_SENDER_ID}
+      - VITE_FIREBASE_APP_ID = ${VITE_FIREBASE_APP_ID}
     depends_on:
       - backend
 
@@ -51,7 +51,7 @@ services:
     image: docker.elastic.co/kibana/kibana:8.12.0
     container_name: kibana
     environment:
-      - ELASTICSEARCH_HOSTS=http://elasticsearch:9200
+      - ELASTICSEARCH_HOSTS=${ELASTICSEARCH_HOST}
     ports:
       - "5601:5601"
     depends_on:
