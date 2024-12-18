@@ -63,7 +63,7 @@ projectSchema.post("save", async function (proj) {
         title: proj.title,
         description: proj.description,
         budget: proj.budget,
-        clientId: proj.clientId.toString(),
+        userId: proj.userId.toString(),
         status: proj.status,
         createdAt: proj.createdAt
       },

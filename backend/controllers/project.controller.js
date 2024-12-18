@@ -78,8 +78,7 @@ export const updateProject = async (req, res) => {
         title: updatedProject.title,
         description: updatedProject.description,
         budget: updatedProject.budget,
-        clientId: updatedProject.clientId.toString(),
-        status: updatedProject.status,
+        userId: updatedProject.userId.toString(),
         createdAt: updatedProject.createdAt,
       },
     });
@@ -248,7 +247,8 @@ export const searchProjects = async (req, res) => {
 };
 
 export const searchProjectsByUserId = async (req, res) => {
-  const { query, userId } = req.query;
+  const { query } = req.query;
+  const { userId } = req.params;
 
   try {
     if (!query && !userId) {
@@ -267,7 +267,7 @@ export const searchProjectsByUserId = async (req, res) => {
     if (userId) {
       esQuery.bool.filter.push({
         term: {
-          clientId: userId,
+          userId: userId,
         },
       });
     }
