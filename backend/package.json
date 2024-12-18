@@ -18,6 +18,7 @@
     "mongoose": "^8.8.4",
     "nodemon": "^3.1.7",
     "opuslink-backend": "file:",
+    "redis": "^4.7.0",
     "socket.io": "^4.8.1"
   }
 }

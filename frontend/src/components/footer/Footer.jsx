@@ -13,63 +13,10 @@ function Footer() {
               collaboration.
             </p>
           </div>
-          <div className="column quickLinks">
-            <h3>Quick Links</h3>
-            <ul>
-              <li>
-                <Link to="/">About Us</Link>
-              </li>
-              <li>
-                <Link to="/">Contact</Link>
-              </li>
-              <li>
-                <Link to="/">FAQs</Link>
-              </li>
-              <li>
-                <Link to="/">Terms & Conditions</Link>
-              </li>
-              <li>
-                <Link to="/">Privacy Policy</Link>
-              </li>
-            </ul>
-          </div>
-          <div className="column">
-            <h3>Follow Us</h3>
-            <div className="social">
-              <a
-                href="https://twitter.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="/img/twitter.png" alt="Twitter" />
-              </a>
-              <a
-                href="https://facebook.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="/img/facebook.png" alt="Facebook" />
-              </a>
-              <a
-                href="https://linkedin.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="/img/linkedin.png" alt="LinkedIn" />
-              </a>
-              <a
-                href="https://instagram.com"
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                <img src="/img/instagram.png" alt="Instagram" />
-              </a>
-            </div>
-          </div>
         </div>
 
         <div className="bottom">
-          <span>© 2024 OpusLink International Ltd. All rights reserved.</span>
+          <span>OpusLink - CS 554-A Final Project by Web Rangers.</span>
           <div className="settings">
             <div className="link">
               <img src="/img/language.png" alt="Language" />

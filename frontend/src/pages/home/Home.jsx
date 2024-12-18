@@ -108,13 +108,6 @@ function Home() {
               </div>
               <button onClick={handleSearch}>Find</button>
             </div>
-            <div className="popular">
-              <span>Trending:</span>
-              <button>App Development</button>
-              <button>eCommerce</button>
-              <button>SEO Optimization</button>
-              <button>Machine Learning</button>
-            </div>
           </div>
           <div className="right">
             <img src="./img/dashboard-img.jpg" alt="" />

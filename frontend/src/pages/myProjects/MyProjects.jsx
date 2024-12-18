@@ -32,7 +32,7 @@ function MyProjects() {
     };
 
     fetchProjects();
-  }, [currentUser._id]);
+  }, []);
 
   const handleDelete = async (projectId) => {
     try {

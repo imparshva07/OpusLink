@@ -3,7 +3,12 @@ import User from "../models/user.model.js";
 import client from "../config/elasticsearch.js";
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
+import redis from 'redis';
 
+const redisclient = redis.createClient();
+redisclient.connect().then(() => {
+
+});
 export const createProject = async (req, res) => {
   const {
     userId,
@@ -51,6 +56,20 @@ export const createProject = async (req, res) => {
 
     await indexProject(newProject); 
 
+    let exists = await redisclient.exists('allProjects');
+    if(exists) {
+      console.log('redis cleared');
+      await redisclient.json.del('allProjects');
+      await redisclient.flushDb();
+    }
+
+    let existsClientProj = await redisclient.exists(`projects:${userId}`);
+    if(existsClientProj) {
+      console.log('redis cleared');
+      await redisclient.json.del(`projects:${userId}`);
+      await redisclient.flushDb();
+    }
+
     return res.status(201).json(newProject);
   } catch (e) {
     console.error("Error creating project:", e);
@@ -83,6 +102,12 @@ export const updateProject = async (req, res) => {
       },
     });
 
+    let exists = await redisclient.exists('allProjects');
+    if(exists) {
+      await redisclient.json.del('allProjects');
+      await redisclient.flushDb();
+    }
+  
     return res.status(200).json(updatedProject);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -103,6 +128,12 @@ export const deleteProject = async (req, res) => {
       id: deletedProject._id.toString(),
     });
 
+    let exists = await redisclient.exists('allProjects');
+    if(exists) {
+      await redisclient.json.del('allProjects');
+      await redisclient.flushDb();
+    }
+
     return res.status(200).json({ message: "Project deleted successfully!" });
   } catch (error) {
     return res.status(500).json({ error: error.message });
@@ -122,9 +153,20 @@ export const getClientProject = async (req, res) => {
   }
 
   try {
+
+    let exists = await redisclient.exists(`projects:${userId}`);
+        if(exists) {
+            console.log('projects from redis');
+            let projects = await redisclient.json.get(`projects:${userId}`);
+            return res.status(200).json(projects);
+        }
     const projects = await Project.find({ userId: new ObjectId(userId) });
 
     console.log("Projects found:", projects);
+
+    await redisclient.json.set(`projects:${userId}`, '.', projects);
+    await redisclient.expire(`projects:${userId}`, 3600);
+    console.log('projects not from redis');
     return res.status(200).json(projects);
   } catch (e) {
     console.error("Error:", e);
@@ -148,12 +190,32 @@ export const getProject = async (req, res) => {
   }
 };
 
+// export const getAll = async (req, res) => {
+//   try {
+//     const allProjects = await Project.find();
+//     return res.status(200).json(allProjects);
+//   } catch (e) {
+//     return res.status(500).json({ error: e });
+//   }
+// };
 export const getAll = async (req, res) => {
   try {
+
+  let exists = await redisclient.exists('allProjects');
+      if(exists) {
+          console.log('allprojects from redis');
+          let allProjects = await redisclient.json.get('allProjects');
+          return res.status(200).json(allProjects);
+      }
+
     const allProjects = await Project.find();
+
+    await redisclient.json.set('allProjects', '.', allProjects);
+    await redisclient.expire('allProjects', 3600);
     return res.status(200).json(allProjects);
   } catch (e) {
-    return res.status(500).json({ error: e });
+    console.error("Error fetching projects:", e);
+    return res.status(500).json({ error: e.message });
   }
 };
 
