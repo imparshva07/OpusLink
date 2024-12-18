@@ -144,55 +144,48 @@ function Home() {
 
       <div className="whyOpusLinkContainer">
         <h2>
-          Why <span>OPUSLINK?</span>
+          Who are we?
         </h2>
         <div className="whyOpusLink">
           <div className="card">
-            <h3>Trusted Professionals</h3>
+            <Link to={`https://www.linkedin.com/in/chaurasiaankit`} target="_blank">
+            <h3>Ankit Durgaprasad Chaurasia</h3>
             <p>
-              Work with verified and experienced freelancers for high-quality
-              results.
+            LinkedIn: https://www.linkedin.com/in/chaurasiaankit
             </p>
+            </Link>
           </div>
           <div className="card">
-            <h3>Secure Payments</h3>
+          <Link to={`https://www.linkedin.com/in/imparshva07`} target="_blank">
+            <h3>Parshva Shah</h3>
             <p>
-              Our payment system ensures safety and transparency for both
-              clients and freelancers.
+             LinkedIn: https://www.linkedin.com/in/imparshva07 
             </p>
+            </Link>
           </div>
           <div className="card">
-            <h3>Global Reach</h3>
+          <Link to={`https://www.linkedin.com/in/keyur-patel-13a6011a3`} target="_blank">
+            <h3>Keyur Patel</h3>
             <p>
-              Connect with professionals or clients from all around the world.
+            LinkedIn: https://www.linkedin.com/in/keyur-patel-13a6011a3
             </p>
+            </Link>
           </div>
           <div className="card">
-            <h3>Efficient Matching</h3>
+          <Link to={`https://www.linkedin.com/in/yash-gandhi-56a4a0221`} target="_blank">
+            <h3>Yash Gandhi</h3>
             <p>
-              Our platform uses smart algorithms to match you with the best
-              talent or project.
+             LinkedIn: https://www.linkedin.com/in/yash-gandhi-56a4a0221
             </p>
+            </Link>
           </div>
           <div className="card">
-            <h3>Skilled Professionals</h3>
+          <Link to={`https://www.linkedin.com/in/codewithappy`} target="_blank">
+            <h3>Arpit Shah</h3>
             <p>
-              Connect with skilled freelancers for efficient project solutions.
+              LinkedIn: https://www.linkedin.com/in/codewithappy
             </p>
-          </div>
-          <div className="card">
-            <h3>Quality Services</h3>
-            <p>
-              Find reliable talent for your projects with top-notch services.
-            </p>
-          </div>
-          <div className="card">
-            <h3>Affordable Rates</h3>
-            <p>Get great results at competitive prices.</p>
-          </div>
-          <div className="card">
-            <h3>Flexible Options</h3>
-            <p>Choose freelancers based on your budget and timeline.</p>
+            </Link>
           </div>
         </div>
       </div>
