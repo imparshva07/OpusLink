@@ -168,6 +168,9 @@ function Reset() {
         <div>
           Don{"'"}t have an account? <Link to="/register">Register</Link> now.
         </div>
+        <div>
+              Already have an account? <Link to="/login">Login</Link> now.
+        </div>
       </form>
     </div>
   );
