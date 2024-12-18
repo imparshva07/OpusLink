@@ -23,7 +23,6 @@ const Add = () => {
   const [formErrors, setFormErrors] = useState({});
   const [errorMessage, setErrorMessage] = useState("");
   const [isLoading, setIsLoading] = useState(false);
-  // eslint-disable-next-line no-unused-vars
   const [imageFile, setImageFile] = useState(null);
 
   const tomorrow = new Date();
@@ -72,6 +71,18 @@ const Add = () => {
       errors.image = "Image is required.";
     }
 
+    if (formData.img) {
+      if (imageFile) {
+        const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+        if (!validImageTypes.includes(imageFile.type)) {
+          errors.image =
+            "Invalid image format (only jpg, jpeg, or png allowed)";
+        } else if (imageFile.size > 5 * 1024 * 1024) {
+          errors.image = "Image size must not exceed 5MB";
+        }
+      }
+    }
+
     setFormErrors(errors);
     return Object.keys(errors).length === 0;
   };
@@ -118,7 +129,31 @@ const Add = () => {
   const handleFileChange = (e) => {
     const file = e.target.files[0];
     setImageFile(file);
+
     if (file) {
+      const validImageTypes = ["image/jpeg", "image/png", "image/jpg"];
+      if (!validImageTypes.includes(file.type)) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          image: "Invalid image format (only jpg, jpeg, or png allowed)",
+        }));
+        return;
+      }
+
+      if (file.size > 5 * 1024 * 1024) {
+        setFormErrors((prevErrors) => ({
+          ...prevErrors,
+          image: "Image size must not exceed 5MB",
+        }));
+        return;
+      }
+
+      setFormErrors((prevErrors) => {
+        const updatedErrors = { ...prevErrors };
+        delete updatedErrors.image;
+        return updatedErrors;
+      });
+
       handleImageUpload(file);
     }
   };
@@ -167,8 +202,8 @@ const Add = () => {
                 handleFileChange(e);
               }}
             />
-            {formErrors.img && (
-              <div className="error-message">{formErrors.img}</div>
+            {formErrors.image && (
+              <div className="error-message">{formErrors.image}</div>
             )}
           </div>
 
