@@ -50,6 +50,11 @@ function Navbar() {
             <Link className="link" to="/myprojects">
               <span>Projects</span>
             </Link>
+            {currentUser && currentUser.isClient && (
+              <Link className="link" to="/freelancers">
+                <span>Freelancers</span>
+              </Link>
+            )}
           </>
           {currentUser ? (
             <div className="user" onClick={() => setOpen(!open)}>
