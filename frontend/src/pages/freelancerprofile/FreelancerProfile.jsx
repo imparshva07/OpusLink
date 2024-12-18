@@ -80,6 +80,7 @@ const EditProfile = () => {
                     <input
                         name="img"
                         type="file"
+                        id="profilePicture"
                         accept="image/*"
                         onChange={handleChange}
                     />
@@ -99,7 +100,7 @@ const EditProfile = () => {
 
                     <label htmlFor="bio">Bio</label>
                     <input
-                        type="textbox"
+                        type="text"
                         id="bio"
                         name="bio"
                         value={formData.bio}

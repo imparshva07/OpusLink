@@ -248,6 +248,7 @@ function Project() {
                     <th>Bid Amount</th>
                     <th>Freelancer</th>
                     <th>Proposal</th>
+                    <th>Status</th>
                   </tr>
                 </thead>
                 <tbody>
@@ -262,6 +263,7 @@ function Project() {
                     <td>${userBid?.bidAmount}</td>
                     <td>{userBid?.freelancerId?.name || "Anonymous"}</td>
                     <td>{userBid?.proposal}</td>
+                    <td>{userBid?.isApproved ? "Approved" : "Not Approved Yet"}</td>
                   </tr>
                 </tbody>
               </table>
