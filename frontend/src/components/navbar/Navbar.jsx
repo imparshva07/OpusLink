@@ -1,5 +1,5 @@
 /* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth, logOut } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -9,6 +9,7 @@ import "./Navbar.css";
 function Navbar() {
   const [active, setActive] = useState(false);
   const [open, setOpen] = useState(false);
+  const navContainerRef = useRef(null);
   const { currentUser, logoutUser } = useContext(UserContext);
 
   const { pathname } = useLocation();
@@ -20,6 +21,12 @@ function Navbar() {
   const removeUser = () => {
     logoutUser();
     logOut();
+  };
+
+  const handleClickOutside = (event) => {
+    if (navContainerRef.current && !navContainerRef.current.contains(event.target)) {
+      setOpen(false); 
+    }
   };
 
   useEffect(() => {
@@ -36,6 +43,13 @@ function Navbar() {
     if (loading) return;
     if (!user) navigate("/login");
   }, [loading, navigate, user]);
+
+  useEffect(() => {
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
 
   return (
     <div className={active || pathname !== "/" ? "navbar active" : "navbar"}>
@@ -57,7 +71,7 @@ function Navbar() {
             )}
           </>
           {currentUser ? (
-            <div className="user" onClick={() => setOpen(!open)}>
+            <div className="user" onClick={() => setOpen(!open)} ref={navContainerRef}>
               <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
               <span>{currentUser.name}</span>
               {open && (
