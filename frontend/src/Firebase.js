@@ -21,10 +21,8 @@ const app = initializeApp(firebaseConfig);
 const auth = getAuth(app);
 const db = getFirestore(app);
 
-// register user to mongo
 const registerUserToMongo = async (name, email, uid, img, isClient, bio) => {
   await fetch("http://localhost:3000/api/auth/register", {
-    // Need to use axios here
     method: "POST",
     body: JSON.stringify({
       name,

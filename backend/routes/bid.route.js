@@ -1,11 +1,11 @@
 import express from "express";
 import {
-    createBid,
-    getBidsByProject,
-    getBidById,
-    updateBid,
-    deleteBid,
-    approveBid
+  createBid,
+  getBidsByProject,
+  getBidById,
+  updateBid,
+  deleteBid,
+  approveBid,
 } from "../controllers/bid.controller.js";
 
 const router = express.Router();

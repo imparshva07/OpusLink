@@ -8,11 +8,9 @@ import Login from "./pages/login/Login";
 import Register from "./pages/register/Register";
 import Reset from "./pages/register/Reset";
 import Add from "./pages/add/Add";
-import Bids from "./pages/bids/Bids";
 import Messages from "./pages/messages/Messages";
 import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
-import Orders from "./pages/orders/Orders";
 import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
 import FreelancersList from "./pages/freelancerslist/FreelancersList";
 
@@ -41,10 +39,6 @@ function App() {
           element: <MyProjects />,
         },
         {
-          path: "/bids",
-          element: <Bids />,
-        },
-        {
           path: "/messages",
           element: <Messages />,
         },
@@ -63,10 +57,6 @@ function App() {
         {
           path: "/project/:id",
           element: <Project />,
-        },
-        {
-          path: "/orders",
-          element: <Orders />,
         },
         {
           path: "/freelancers",

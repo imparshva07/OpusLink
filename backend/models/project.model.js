@@ -53,7 +53,6 @@ const projectSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-
 projectSchema.post("save", async function (proj) {
   try {
     await client.index({
@@ -65,7 +64,7 @@ projectSchema.post("save", async function (proj) {
         budget: proj.budget,
         userId: proj.userId.toString(),
         status: proj.status,
-        createdAt: proj.createdAt
+        createdAt: proj.createdAt,
       },
     });
     console.log(`Elasticsearch: Project indexed with ID ${proj._id}`);
@@ -73,7 +72,6 @@ projectSchema.post("save", async function (proj) {
     console.error("Error indexing project to Elasticsearch:", error);
   }
 });
-
 
 projectSchema.post("remove", async function (proj) {
   try {
@@ -86,6 +84,5 @@ projectSchema.post("remove", async function (proj) {
     console.error("Error deleting project from Elasticsearch:", error);
   }
 });
-
 
 export const Project = mongoose.model("Project", projectSchema);

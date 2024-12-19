@@ -9,17 +9,14 @@ const Messages = () => {
   const [currentUser, setCurrentUser] = useState(null);
   const [chatImage, setImage] = useState({});
   const handleDeleteChat = async (chatId) => {
+    const confirmDelete = window.confirm(
+      "Are you sure you want to delete this chat? This action cannot be undone."
+    );
 
-  const confirmDelete = window.confirm(
-    "Are you sure you want to delete this chat? This action cannot be undone."
-  );
-
-  if (!confirmDelete) return; 
+    if (!confirmDelete) return;
 
     try {
-
       await axios.delete(`http://localhost:3000/api/chat/delete/${chatId}`);
-  
 
       setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
     } catch (error) {
@@ -39,9 +36,10 @@ const Messages = () => {
       if (!currentUser) return;
 
       try {
-        
         console.log(currentUser);
-        const res = await axios.get(`http://localhost:3000/api/chat/${currentUser._id}`);
+        const res = await axios.get(
+          `http://localhost:3000/api/chat/${currentUser._id}`
+        );
         const images = res.data.reduce((acc, chat) => {
           const img = currentUser?.isClient
             ? chat.freelancerId?.img
@@ -50,7 +48,7 @@ const Messages = () => {
           return acc;
         }, {});
         setImage(images);
-        setChats(res.data); 
+        setChats(res.data);
       } catch (error) {
         console.error("Failed to fetch chats:", error);
       }
@@ -61,29 +59,30 @@ const Messages = () => {
     socket.on("newMessage", ({ chatId, lastMessage, timestamp }) => {
       setChats((prevChats) => {
         const chatExists = prevChats.some((chat) => chat._id === chatId);
-    
+
         if (!chatExists) {
-         
           window.location.reload();
-          return prevChats; 
+          return prevChats;
         }
-    
 
         return prevChats.map((chat) =>
           chat._id === chatId
             ? {
                 ...chat,
-                messages: [...chat.messages.slice(0, -1), { text: lastMessage, timestamp }],
+                messages: [
+                  ...chat.messages.slice(0, -1),
+                  { text: lastMessage, timestamp },
+                ],
               }
             : chat
         );
       });
     });
 
- socket.on("chatDeleted", ({ chatId }) => {
-  console.log(`Chat deleted: ${chatId}`);
-  setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
-});
+    socket.on("chatDeleted", ({ chatId }) => {
+      console.log(`Chat deleted: ${chatId}`);
+      setChats((prevChats) => prevChats.filter((chat) => chat._id !== chatId));
+    });
     return () => {
       socket.off("newMessage");
       socket.off("chatDeleted");
@@ -135,12 +134,18 @@ const Messages = () => {
                     : "-"}
                 </td>
                 <td>
-                <Link to={`/message/${chat._id}`} state={{ chatImage: chatImage[chat._id] }} >
-                  <button >Message</button>
-                </Link>
-                <button className="delete-button" onClick={() => handleDeleteChat(chat._id)}>
-                  Delete Chat
-                </button>
+                  <Link
+                    to={`/message/${chat._id}`}
+                    state={{ chatImage: chatImage[chat._id] }}
+                  >
+                    <button>Message</button>
+                  </Link>
+                  <button
+                    className="delete-button"
+                    onClick={() => handleDeleteChat(chat._id)}
+                  >
+                    Delete Chat
+                  </button>
                 </td>
               </tr>
             ))}

@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 import { Link } from "react-router-dom";
 import axios from "axios";
 import { UserContext } from "../../context/UserContext";
@@ -15,15 +14,18 @@ function MyProjects() {
     const fetchProjects = async () => {
       try {
         setLoading(true);
-        if(currentUser && currentUser.isClient) {
-          const response = await axios.get(`http://localhost:3000/api/projects/client/${currentUser._id}`);
+        if (currentUser && currentUser.isClient) {
+          const response = await axios.get(
+            `http://localhost:3000/api/projects/client/${currentUser._id}`
+          );
           setProjects(response.data);
         }
-        if(currentUser && !currentUser.isClient) {
-          const response = await axios.get(`http://localhost:3000/api/projects`);
+        if (currentUser && !currentUser.isClient) {
+          const response = await axios.get(
+            `http://localhost:3000/api/projects`
+          );
           setProjects(response.data);
         }
-        
       } catch (err) {
         setError(err.message || "Failed to fetch projects.");
       } finally {
@@ -48,14 +50,12 @@ function MyProjects() {
   if (loading) return <div>Loading...</div>;
   if (error) return <div>Error: {error}</div>;
 
-  console.log(projects);
-
   return (
     <div className="projects">
       <div className="projects-container">
         <div className="projects-header">
           <h1>{currentUser.isClient ? "Your Projects" : "All Projects"}</h1>
-          {currentUser.isSeller && (
+          {currentUser.isClient && (
             <Link to="/add" className="add-project-link">
               <button className="add-project-btn">Add Project</button>
             </Link>
@@ -69,7 +69,7 @@ function MyProjects() {
               <th>Budget</th>
               <th>Category</th>
               <th>Delivery Time</th>
-              <th>Action</th>
+              {currentUser.isClient && <th>Action</th>}
             </tr>
           </thead>
           <tbody>
@@ -101,12 +101,14 @@ function MyProjects() {
                   ).toLocaleDateString()}
                 </td>
                 <td>
-                  <img
-                    className="delete-btn"
-                    src="./img/delete.png"
-                    alt="Delete"
-                    onClick={() => handleDelete(project._id)}
-                  />
+                  {currentUser.isClient && (
+                    <img
+                      className="delete-btn"
+                      src="./img/delete.png"
+                      alt="Delete"
+                      onClick={() => handleDelete(project._id)}
+                    />
+                  )}
                 </td>
               </tr>
             ))}

@@ -22,20 +22,24 @@
   margin-bottom: 20px;
 }
 
-.register form .left, .register form .right {
+.register form .left,
+.register form .right {
   flex: 1;
   display: flex;
   flex-direction: column;
   gap: 15px;
 }
 
-.register form .left label, .register form .right label {
+.register form .left label,
+.register form .right label {
   font-size: 16px;
   color: #555;
 }
 
-.register form .left input, .register form .right input,
-.register form .left textarea, .register form .right textarea {
+.register form .left input,
+.register form .right input,
+.register form .left textarea,
+.register form .right textarea {
   padding: 15px;
   border: 1px solid #e0e0e0;
   border-radius: 8px;
@@ -44,13 +48,16 @@
   transition: all 0.3s ease;
 }
 
-.register form .left input:focus, .register form .right input:focus,
-.register form .left textarea:focus, .register form .right textarea:focus {
+.register form .left input:focus,
+.register form .right input:focus,
+.register form .left textarea:focus,
+.register form .right textarea:focus {
   border-color: #007bff;
   outline: none;
 }
 
-.register form .left button, .register form .right button {
+.register form .left button,
+.register form .right button {
   padding: 16px;
   background-color: #007bff;
   color: #fff;
@@ -62,17 +69,20 @@
   transition: background-color 0.3s ease;
 }
 
-.register form .left button:hover, .register form .right button:hover {
+.register form .left button:hover,
+.register form .right button:hover {
   background-color: #0056b3;
 }
 
-.register form .left .toggle, .register form .right .toggle {
+.register form .left .toggle,
+.register form .right .toggle {
   display: flex;
   align-items: center;
   gap: 12px;
 }
 
-.register form .left .toggle .switch, .register form .right .toggle .switch {
+.register form .left .toggle .switch,
+.register form .right .toggle .switch {
   position: relative;
   width: 52px;
   height: 28px;
@@ -81,13 +91,15 @@
   transition: background-color 0.3s ease;
 }
 
-.register form .left .toggle .switch input, .register form .right .toggle .switch input {
+.register form .left .toggle .switch input,
+.register form .right .toggle .switch input {
   opacity: 0;
   width: 0;
   height: 0;
 }
 
-.register form .left .toggle .slider, .register form .right .toggle .slider {
+.register form .left .toggle .slider,
+.register form .right .toggle .slider {
   position: absolute;
   cursor: pointer;
   top: 4px;
@@ -99,7 +111,8 @@
   transition: transform 0.3s ease;
 }
 
-.register form .left .toggle input:checked + .slider, .register form .right .toggle input:checked + .slider {
+.register form .left .toggle input:checked + .slider,
+.register form .right .toggle input:checked + .slider {
   transform: translateX(24px);
 }
 
@@ -115,7 +128,8 @@
   background-color: #007bff;
 }
 
-.register form .left .toggle input:focus + .slider, .register form .right .toggle input:focus + .slider {
+.register form .left .toggle input:focus + .slider,
+.register form .right .toggle input:focus + .slider {
   box-shadow: 0 0 2px #007bff;
 }
 
@@ -144,7 +158,7 @@
   font-size: 14px;
   color: #555;
   cursor: pointer;
-  appearance: none; /* Removes default dropdown arrow */
+  appearance: none;
   -webkit-appearance: none;
   -moz-appearance: none;
   position: relative;
@@ -156,7 +170,7 @@
 }
 
 .register form .left select::after {
-  content: "▼"; /* Custom dropdown arrow */
+  content: "▼";
   position: absolute;
   right: 10px;
   top: 50%;

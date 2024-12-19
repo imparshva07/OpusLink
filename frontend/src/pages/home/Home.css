@@ -247,21 +247,31 @@
   color: #555;
 }
 
+.card a {
+  text-decoration: none;
+  color: inherit;
+  transition: color 0.3s ease;
+}
+
+.card a:hover {
+  color: #003366;
+}
+
 @media (max-width: 768px) {
   .whyOpusLink {
-    grid-template-columns: 1fr; /* Single column on small screens */
+    grid-template-columns: 1fr;
   }
 
   .card {
-    padding: 15px; /* Reduced padding for smaller screens */
+    padding: 15px;
   }
 
   .card h3 {
-    font-size: 20px; /* Slightly smaller heading */
+    font-size: 20px;
   }
 
   .card p {
-    font-size: 14px; /* Reduced font size for text */
+    font-size: 14px;
   }
 
   .slick-slide {
@@ -275,11 +285,11 @@
   }
 
   .slick-slide h3 {
-    font-size: 16px; /* Smaller font size for better readability */
-    margin-bottom: 10px; /* Slightly reduced margin */
+    font-size: 16px;
+    margin-bottom: 10px;
   }
 
   .slick-slide p {
-    font-size: 12px; /* Smaller text on mobile */
+    font-size: 12px;
   }
 }
