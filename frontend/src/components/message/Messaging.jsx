@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import io from "socket.io-client";
 import axios from "axios";
 
-const socket = io("http://localhost:3000"); // Adjust to your backend server URL
+const socket = io("http://localhost:3000");
 
 function Messaging({ currentUser, freelancerId }) {
   const [messages, setMessages] = useState([]);
@@ -13,16 +13,15 @@ function Messaging({ currentUser, freelancerId }) {
   useEffect(() => {
     const initiateChat = async () => {
       try {
-        const { data } = await axios.post("http://localhost:3000/api/chat/initiate", {
-          clientId: currentUser._id, // Assuming `currentUser` has `id`
-          freelancerId,
-        });
+        const { data } = await axios.post(
+          "http://localhost:3000/api/chat/initiate",
+          {
+            clientId: currentUser._id,
+            freelancerId,
+          }
+        );
         setChatId(data._id);
-
-        // Join the Socket.IO room for real-time messaging
         socket.emit("joinRoom", { chatId: data._id });
-
-        // Fetch existing messages
         fetchMessages(data._id);
       } catch (error) {
         console.error("Error initiating chat:", error.message);
@@ -35,7 +34,9 @@ function Messaging({ currentUser, freelancerId }) {
   // Step 2: Fetch Messages
   const fetchMessages = async (chatId) => {
     try {
-      const { data } = await axios.get(`http://localhost:3000/api/chat/${chatId}/messages`);
+      const { data } = await axios.get(
+        `http://localhost:3000/api/chat/${chatId}/messages`
+      );
       setMessages(data);
     } catch (error) {
       console.error("Error fetching messages:", error.message);
@@ -53,11 +54,11 @@ function Messaging({ currentUser, freelancerId }) {
     };
 
     try {
-      // Send message to backend via REST API
       await axios.post("http://localhost:3000/api/chat/send", messageData);
-
-      // Emit message via Socket.IO for real-time updates
-      socket.emit("message", { chatId, message: { ...messageData, senderName: currentUser.name } });
+      socket.emit("message", {
+        chatId,
+        message: { ...messageData, senderName: currentUser.name },
+      });
 
       setMessageText("");
     } catch (error) {
@@ -79,7 +80,14 @@ function Messaging({ currentUser, freelancerId }) {
   return (
     <div>
       <h3>Chat</h3>
-      <div style={{ border: "1px solid #ccc", padding: "10px", height: "300px", overflowY: "scroll" }}>
+      <div
+        style={{
+          border: "1px solid #ccc",
+          padding: "10px",
+          height: "300px",
+          overflowY: "scroll",
+        }}
+      >
         {messages.map((msg, index) => (
           <p key={index}>
             <strong>{msg.senderName || "User"}:</strong> {msg.text}
@@ -93,7 +101,10 @@ function Messaging({ currentUser, freelancerId }) {
         placeholder="Type a message"
         style={{ width: "80%" }}
       />
-      <button onClick={handleSendMessage} style={{ width: "18%", marginLeft: "2%" }}>
+      <button
+        onClick={handleSendMessage}
+        style={{ width: "18%", marginLeft: "2%" }}
+      >
         Send
       </button>
     </div>

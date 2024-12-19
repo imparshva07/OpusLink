@@ -248,7 +248,9 @@ const Add = () => {
                 handleFieldChange("category", e.target.value);
               }}
             >
-              <option value="" label="Select an option">Select an option</option>
+              <option value="" label="Select an option">
+                Select an option
+              </option>
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>

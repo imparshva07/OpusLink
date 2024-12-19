@@ -3,12 +3,10 @@ import User from "../models/user.model.js";
 import client from "../config/elasticsearch.js";
 import mongoose from "mongoose";
 import { ObjectId } from "mongodb";
-import redis from 'redis';
+import redis from "redis";
 
 const redisclient = redis.createClient();
-redisclient.connect().then(() => {
-
-});
+redisclient.connect().then(() => {});
 export const createProject = async (req, res) => {
   const {
     userId,
@@ -33,12 +31,16 @@ export const createProject = async (req, res) => {
     }
 
     if (!Array.isArray(specifications) || specifications.length === 0) {
-      throw new Error("Specifications must be an array with at least one item.");
+      throw new Error(
+        "Specifications must be an array with at least one item."
+      );
     }
 
-    const invalidSpecs = specifications.filter(spec => spec.length < 3);
+    const invalidSpecs = specifications.filter((spec) => spec.length < 3);
     if (invalidSpecs.length > 0) {
-      throw new Error("Each specification should be at least 3 characters long.");
+      throw new Error(
+        "Each specification should be at least 3 characters long."
+      );
     }
 
     const newProject = new Project({
@@ -54,18 +56,18 @@ export const createProject = async (req, res) => {
 
     await newProject.save();
 
-    await indexProject(newProject); 
+    await indexProject(newProject);
 
-    let exists = await redisclient.exists('allProjects');
-    if(exists) {
-      console.log('redis cleared');
-      await redisclient.json.del('allProjects');
+    let exists = await redisclient.exists("allProjects");
+    if (exists) {
+      console.log("redis cleared");
+      await redisclient.json.del("allProjects");
       await redisclient.flushDb();
     }
 
     let existsClientProj = await redisclient.exists(`projects:${userId}`);
-    if(existsClientProj) {
-      console.log('redis cleared');
+    if (existsClientProj) {
+      console.log("redis cleared");
       await redisclient.json.del(`projects:${userId}`);
       await redisclient.flushDb();
     }
@@ -102,12 +104,12 @@ export const updateProject = async (req, res) => {
       },
     });
 
-    let exists = await redisclient.exists('allProjects');
-    if(exists) {
-      await redisclient.json.del('allProjects');
+    let exists = await redisclient.exists("allProjects");
+    if (exists) {
+      await redisclient.json.del("allProjects");
     }
     await redisclient.flushAll();
-  
+
     return res.status(200).json(updatedProject);
   } catch (e) {
     return res.status(500).json({ error: e });
@@ -128,9 +130,9 @@ export const deleteProject = async (req, res) => {
       id: deletedProject._id.toString(),
     });
 
-    let exists = await redisclient.exists('allProjects');
-    if(exists) {
-      await redisclient.json.del('allProjects');
+    let exists = await redisclient.exists("allProjects");
+    if (exists) {
+      await redisclient.json.del("allProjects");
     }
     await redisclient.flushAll();
 
@@ -153,20 +155,19 @@ export const getClientProject = async (req, res) => {
   }
 
   try {
-
     let exists = await redisclient.exists(`projects:${userId}`);
-        if(exists) {
-            console.log('projects from redis');
-            let projects = await redisclient.json.get(`projects:${userId}`);
-            return res.status(200).json(projects);
-        }
+    if (exists) {
+      console.log("projects from redis");
+      let projects = await redisclient.json.get(`projects:${userId}`);
+      return res.status(200).json(projects);
+    }
     const projects = await Project.find({ userId: new ObjectId(userId) });
 
     console.log("Projects found:", projects);
 
-    await redisclient.json.set(`projects:${userId}`, '.', projects);
+    await redisclient.json.set(`projects:${userId}`, ".", projects);
     await redisclient.expire(`projects:${userId}`, 3600);
-    console.log('projects not from redis');
+    console.log("projects not from redis");
     return res.status(200).json(projects);
   } catch (e) {
     console.error("Error:", e);
@@ -190,28 +191,19 @@ export const getProject = async (req, res) => {
   }
 };
 
-// export const getAll = async (req, res) => {
-//   try {
-//     const allProjects = await Project.find();
-//     return res.status(200).json(allProjects);
-//   } catch (e) {
-//     return res.status(500).json({ error: e });
-//   }
-// };
 export const getAll = async (req, res) => {
   try {
-
-  let exists = await redisclient.exists('allProjects');
-      if(exists) {
-          console.log('allprojects from redis');
-          let allProjects = await redisclient.json.get('allProjects');
-          return res.status(200).json(allProjects);
-      }
+    let exists = await redisclient.exists("allProjects");
+    if (exists) {
+      console.log("allprojects from redis");
+      let allProjects = await redisclient.json.get("allProjects");
+      return res.status(200).json(allProjects);
+    }
 
     const allProjects = await Project.find();
 
-    await redisclient.json.set('allProjects', '.', allProjects);
-    await redisclient.expire('allProjects', 3600);
+    await redisclient.json.set("allProjects", ".", allProjects);
+    await redisclient.expire("allProjects", 3600);
     return res.status(200).json(allProjects);
   } catch (e) {
     console.error("Error fetching projects:", e);
@@ -321,8 +313,8 @@ export const searchProjectsByUserId = async (req, res) => {
 
     const esQuery = {
       bool: {
-        must: [], 
-        filter: [], 
+        must: [],
+        filter: [],
       },
     };
 
@@ -333,7 +325,7 @@ export const searchProjectsByUserId = async (req, res) => {
         },
       });
     }
-    
+
     if (query) {
       esQuery.bool.must.push({
         multi_match: {
@@ -360,4 +352,3 @@ export const searchProjectsByUserId = async (req, res) => {
     return res.status(500).json({ error: error.message });
   }
 };
-

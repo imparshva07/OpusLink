@@ -12,14 +12,12 @@ import { Project } from "./models/project.model.js";
 import { indexProject } from "./controllers/project.controller.js";
 import chatRoutes from "./routes/chat.route.js";
 import http from "http";
-import redis from 'redis';
+import redis from "redis";
 import { Server } from "socket.io";
 const app = express();
 
 const redisclient = redis.createClient();
-redisclient.connect().then(() => {
-
-});
+redisclient.connect().then(() => {});
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -41,11 +39,6 @@ app.use("/api/users", userRoute);
 app.use("/api/bids", bidRoute);
 app.use("/api/projects", projectRoute);
 app.use("/api/auth", authRoute);
-
-// app.listen(3000, () => {
-//   connect();
-//   console.log("Server is running on port 3000");
-// });
 
 createIndex();
 
@@ -107,7 +100,7 @@ const syncElasticsearch = async () => {
 
 syncElasticsearch();
 
-// WebSocket logic
+// WebSocket
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
   app.set("io", io);
@@ -124,17 +117,15 @@ io.on("connection", (socket) => {
     console.log(`Message sent to room ${chatId}:`, newMessage);
     io.emit("newMessage", {
       chatId,
-      lastMessage: newMessage.text, // Send the text of the latest message
+      lastMessage: newMessage.text, // Sending the text of the latest message
       timestamp: newMessage.timestamp || new Date(),
     });
   });
-  // Handle user disconnection
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });
 });
 
-// Start the server
 server.listen(PORT, () => {
   connect();
   console.log(`Server ----> running on http://localhost:${PORT}`);

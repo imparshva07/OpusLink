@@ -2,8 +2,8 @@ import axios from "axios";
 
 const upload = async (img) => {
   const data = new FormData();
-  data.append("file", img); // The field name for the file must be 'file', not 'img'
-  data.append("upload_preset", "OpusLink"); // Must match the exact name of the preset
+  data.append("file", img);
+  data.append("upload_preset", "OpusLink");
 
   try {
     const res = await axios.post(
@@ -11,7 +11,7 @@ const upload = async (img) => {
       data
     );
 
-    const { secure_url } = res.data; // Use "secure_url" for HTTPS URL
+    const { secure_url } = res.data;
     return secure_url;
   } catch (err) {
     console.error("Error uploading to Cloudinary", err);

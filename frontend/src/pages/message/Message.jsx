@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useParams,useLocation } from "react-router-dom";
+import { useParams, useLocation } from "react-router-dom";
 import axios from "axios";
 import { io } from "socket.io-client";
 import "./Message.css";
@@ -7,21 +7,18 @@ import "./Message.css";
 const socket = io("http://localhost:3000");
 
 const Message = () => {
-
-  const { chatId: urlChatId } = useParams(); 
+  const { chatId: urlChatId } = useParams();
   const location = useLocation();
   const { chatImage } = location.state || {};
-  const [chatId, setChatId] = useState(null); 
+  const [chatId, setChatId] = useState(null);
 
   const [messages, setMessages] = useState([]);
   const [newMessage, setNewMessage] = useState("");
   const [currentUser, setCurrentUser] = useState(null);
 
-
   useEffect(() => {
     const user = JSON.parse(localStorage.getItem("currentUser"));
     if (user) setCurrentUser(user);
-
 
     if (urlChatId) {
       setChatId(urlChatId);
@@ -30,7 +27,6 @@ const Message = () => {
       if (storedChatId) setChatId(storedChatId);
     }
   }, [urlChatId]);
-
 
   useEffect(() => {
     if (!chatId || !currentUser) return;
@@ -46,23 +42,20 @@ const Message = () => {
       }
     };
 
-
     socket.emit("joinRoom", chatId);
 
-
     fetchMessages();
-
 
     socket.on("receiveMessage", (newMessage) => {
       setMessages((prevMessages) => [...prevMessages, newMessage]);
     });
 
-  socket.on("chatDeleted", ({ chatId: deletedChatId }) => {
-    if (deletedChatId === chatId) {
-      alert("This chat has been deleted.");
-      window.location.href = "/messages"; 
-    }
-  });
+    socket.on("chatDeleted", ({ chatId: deletedChatId }) => {
+      if (deletedChatId === chatId) {
+        alert("This chat has been deleted.");
+        window.location.href = "/messages";
+      }
+    });
     return () => {
       socket.off("receiveMessage");
       socket.off("chatDeleted");
@@ -79,17 +72,17 @@ const Message = () => {
         text: newMessage,
       };
 
-      const res = await axios.post("http://localhost:3000/api/chat/send", messageData);
-
+      const res = await axios.post(
+        "http://localhost:3000/api/chat/send",
+        messageData
+      );
 
       const new_mess = res.data.messages.slice(-1)[0];
-      new_mess.sender = { _id: new_mess.sender }; 
-
+      new_mess.sender = { _id: new_mess.sender };
 
       socket.emit("sendMessage", { chatId, newMessage: new_mess });
 
-
-      setNewMessage(""); 
+      setNewMessage("");
     } catch (error) {
       console.error("Failed to send message:", error);
     }
@@ -110,7 +103,7 @@ const Message = () => {
                 src={
                   msg.sender?._id === currentUser?._id
                     ? currentUser?.img
-                    :  chatImage
+                    : chatImage
                 }
                 alt={msg.sender?._id === currentUser?._id ? "Owner" : "User"}
               />

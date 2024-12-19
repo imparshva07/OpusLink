@@ -1,18 +1,14 @@
-/* eslint-disable react/prop-types */
-import { createContext, useState, useEffect } from "react";
+import { createContext, useState } from "react";
 
-// Create UserContext
 export const UserContext = createContext();
 
-// UserProvider Component to provide user context to all children
 export const UserProvider = ({ children }) => {
   const [currentUser, setCurrentUser] = useState(() => {
     const storedUser = localStorage.getItem("currentUser");
     return storedUser ? JSON.parse(storedUser) : null;
   });
 
-  // Function to update user globally
-  const updateUser = async(uid) => {
+  const updateUser = async (uid) => {
     const response = await fetch("http://localhost:3000/api/auth/login", {
       method: "POST",
       headers: {
