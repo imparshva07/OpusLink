@@ -13,6 +13,7 @@ import Message from "./pages/message/Message";
 import MyProjects from "./pages/myProjects/MyProjects";
 import FreelancerProfile from "./pages/freelancerprofile/FreelancerProfile";
 import FreelancersList from "./pages/freelancerslist/FreelancersList";
+import PageNotFound from "./components/pageNotFound/pageNotFound";
 
 function App() {
   const Layout = () => {
@@ -62,6 +63,10 @@ function App() {
           path: "/freelancers",
           element: <FreelancersList />,
         },
+        {
+          path: "*",
+          element: <PageNotFound />
+        }
       ],
     },
     {
@@ -76,6 +81,10 @@ function App() {
       path: "/reset",
       element: <Reset />,
     },
+    {
+      path: "*",
+      element: <PageNotFound />
+    }
   ]);
 
   return <RouterProvider router={router} />;
