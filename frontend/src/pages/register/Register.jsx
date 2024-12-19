@@ -1,9 +1,9 @@
 import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
-import "../register/Register.css";
 import { auth, registerInWithEmailAndPassword } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
 import upload from "../../utils/upload.js";
+import "./Register.css";
 
 function Register() {
   const [email, setEmail] = useState("");
@@ -128,6 +128,7 @@ function Register() {
           <label htmlFor="name">Full Name</label>
           <input
             name="name"
+            id="name"
             type="text"
             placeholder="Enter your full name"
             value={name}
@@ -141,6 +142,7 @@ function Register() {
           <input
             name="email"
             type="email"
+            id="email"
             placeholder="Enter your email"
             value={email}
             onChange={(e) => handleFieldChange("email", e.target.value)}
@@ -153,6 +155,7 @@ function Register() {
           <input
             name="password"
             type="password"
+            id="password"
             placeholder="Enter your password"
             value={password}
             onChange={(e) => handleFieldChange("password", e.target.value)}
@@ -164,7 +167,9 @@ function Register() {
           <label htmlFor="profilePicture">Profile Picture</label>
           <input
             type="file"
+            id="profilePicture"
             accept="image/*"
+            required
             onChange={(e) => setImg(e.target.files[0])}
           />
           {formErrors.img && (
@@ -175,6 +180,7 @@ function Register() {
           <input
             name="bio"
             type="text"
+            id="bio"
             placeholder="Enter a brief description"
             value={bio}
             onChange={(e) => handleFieldChange("bio", e.target.value)}
@@ -190,6 +196,7 @@ function Register() {
               <label className="switch">
                 <input
                   type="checkbox"
+                  id="isClient"
                   checked={isClient}
                   onChange={() => setIsClient(!isClient)}
                 />

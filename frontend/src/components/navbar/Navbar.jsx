@@ -1,5 +1,4 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useContext, useRef } from "react";
+import { useEffect, useState, useContext, useRef } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { auth, logOut } from "../../Firebase";
 import { useAuthState } from "react-firebase-hooks/auth";
@@ -24,8 +23,11 @@ function Navbar() {
   };
 
   const handleClickOutside = (event) => {
-    if (navContainerRef.current && !navContainerRef.current.contains(event.target)) {
-      setOpen(false); 
+    if (
+      navContainerRef.current &&
+      !navContainerRef.current.contains(event.target)
+    ) {
+      setOpen(false);
     }
   };
 
@@ -71,7 +73,11 @@ function Navbar() {
             )}
           </>
           {currentUser ? (
-            <div className="user" onClick={() => setOpen(!open)} ref={navContainerRef}>
+            <div
+              className="user"
+              onClick={() => setOpen(!open)}
+              ref={navContainerRef}
+            >
               <img src={currentUser.img || "/img/noavatar.jpg"} alt="" />
               <span>{currentUser.name}</span>
               {open && (

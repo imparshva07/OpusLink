@@ -1,6 +1,5 @@
-/* eslint-disable no-unused-vars */
-import React, { useEffect, useState, useContext } from "react";
-import { useParams,useNavigate } from "react-router-dom";
+import { useEffect, useState, useContext } from "react";
+import { useParams, useNavigate } from "react-router-dom";
 import axios from "axios";
 import "./Project.css";
 import BidModal from "../../components/bidModal/BidModal";
@@ -11,53 +10,65 @@ function Project() {
   const [project, setProject] = useState(null);
   const [bids, setBids] = useState([]);
   const [loading, setLoading] = useState(true);
+  const [showAction, setShowAction] = useState(true);
   const [userName, setUserName] = useState("");
   const [userImage, setUserImage] = useState("");
-  const [categoryImage, setCategoryImage] = useState("");
   const [showBidModal, setShowBidModal] = useState(false);
   const [bidSubmitted, setBidSubmitted] = useState(false);
-  const [userBid, setUserBid] = useState("")
+  const [userBid, setUserBid] = useState("");
   const { currentUser } = useContext(UserContext);
   const navigate = useNavigate();
   const handleOpenModal = () => {
-    setShowBidModal(true)
-  }
+    setShowBidModal(true);
+  };
 
   const handleCloseModal = () => {
-    setShowBidModal(false)
-  }
-  
+    setShowBidModal(false);
+  };
+
   const handleOpenMessaging = async (freelancerId) => {
     try {
-      // Step 1: Initiate the chat with the backend
-      const { data } = await axios.post("http://localhost:3000/api/chat/initiate", {
-        clientId: currentUser._id,
-        freelancerId,
-      });
-
-      // Step 2: Store chatId in localStorage for consistency (optional)
+      const { data } = await axios.post(
+        "http://localhost:3000/api/chat/initiate",
+        {
+          clientId: currentUser._id,
+          freelancerId,
+        }
+      );
       localStorage.setItem("currentChatId", data._id);
-
-      // Step 3: Redirect to the messaging page with chatId
       navigate(`/messages`);
     } catch (error) {
       console.error("Error initiating chat:", error.message);
     }
   };
 
+  const acceptBid = async (id) => {
+    try {
+      await axios.post(`http://localhost:3000/api/bids/${id}/approve`);
+      setShowAction(false);
+
+      setBids((prevBids) =>
+        prevBids.map((bid) =>
+          bid._id === id ? { ...bid, isApproved: true } : bid
+        )
+      );
+    } catch (error) {
+      console.error("Error accepting bid:", error.message);
+    }
+  };
+
   useEffect(() => {
     const fetchProject = async () => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/projects/${id}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/projects/${id}`
+        );
         setProject(response.data);
         if (response.data.userId) {
           fetchUserName(response.data.userId);
         }
-        if (response.data.category) {
-          fetchRandomImage(response.data.category);
-        }
         if (currentUser.isClient) {
-          await fetchBids(response.data._id); 
+          await fetchBids(response.data._id);
         }
         if (!currentUser.isClient) {
           findCurrentUserBid(response.data._id);
@@ -71,7 +82,10 @@ function Project() {
 
     const fetchUserName = async (userId) => {
       try {
-        const response = await axios.post("http://localhost:3000/api/auth/getUser", { _id: userId });
+        const response = await axios.post(
+          "http://localhost:3000/api/auth/getUser",
+          { _id: userId }
+        );
         if (response.data && response.data.name) {
           setUserName(response.data.name);
         } else {
@@ -80,7 +94,9 @@ function Project() {
         if (response.data && response.data.img) {
           setUserImage(response.data.img);
         } else {
-          setUserImage("https://img.freepik.com/free-photo/teenager-boy-portrait_23-2148105678.jpg");
+          setUserImage(
+            "https://img.freepik.com/free-photo/teenager-boy-portrait_23-2148105678.jpg"
+          );
         }
       } catch (error) {
         console.error("Error fetching user name:", error);
@@ -88,26 +104,13 @@ function Project() {
       }
     };
 
-    const fetchRandomImage = async (category) => {
-      try {
-        const response = await axios.get("https://api.unsplash.com/photos/random", {
-          params: { query: category, client_id: 'uJ5AA6wgZQ2QQWQAkUfhEac2_iZZRIBNBovaV4Ur3uI' },
-        });
-        if (response.data && response.data.urls && response.data.urls.regular) {
-          setCategoryImage(response.data.urls.regular);
-        } else {
-          setCategoryImage("https://via.placeholder.com/300x200");
-        }
-      } catch (error) {
-        console.error("Error fetching random image:", error);
-        setCategoryImage("https://via.placeholder.com/300x200");
-      }
-    };
-
     const fetchBids = async (projectId) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/bids/project/${projectId}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/bids/project/${projectId}`
+        );
         setBids(response.data);
+        await setShowActionsFlag();
       } catch (error) {
         console.error("Error fetching bids:", error);
         setBids([]);
@@ -116,10 +119,14 @@ function Project() {
 
     const findCurrentUserBid = async (projectId) => {
       try {
-        const response = await axios.get(`http://localhost:3000/api/bids/project/${projectId}`);
+        const response = await axios.get(
+          `http://localhost:3000/api/bids/project/${projectId}`
+        );
         if (Array.isArray(response.data) && response.data.length !== 0) {
-          const userBid = response.data.find(bid => bid.freelancerId._id === currentUser._id);
-          console.log(userBid)
+          const userBid = response.data.find(
+            (bid) => bid.freelancerId._id === currentUser._id
+          );
+          console.log(userBid);
           if (userBid) {
             setUserBid(userBid);
             setBidSubmitted(true);
@@ -129,8 +136,29 @@ function Project() {
         console.error("Error fetching bids:", error);
       }
     };
+
+    const setShowActionsFlag = async () => {
+      for (const bid of bids) {
+        if (bid.isApproved) {
+          setShowAction(false);
+        }
+      }
+    };
+
     fetchProject();
   }, [id, bidSubmitted]);
+
+  useEffect(() => {
+    const setShowActionsFlag = async () => {
+      for (const bid of bids) {
+        if (bid.isApproved) {
+          setShowAction(false);
+        }
+      }
+    };
+
+    setShowActionsFlag();
+  }, [bids]);
 
   if (loading) {
     return <div className="loading">Loading Project...</div>;
@@ -157,79 +185,111 @@ function Project() {
             src={project.img}
             alt="Project Image"
             className="project-image"
-            style={{ width: '100%', height: 'auto', borderRadius: '8px' }}
+            style={{ width: "100%", height: "auto", borderRadius: "8px" }}
           />
           <h2>About This Project</h2>
           <p>{project.description}</p>
           {currentUser.isClient && (
             <div className="bids-section">
               <h2>Bids for this Project</h2>
-              <table className="bids-table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Bid Amount</th>
-                    <th>Freelancer</th>
-                    <th>Proposal</th>
-                    <th>Contact</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {bids.map((bid, index) => (
-                    <tr key={index}>
-                      <td>
-                        <img
-                          className="bid-image"
-                          src={bid.freelancerImg || "https://via.placeholder.com/100x100"}
-                          alt="Freelancer"
-                        />
-                      </td>
-                      <td>${bid.bidAmount}</td>
-                      <td>{bid.freelancerId.name || "Anonymous"}</td>
-                      <td>{bid.proposal}</td>
-                      <td>
-                        {currentUser.isClient && (
-                          <button onClick={() => handleOpenMessaging(bid.freelancerId._id)}>
-                            Message
-                          </button>
-                        )}
-                      </td>
-                      {/* <td>
-                        <img onClick={() => handleOpenMessaging(bid.freelancerId._id)} className="message-icon" src="/img/message.png" alt="Message" />      
-                      </td> */}
+              {bids.length > 0 ? (
+                <table className="bids-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Bid Amount</th>
+                      <th>Freelancer</th>
+                      <th>Proposal</th>
+                      <th>Contact</th>
+                      <th>Action</th>
                     </tr>
-                  ))}
-                </tbody>
-              </table>
+                  </thead>
+                  <tbody>
+                    {bids.map((bid, index) => (
+                      <tr key={index}>
+                        <td>
+                          <img
+                            className="bid-image"
+                            src={
+                              bid.freelancerId?.img ||
+                              "https://via.placeholder.com/100x100"
+                            }
+                            alt="Freelancer"
+                          />
+                        </td>
+                        <td>${bid.bidAmount}</td>
+                        <td>{bid.freelancerId.name}</td>
+                        <td>{bid.proposal}</td>
+                        <td>
+                          {currentUser.isClient && (
+                            <button
+                              onClick={() =>
+                                handleOpenMessaging(bid.freelancerId._id)
+                              }
+                            >
+                              Message
+                            </button>
+                          )}
+                        </td>
+                        <td>
+                          {currentUser.isClient &&
+                            !showAction &&
+                            bid.isApproved && (
+                              <span style={{ color: "blue" }}>Accepted</span>
+                            )}
+                          {currentUser.isClient && showAction && (
+                            <button onClick={() => acceptBid(bid._id)}>
+                              Accept
+                            </button>
+                          )}
+                        </td>
+                      </tr>
+                    ))}
+                  </tbody>
+                </table>
+              ) : (
+                <p>No bids have been submitted for this project yet.</p>
+              )}
             </div>
           )}
           {!currentUser.isClient && (
             <div className="bids-section">
               <h2>Your Bid for this Project</h2>
-              <table className="bids-table">
-                <thead>
-                  <tr>
-                    <th>Image</th>
-                    <th>Bid Amount</th>
-                    <th>Freelancer</th>
-                    <th>Proposal</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  <tr>
-                    <td>
-                      <img
-                        className="bid-image"
-                        src={userBid?.freelancerImg || "https://via.placeholder.com/100x100"}
-                        alt="Freelancer"
-                      />
-                    </td>
-                    <td>${userBid?.bidAmount}</td>
-                    <td>{userBid?.freelancerId?.name || "Anonymous"}</td>
-                    <td>{userBid?.proposal}</td>
-                  </tr>
-                </tbody>
-              </table>
+              {bidSubmitted && userBid ? (
+                <table className="bids-table">
+                  <thead>
+                    <tr>
+                      <th>Image</th>
+                      <th>Bid Amount</th>
+                      <th>Freelancer</th>
+                      <th>Proposal</th>
+                      <th>Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td>
+                        <img
+                          className="bid-image"
+                          src={
+                            userBid?.freelancerId?.img ||
+                            "https://via.placeholder.com/100x100"
+                          }
+                          alt="Freelancer"
+                        />
+                      </td>
+                      <td>${userBid?.bidAmount}</td>
+                      <td>{userBid?.freelancerId?.name}</td>
+                      <td>{userBid?.proposal}</td>
+                      <td>
+                        {userBid?.isApproved ? "Approved" : "Not Approved Yet"}
+                      </td>
+                    </tr>
+                  </tbody>
+                </table>
+              ) : (
+                <p>You have not submitted a bid for this project yet.</p>
+              )}
             </div>
           )}
         </div>
@@ -261,15 +321,21 @@ function Project() {
           </div>
           {!currentUser.isClient && bidSubmitted && (
             <>
-              <button onClick={handleOpenModal} disabled>Submit Bid</button>
               <span>You have already submitted the bid!</span>
             </>
           )}
-          {!currentUser.isClient && !bidSubmitted && (<button onClick={handleOpenModal}>Submit Bid</button>)}
+          {!currentUser.isClient && !bidSubmitted && (
+            <button onClick={handleOpenModal}>Submit Bid</button>
+          )}
         </div>
       </div>
       {showBidModal && (
-        <BidModal project={project} showModal={showBidModal} handleClose={handleCloseModal} setBidSubmitted={setBidSubmitted} />
+        <BidModal
+          project={project}
+          showModal={showBidModal}
+          handleClose={handleCloseModal}
+          setBidSubmitted={setBidSubmitted}
+        />
       )}
     </div>
   );

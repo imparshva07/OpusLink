@@ -248,7 +248,9 @@ const Add = () => {
                 handleFieldChange("category", e.target.value);
               }}
             >
-              <option value=""></option>
+              <option value="" label="Select an option">
+                Select an option
+              </option>
               <option value="design">Design</option>
               <option value="web">Web Development</option>
               <option value="animation">Animation</option>
@@ -313,6 +315,7 @@ const Add = () => {
             <div className="specifications-input">
               <input
                 type="text"
+                id="specifications"
                 value={specificationInput}
                 onChange={(e) => setSpecificationInput(e.target.value)}
                 placeholder="Add a specification"

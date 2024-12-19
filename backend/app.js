@@ -12,14 +12,12 @@ import { Project } from "./models/project.model.js";
 import { indexProject } from "./controllers/project.controller.js";
 import chatRoutes from "./routes/chat.route.js";
 import http from "http";
-import redis from 'redis';
+import redis from "redis";
 import { Server } from "socket.io";
 const app = express();
 
 const redisclient = redis.createClient();
-redisclient.connect().then(() => {
-
-});
+redisclient.connect().then(() => {});
 
 dotenv.config();
 const PORT = process.env.PORT || 3000;
@@ -41,11 +39,6 @@ app.use("/api/users", userRoute);
 app.use("/api/bids", bidRoute);
 app.use("/api/projects", projectRoute);
 app.use("/api/auth", authRoute);
-
-// app.listen(3000, () => {
-//   connect();
-//   console.log("Server is running on port 3000");
-// });
 
 createIndex();
 
@@ -78,6 +71,7 @@ const syncElasticsearch = async () => {
             budget: { type: "float" },
             userId: { type: "keyword" },
             createdAt: { type: "date" },
+            img: {type: "text"}
           },
         },
       },
@@ -95,6 +89,7 @@ const syncElasticsearch = async () => {
           budget: project.budget || 0,
           userId: project.userId ? project.userId.toString() : "Unknown",
           createdAt: project.createdAt || new Date(),
+          img: project.img || "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
         },
       });
       console.log(`Elasticsearch: Project indexed with ID ${project._id}`);
@@ -107,7 +102,7 @@ const syncElasticsearch = async () => {
 
 syncElasticsearch();
 
-// WebSocket logic
+// WebSocket
 io.on("connection", (socket) => {
   console.log("A user connected:", socket.id);
   app.set("io", io);
@@ -124,17 +119,15 @@ io.on("connection", (socket) => {
     console.log(`Message sent to room ${chatId}:`, newMessage);
     io.emit("newMessage", {
       chatId,
-      lastMessage: newMessage.text, // Send the text of the latest message
+      lastMessage: newMessage.text, // Sending the text of the latest message
       timestamp: newMessage.timestamp || new Date(),
     });
   });
-  // Handle user disconnection
   socket.on("disconnect", () => {
     console.log("User disconnected:", socket.id);
   });
 });
 
-// Start the server
 server.listen(PORT, () => {
   connect();
   console.log(`Server ----> running on http://localhost:${PORT}`);

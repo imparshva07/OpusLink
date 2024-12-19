@@ -57,7 +57,6 @@ function Login() {
       }
     };
     fetchAndNavigate();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user, loading, navigate]);
 
   const handleSubmit = async (e) => {

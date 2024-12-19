@@ -1,4 +1,8 @@
-import { updateProfile, getUserProfile, getAllProfiles } from "../controllers/freelancerProfile.controller.js"
+import {
+  updateProfile,
+  getUserProfile,
+  getAllProfiles,
+} from "../controllers/freelancerProfile.controller.js";
 import express from "express";
 
 const router = express.Router();
