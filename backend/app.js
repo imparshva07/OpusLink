@@ -78,6 +78,7 @@ const syncElasticsearch = async () => {
             budget: { type: "float" },
             userId: { type: "keyword" },
             createdAt: { type: "date" },
+            img: {type: "text"}
           },
         },
       },
@@ -95,6 +96,7 @@ const syncElasticsearch = async () => {
           budget: project.budget || 0,
           userId: project.userId ? project.userId.toString() : "Unknown",
           createdAt: project.createdAt || new Date(),
+          img: project.img || "https://images.pexels.com/photos/270408/pexels-photo-270408.jpeg?auto=compress&cs=tinysrgb&w=1600"
         },
       });
       console.log(`Elasticsearch: Project indexed with ID ${project._id}`);
