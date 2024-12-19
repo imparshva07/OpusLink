@@ -95,3 +95,21 @@
 .messages-table td .delete-button:hover {
   background-color: #cc0000;
 }
+.messages-table td .messclr {
+  display: inline-block; 
+  text-decoration: none;
+  background-color: #4caf50; 
+  color: white; 
+  padding: 8px 15px;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+  font-weight: bold; 
+  text-align: center;
+  transition: background-color 0.3s ease, transform 0.2s ease;
+}
+
+.messages-table td .messclr:hover {
+  background-color: #388e3c; 
+  transform: scale(1.05); 
+}

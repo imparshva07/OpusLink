@@ -136,9 +136,10 @@ const Messages = () => {
                 <td>
                   <Link
                     to={`/message/${chat._id}`}
+                    className="messclr"
                     state={{ chatImage: chatImage[chat._id] }}
                   >
-                    <button>Message</button>
+                    Message
                   </Link>
                   <button
                     className="delete-button"
