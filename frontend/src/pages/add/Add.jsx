@@ -48,6 +48,8 @@ const Add = () => {
       errors.budget = "Budget is required.";
     } else if (formData.budget <= 0) {
       errors.budget = "Budget must be greater than 0.";
+    } else if (formData.budget >= 1000000) {
+      errors.budget = "Budget must be less than 1000000.";
     }
 
     if (!formData.expected_delivery_time) {
